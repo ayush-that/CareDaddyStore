@@ -11,6 +11,8 @@ interface Product {
   image: string;
   rating: number;
   slug: string;
+  deliveryPeriod: string;
+  shipsTo: string;
 }
 
 interface ProductContextType {
