@@ -22,6 +22,7 @@ interface Product {
   description?: string;
   dosage?: string;
   sideEffects?: string;
+  slug: string;
 }
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
@@ -37,19 +38,12 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     async function fetchData() {
       try {
         setLoading(true);
-        // Fetch all products for the sidebar
         const allProducts = await ProductService.getAllProducts();
         setProducts(allProducts);
-
-        // Find the product that matches the slug
-        const foundProduct = allProducts.find(
-          (p) => p.name.toLowerCase().replace(/\s+/g, "-") === params.slug
-        );
-
+        const foundProduct = allProducts.find((p) => p.slug === params.slug);
         if (!foundProduct) {
           throw new Error("Product not found");
         }
-
         setProduct(foundProduct);
       } catch (err) {
         setError(
