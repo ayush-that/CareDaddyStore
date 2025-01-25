@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ProductService } from "@/lib/api";
+import { ProductService, Product } from "@/lib/api";
 import { AlphabetFilter } from "@/components/ui/alphabet-filter";
 import { DiseaseSidebar } from "@/components/ui/disease-sidebar";
 import { Star, ShoppingCart } from "lucide-react";
@@ -10,20 +10,6 @@ import { useCartStore } from "@/lib/store/cart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ClientWrapper } from "@/components/ui/client-wrapper";
 import { ProductGrid } from "@/components/ui/product-grid";
-
-interface Product {
-  id: string;
-  name: string;
-  disease: string;
-  price: number;
-  rating: number;
-  image: string;
-  shipsTo: string | string[];
-  description?: string;
-  dosage?: string;
-  sideEffects?: string;
-  slug: string;
-}
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const [product, setProduct] = useState<Product | null>(null);

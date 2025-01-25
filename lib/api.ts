@@ -10,15 +10,11 @@ export interface Product {
   price: number;
   rating: number;
   image: string;
-  shipsTo: string;
-  description: string;
-  longDescription: string;
-  safetyInfo: string;
-  sideEffects: string;
-  sku: string;
-  status?: string;
-  createdAt?: string;
-  modifiedAt?: string;
+  shipsTo: string | string[];
+  description?: string;
+  dosage?: string;
+  sideEffects?: string;
+  slug: string;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
