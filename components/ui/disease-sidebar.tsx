@@ -10,15 +10,20 @@ interface Disease {
 }
 
 interface Product {
-  id: number;
+  id: string | number;
   name: string;
   disease: string;
   slug: string;
 }
 
 interface DiseaseSidebarProps {
-  diseases: Disease[];
-  products: Product[];
+  diseases: Array<{ name: string; count: number }>;
+  products: Array<{
+    id: string | number;
+    name: string;
+    disease: string;
+    slug: string;
+  }>;
   selectedDisease: string | null;
   onDiseaseSelect: (disease: string | null) => void;
 }
