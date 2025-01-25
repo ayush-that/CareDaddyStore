@@ -8,11 +8,12 @@ export function ProductGrid() {
   const { products, selectedLetter } = useProducts();
   const { addToCart } = useCart();
 
-  const filteredProducts = selectedLetter
-    ? products.filter((product) =>
-        product.name.toLowerCase().startsWith(selectedLetter.toLowerCase())
-      )
-    : products;
+  const filteredProducts =
+    selectedLetter === null || selectedLetter === ""
+      ? products
+      : products.filter((product) =>
+          product.name.toLowerCase().startsWith(selectedLetter.toLowerCase())
+        );
 
   const handleAddToCart = (product: any) => {
     addToCart({
@@ -24,31 +25,54 @@ export function ProductGrid() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-2 md:px-6">
       {filteredProducts.map((product) => (
         <div
           key={product.id}
-          className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+          className="bg-white rounded-lg overflow-hidden flex md:block"
         >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-48 object-cover"
-          />
-          <div className="p-4">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <div className="w-1/3 md:w-full p-4 bg-white flex items-center justify-center">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-24 h-24 md:w-32 md:h-32 object-contain"
+            />
+          </div>
+          <div className="w-2/3 md:w-full p-4 bg-[#88bdbc] text-white">
+            <h3 className="font-medium text-sm md:text-base mb-1">
               {product.name}
             </h3>
-            <p className="text-[#00bcd4] font-medium mb-4">
-              ${product.price.toFixed(2)}
-            </p>
-            <button
-              onClick={() => handleAddToCart(product)}
-              className="w-full bg-[#00bcd4] text-white px-4 py-2 rounded flex items-center justify-center gap-2 hover:bg-[#00acc1] transition-colors"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              Add to Cart
-            </button>
+            <div className="text-xs uppercase mb-1 md:mb-2">
+              {product.disease}
+            </div>
+            <div className="hidden md:flex items-center gap-1 mb-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-yellow-400">
+                    ★
+                  </span>
+                ))}
+              </div>
+              <span className="text-sm text-white/90">
+                / {product.rating || "0.0"} out of 5
+              </span>
+            </div>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
+              <div className="text-lg md:text-xl font-bold">
+                ${product.price.toFixed(2)}
+                <span className="text-sm font-normal ml-1">PILL</span>
+              </div>
+              <button
+                onClick={() => handleAddToCart(product)}
+                className="bg-white text-[#88bdbc] px-3 py-1.5 md:px-4 md:py-2 rounded text-sm flex items-center gap-2 hover:bg-gray-100 transition-colors"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                Add to Cart
+              </button>
+            </div>
+            <div className="hidden md:block text-sm text-white/90">
+              <p>Delivery period: 2-5 Days</p>
+            </div>
           </div>
         </div>
       ))}

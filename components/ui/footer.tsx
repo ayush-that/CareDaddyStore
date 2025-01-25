@@ -2,29 +2,61 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Phone, MessageSquare } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-background">
-      <div className="container py-6">
-        <div className="flex flex-col items-center gap-4">
-          <Image
-            src="/logo1.png"
-            alt="365Happy"
-            width={140}
-            height={40}
-            className="h-10 w-auto dark:invert"
-          />
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-center text-sm text-muted-foreground">
-              © 2021-2025 Canadian Pharmacy Ltd. All rights reserved.
-            </p>
-            <Link
-              href="/policy"
-              className="text-sm text-muted-foreground hover:text-foreground hover:underline"
-            >
-              View our policies
+    <footer className="bg-[#f5f9fa] border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+          {/* Left side - Logo and tagline */}
+          <div className="flex flex-col gap-4">
+            <Link href="/" className="inline-block">
+              <Image
+                src="/logo2.png"
+                alt="365Happy"
+                width={180}
+                height={50}
+                className="h-12 w-auto"
+              />
             </Link>
+            <p className="text-[#7a7a7a] text-sm max-w-sm leading-relaxed">
+              Your trusted online pharmacy partner, delivering quality
+              healthcare solutions worldwide with care and reliability.
+            </p>
+          </div>
+
+          {/* Right side - Contact numbers */}
+          <div className="flex flex-col gap-6">
+            <div className="flex items-start gap-4">
+              <MessageSquare className="w-6 h-6 text-[#88bdbc] mt-1" />
+              <div>
+                <div className="text-[#254e58] font-medium mb-1">
+                  WhatsApp Number
+                </div>
+                <a
+                  href="tel:+19175202876"
+                  className="text-xl text-[#7a7a7a] hover:text-[#88bdbc] transition-colors"
+                >
+                  +1 917 520-2876
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <Phone className="w-6 h-6 text-[#88bdbc] mt-1" />
+              <div>
+                <div className="text-[#254e58] font-medium mb-1">
+                  Call or text
+                </div>
+                <a
+                  href="tel:+19288596278"
+                  className="text-xl text-[#7a7a7a] hover:text-[#88bdbc] transition-colors"
+                >
+                  +1 928 859-6278
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

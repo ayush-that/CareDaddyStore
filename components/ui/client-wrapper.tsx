@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { TopBanner } from "./top-banner";
 import { Navbar } from "./navbar";
 import { MenuBanner } from "./menu-banner";
@@ -8,6 +8,7 @@ import { Footer } from "./footer";
 import { useProducts } from "@/lib/contexts/product-context";
 import { AlphabetFilter } from "./alphabet-filter";
 import { DiseaseSidebar } from "./disease-sidebar";
+import { Filter } from "lucide-react";
 
 function Loading() {
   return <div className="h-screen bg-gray-100 animate-pulse" />;
@@ -22,6 +23,8 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
     selectedDisease,
     setSelectedDisease,
   } = useProducts();
+
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   // Calculate disease counts from all products
   const diseaseCounts = allProducts.reduce(
@@ -44,14 +47,40 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <TopBanner />
+      <div className="hidden md:block">
+        <TopBanner />
+      </div>
       <Navbar />
       <MenuBanner />
       <main>
         <div className="container py-8" id="main-content">
-          <div className="flex gap-6">
+          {/* Mobile Filter Toggle */}
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
+              className="flex items-center gap-2 px-4 py-2 bg-[#88bdbc] text-white rounded-md"
+            >
+              <Filter className="w-4 h-4" />
+              {isMobileFiltersOpen ? "Hide Filters" : "Show Filters"}
+            </button>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-6">
             {/* Sidebar */}
-            <div className="w-72 flex-shrink-0">
+            <div
+              className={`${
+                isMobileFiltersOpen ? "block" : "hidden"
+              } md:block md:w-72 md:flex-shrink-0 space-y-4`}
+            >
+              {/* Alphabet Filter - Mobile */}
+              <div className="md:hidden overflow-x-auto">
+                <AlphabetFilter
+                  selectedLetter={selectedLetter}
+                  onLetterSelect={setSelectedLetter}
+                />
+              </div>
+
+              {/* Disease Sidebar */}
               <DiseaseSidebar
                 diseases={diseaseList}
                 products={allProducts}
@@ -62,7 +91,8 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
 
             {/* Main Content */}
             <div className="flex-1">
-              <div className="mb-6">
+              {/* Alphabet Filter - Desktop */}
+              <div className="hidden md:block mb-6">
                 <AlphabetFilter
                   selectedLetter={selectedLetter}
                   onLetterSelect={setSelectedLetter}

@@ -1,67 +1,37 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useProducts } from "@/lib/contexts/product-context";
 
-interface AlphabetFilterProps {
-  selectedLetter: string | null;
-  onLetterSelect: (letter: string | null) => void;
-}
-
-export function AlphabetFilter({
-  selectedLetter,
-  onLetterSelect,
-}: AlphabetFilterProps) {
-  const letters = [
-    "ALL",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-  ];
+export function AlphabetFilter() {
+  const { selectedLetter, setSelectedLetter } = useProducts();
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm">
-      <div className="flex items-center px-4 py-3">
-        <div className="text-sm font-medium text-gray-500 mr-4">ALPHABET:</div>
-        <div className="flex items-center gap-1 flex-1">
-          {letters.map((letter) => (
-            <Button
-              key={letter}
-              variant="ghost"
-              onClick={() => onLetterSelect(letter === "ALL" ? null : letter)}
-              className={`h-7 min-w-[28px] px-2 rounded hover:bg-[#88bdbc] hover:text-white transition-colors ${
-                (letter === "ALL" && selectedLetter === null) ||
-                letter === selectedLetter
-                  ? "bg-[#88bdbc] text-white px-3"
-                  : "bg-transparent text-gray-600"
-              }`}
-            >
-              {letter}
-            </Button>
-          ))}
-        </div>
+    <div className="w-full bg-[#f5f9fa] p-2">
+      <div className="flex flex-wrap items-center gap-1">
+        <button
+          onClick={() => setSelectedLetter(null)}
+          className={`min-w-[2.5rem] px-2 py-1 rounded text-sm font-medium transition-colors ${
+            selectedLetter === null
+              ? "bg-[#88bdbc] text-white"
+              : "text-gray-600 hover:bg-gray-100"
+          }`}
+        >
+          ALL
+        </button>
+        {ALPHABET.map((letter) => (
+          <button
+            key={letter}
+            onClick={() => setSelectedLetter(letter)}
+            className={`min-w-[2rem] px-2 py-1 rounded text-sm font-medium transition-colors ${
+              selectedLetter === letter
+                ? "bg-[#88bdbc] text-white"
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            {letter}
+          </button>
+        ))}
       </div>
     </div>
   );
