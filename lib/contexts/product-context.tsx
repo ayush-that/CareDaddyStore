@@ -1,19 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { ProductService } from "@/lib/api";
-
-interface Product {
-  id: number;
-  name: string;
-  disease: string;
-  price: number;
-  image: string;
-  rating: number;
-  slug: string;
-  deliveryPeriod: string;
-  shipsTo: string;
-}
+import { ProductService, Product } from "@/lib/api";
 
 interface ProductContextType {
   products: Product[];
@@ -59,14 +47,16 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const filteredProducts = allProducts.filter((product) => {
-    const matchesLetter =
-      selectedLetter === null ||
-      product.name.charAt(0).toUpperCase() === selectedLetter;
-    const matchesDisease =
-      selectedDisease === null || product.disease === selectedDisease;
-    return matchesLetter && matchesDisease;
-  });
+  const filteredProducts: Product[] = allProducts.filter(
+    (product): product is Product => {
+      const matchesLetter =
+        selectedLetter === null ||
+        product.name.charAt(0).toUpperCase() === selectedLetter;
+      const matchesDisease =
+        selectedDisease === null || product.disease === selectedDisease;
+      return matchesLetter && matchesDisease;
+    }
+  );
 
   return (
     <ProductContext.Provider

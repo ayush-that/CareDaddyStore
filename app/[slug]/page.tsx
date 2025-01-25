@@ -10,11 +10,12 @@ import { useCartStore } from "@/lib/store/cart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ClientWrapper } from "@/components/ui/client-wrapper";
 import { ProductGrid } from "@/components/ui/product-grid";
+import { useProducts } from "@/lib/contexts/product-context";
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedLetter, setSelectedLetter] = useState("ALL");
+  const { selectedLetter, setSelectedLetter } = useProducts();
   const [selectedDisease, setSelectedDisease] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +96,10 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     <ClientWrapper>
       <div className="container mx-auto py-8 px-4">
         <div className="mb-6">
-          <AlphabetFilter />
+          <AlphabetFilter
+            selectedLetter={selectedLetter}
+            onLetterSelect={setSelectedLetter}
+          />
         </div>
 
         <div className="flex gap-8">

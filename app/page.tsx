@@ -5,12 +5,12 @@ import { useProducts } from "@/lib/contexts/product-context";
 import { ClientWrapper } from "@/components/ui/client-wrapper";
 
 interface Product {
-  id: number;
-  name: string;
-  disease: string;
-  price: number;
-  image: string;
-  rating?: number;
+  id: any;
+  name: any;
+  disease: any;
+  price: any;
+  image: any;
+  rating?: any;
 }
 
 function ProductGrid() {

@@ -15,6 +15,7 @@ export interface Product {
   dosage?: string;
   sideEffects?: string;
   slug: string;
+  deliveryPeriod?: string;
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";

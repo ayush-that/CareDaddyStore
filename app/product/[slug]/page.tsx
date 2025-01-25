@@ -63,7 +63,9 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             </div>
 
             <div className="text-gray-600 space-y-2">
-              <p>Delivery period: {product.deliveryPeriod}</p>
+              {product.deliveryPeriod && (
+                <p>Delivery period: {product.deliveryPeriod}</p>
+              )}
               <p>Ships to {product.shipsTo}</p>
             </div>
 
