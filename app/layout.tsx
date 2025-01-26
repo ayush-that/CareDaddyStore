@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "../components/providers";
+import { Providers } from "@/components/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "365Happy - Your Online Pharmacy",
-  description: "Find all your pharmaceutical needs at 365Happy",
+  title: "Online Pharmacy",
+  description: "Your trusted online pharmacy",
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: [
+      {
+        url: "/logo.svg",
+        type: "image/svg+xml",
+      },
+    ],
   },
 };
 

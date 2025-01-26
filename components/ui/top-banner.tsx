@@ -1,3 +1,5 @@
+"use client";
+
 import { Phone } from "lucide-react";
 import Image from "next/image";
 
@@ -5,27 +7,23 @@ export function TopBanner() {
   return (
     <div className="w-full bg-[#254e58] text-white py-2">
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          {/* US Phone */}
-          <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-6">
+          {/* US Phone 1 */}
+          <div className="flex items-center gap-2">
             <Phone className="h-4 w-4" />
-            <span className="text-gray-400">US:</span>
-            <span>+1 (888) 243-74-06</span>
+            <span className="text-sm font-bold">US: +1 917 520-2876</span>
           </div>
 
-          {/* GB Phone */}
-          <div className="flex items-center gap-2 text-sm">
-            <div className="bg-[#1d3d45] p-1.5 rounded-md">
-              <Phone className="h-4 w-4" />
-            </div>
-            <span className="text-gray-400">GB:</span>
-            <span>+44 (800) 041-87-44</span>
+          {/* US Phone 2 */}
+          <div className="flex items-center gap-2">
+            <Phone className="h-4 w-4" />
+            <span className="text-sm font-bold">US: +1 928 859-6278</span>
           </div>
 
           {/* 24/7 Support */}
           <div className="flex items-center gap-2 text-sm">
-            <span className="text-gray-400">24/7</span>
-            <span>Customer Support</span>
+            <span className="text-white font-bold">24/7</span>
+            <span className="text-white font-bold">Customer Support</span>
           </div>
         </div>
 

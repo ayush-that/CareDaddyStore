@@ -14,7 +14,7 @@ export function Footer() {
             <Link href="/" className="inline-block">
               <Image
                 src="/logo2.png"
-                alt="365Happy"
+                alt="CareDaddyLogo"
                 width={180}
                 height={50}
                 className="h-12 w-auto"
@@ -34,12 +34,15 @@ export function Footer() {
                 <div className="text-[#254e58] font-medium mb-1">
                   WhatsApp Number
                 </div>
-                <a
-                  href="tel:+19175202876"
-                  className="text-xl text-[#7a7a7a] hover:text-[#88bdbc] transition-colors"
-                >
-                  +1 917 520-2876
-                </a>
+                <div>
+                  <span className="text-sm font-bold text-[#7a7a7a]">US: </span>
+                  <a
+                    href="tel:+19175202876"
+                    className="text-sm font-bold text-[#7a7a7a] hover:text-[#88bdbc] transition-colors"
+                  >
+                    +1 917 520-2876
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -49,12 +52,15 @@ export function Footer() {
                 <div className="text-[#254e58] font-medium mb-1">
                   Call or text
                 </div>
-                <a
-                  href="tel:+19288596278"
-                  className="text-xl text-[#7a7a7a] hover:text-[#88bdbc] transition-colors"
-                >
-                  +1 928 859-6278
-                </a>
+                <div>
+                  <span className="text-sm font-bold text-[#7a7a7a]">US: </span>
+                  <a
+                    href="tel:+19288596278"
+                    className="text-sm font-bold text-[#7a7a7a] hover:text-[#88bdbc] transition-colors"
+                  >
+                    +1 928 859-6278
+                  </a>
+                </div>
               </div>
             </div>
           </div>
