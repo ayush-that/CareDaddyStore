@@ -14,14 +14,14 @@ export function AlphabetFilter({
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
-    <div className="w-full bg-[#f5f9fa] p-2">
-      <div className="flex flex-wrap items-center gap-1">
+    <div className="w-full bg-[#f5f9fa] p-2 rounded-lg overflow-x-auto">
+      <div className="flex items-center justify-between min-w-max">
         <button
           onClick={() => onLetterSelect(null)}
-          className={`min-w-[2.5rem] px-2 py-1 rounded text-sm font-medium transition-colors ${
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
             selectedLetter === null
               ? "bg-[#88bdbc] text-white"
-              : "text-gray-600 hover:bg-gray-100"
+              : "text-gray-600 hover:bg-[#e0ecec]"
           }`}
         >
           ALL
@@ -30,10 +30,10 @@ export function AlphabetFilter({
           <button
             key={letter}
             onClick={() => onLetterSelect(letter)}
-            className={`min-w-[2rem] px-2 py-1 rounded text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
               selectedLetter === letter
                 ? "bg-[#88bdbc] text-white"
-                : "text-gray-600 hover:bg-gray-100"
+                : "text-gray-600 hover:bg-[#e0ecec]"
             }`}
           >
             {letter}

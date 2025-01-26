@@ -51,9 +51,19 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
         <TopBanner />
       </div>
       <Navbar />
-      <MenuBanner />
+      <div className="hidden md:block">
+        <MenuBanner />
+      </div>
       <main>
         <div className="container py-8" id="main-content">
+          {/* Alphabet Filter */}
+          <div className="mb-6">
+            <AlphabetFilter
+              selectedLetter={selectedLetter}
+              onLetterSelect={setSelectedLetter}
+            />
+          </div>
+
           {/* Mobile Filter Toggle */}
           <div className="md:hidden mb-4">
             <button
@@ -70,16 +80,8 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
             <div
               className={`${
                 isMobileFiltersOpen ? "block" : "hidden"
-              } md:block md:w-72 md:flex-shrink-0 space-y-4`}
+              } md:block md:w-72 md:flex-shrink-0`}
             >
-              {/* Alphabet Filter - Mobile */}
-              <div className="md:hidden overflow-x-auto">
-                <AlphabetFilter
-                  selectedLetter={selectedLetter}
-                  onLetterSelect={setSelectedLetter}
-                />
-              </div>
-
               {/* Disease Sidebar */}
               <DiseaseSidebar
                 diseases={diseaseList}
@@ -91,13 +93,6 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
 
             {/* Main Content */}
             <div className="flex-1">
-              {/* Alphabet Filter - Desktop */}
-              <div className="hidden md:block mb-6">
-                <AlphabetFilter
-                  selectedLetter={selectedLetter}
-                  onLetterSelect={setSelectedLetter}
-                />
-              </div>
               <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
           </div>

@@ -11,6 +11,8 @@ interface ProductContextType {
   setSelectedLetter: (letter: string | null) => void;
   selectedDisease: string | null;
   setSelectedDisease: (disease: string | null) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
@@ -20,6 +22,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const [selectedDisease, setSelectedDisease] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -54,7 +57,11 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
         product.name.charAt(0).toUpperCase() === selectedLetter;
       const matchesDisease =
         selectedDisease === null || product.disease === selectedDisease;
-      return matchesLetter && matchesDisease;
+      const matchesSearch =
+        searchQuery === "" ||
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.disease.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesLetter && matchesDisease && matchesSearch;
     }
   );
 
@@ -68,6 +75,8 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
         setSelectedLetter,
         selectedDisease,
         setSelectedDisease,
+        searchQuery,
+        setSearchQuery,
       }}
     >
       {children}
