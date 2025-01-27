@@ -2,7 +2,14 @@
 
 import { ClientWrapper } from "@/components/ui/client-wrapper";
 import { useCart } from "@/lib/context/cart-context";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  Trash2,
+  ShoppingBag,
+  ArrowLeft,
+  CreditCard,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,17 +18,18 @@ export default function CartPage() {
 
   return (
     <ClientWrapper>
-      <div className="p-6 max-w-5xl mx-auto">
+      <div className="p-6 max-w-5xl mx-auto min-h-[calc(100vh-400px)]">
         <h1 className="text-2xl mb-6">Shopping Cart</h1>
 
         {items.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-[#7a7a7a] mb-4">Your cart is empty</p>
+            <p className="text-[#7a7a7a] mb-3">Your cart is empty</p>
             <Link
               href="/"
-              className="inline-block bg-[#88bdbc] text-white px-6 py-2 rounded hover:bg-[#619695]"
+              className="inline-flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white"
             >
-              Continue Shopping
+              <ShoppingBag className="h-5 w-5" />
+              <span className="font-medium">Continue Shopping</span>
             </Link>
           </div>
         ) : (
@@ -61,7 +69,7 @@ export default function CartPage() {
                         onClick={() =>
                           updateQuantity(item.id, item.quantity - 1)
                         }
-                        className="w-8 h-8 flex items-center justify-center bg-[#f1f1f1] hover:bg-[#e5e5e5]"
+                        className="w-8 h-8 flex items-center justify-center bg-[#f1f1f1] hover:bg-[#e5e5e5] rounded"
                       >
                         <Minus className="w-3 h-3" />
                       </button>
@@ -75,7 +83,7 @@ export default function CartPage() {
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
-                        className="w-8 h-8 flex items-center justify-center bg-[#f1f1f1] hover:bg-[#e5e5e5]"
+                        className="w-8 h-8 flex items-center justify-center bg-[#f1f1f1] hover:bg-[#e5e5e5] rounded"
                       >
                         <Plus className="w-3 h-3" />
                       </button>
@@ -100,17 +108,19 @@ export default function CartPage() {
             <div className="flex justify-between items-center mt-6">
               <Link
                 href="/"
-                className="px-6 py-3 bg-[#f1f1f1] hover:bg-[#e5e5e5] text-gray-700"
+                className="inline-flex items-center justify-center gap-2 bg-[#f1f1f1] hover:bg-[#e5e5e5] h-10 px-4 rounded text-gray-700"
               >
-                Continue shopping
+                <ArrowLeft className="h-5 w-5" />
+                <span className="font-medium">Continue Shopping</span>
               </Link>
               <div className="flex items-center gap-8">
-                <div className="text-xl">
+                <div className="text-xl font-bold">
                   Total:{" "}
                   <span className="text-[#ff7675]">${total.toFixed(2)}</span>
                 </div>
-                <button className="px-6 py-3 bg-[#88bdbc] text-white hover:bg-[#619695]">
-                  Proceed to Checkout
+                <button className="inline-flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white">
+                  <CreditCard className="h-5 w-5" />
+                  <span className="font-medium">Proceed to Checkout</span>
                 </button>
               </div>
             </div>

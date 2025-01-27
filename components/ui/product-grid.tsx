@@ -25,21 +25,21 @@ export function ProductGrid() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-2 md:px-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
       {filteredProducts.map((product) => (
         <div
           key={product.id}
-          className="bg-white rounded-lg overflow-hidden flex md:block"
+          className="bg-white rounded-lg overflow-hidden flex sm:block shadow-sm"
         >
-          <div className="w-1/3 md:w-full p-4 bg-white flex items-center justify-center">
+          <div className="w-1/3 sm:w-full p-6 bg-white flex items-center justify-center">
             <img
               src={product.image}
               alt={product.name}
-              className="w-24 h-24 md:w-32 md:h-32 object-contain"
+              className="w-24 h-24 sm:w-36 sm:h-36 object-contain"
             />
           </div>
-          <div className="w-2/3 md:w-full p-4 bg-[#88bdbc] text-white">
-            <h3 className="font-medium text-sm md:text-base mb-1">
+          <div className="w-2/3 sm:w-full p-6 bg-[#88bdbc] text-white">
+            <h3 className="font-medium text-base sm:text-lg mb-2">
               {product.name}
             </h3>
             <div className="text-xs uppercase mb-1 md:mb-2">

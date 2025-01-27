@@ -46,7 +46,6 @@ export function DiseaseSidebar({
 
   return (
     <div className="bg-gradient-to-b from-[#eff9fa] to-[#e5f4f5] rounded-lg px-4 py-3">
-      <h2 className="text-lg font-semibold mb-2">Categories</h2>
       <div className="space-y-1">
         {diseases.map((disease) => (
           <div key={disease.name}>

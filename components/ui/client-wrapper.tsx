@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { TopBanner } from "./top-banner";
 import { Navbar } from "./navbar";
 import { MenuBanner } from "./menu-banner";
@@ -8,7 +8,6 @@ import { Footer } from "./footer";
 import { useProducts } from "@/lib/contexts/product-context";
 import { AlphabetFilter } from "./alphabet-filter";
 import { DiseaseSidebar } from "./disease-sidebar";
-import { Filter } from "lucide-react";
 
 function Loading() {
   return <div className="h-screen bg-gray-100 animate-pulse" />;
@@ -23,8 +22,6 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
     selectedDisease,
     setSelectedDisease,
   } = useProducts();
-
-  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   // Calculate disease counts from all products
   const diseaseCounts = allProducts.reduce(
@@ -47,11 +44,11 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <TopBanner />
       </div>
       <Navbar />
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
         <MenuBanner />
       </div>
       <main>
@@ -64,24 +61,9 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
             />
           </div>
 
-          {/* Mobile Filter Toggle */}
-          <div className="md:hidden mb-4">
-            <button
-              onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-[#88bdbc] text-white rounded-md"
-            >
-              <Filter className="w-4 h-4" />
-              {isMobileFiltersOpen ? "Hide Filters" : "Show Filters"}
-            </button>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
             {/* Sidebar */}
-            <div
-              className={`${
-                isMobileFiltersOpen ? "block" : "hidden"
-              } md:block md:w-72 md:flex-shrink-0`}
-            >
+            <div>
               {/* Disease Sidebar */}
               <DiseaseSidebar
                 diseases={diseaseList}
@@ -92,7 +74,7 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1">
+            <div>
               <Suspense fallback={<Loading />}>{children}</Suspense>
             </div>
           </div>

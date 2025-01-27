@@ -75,10 +75,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
             <button
               onClick={handleAddToCart}
-              className="flex items-center justify-center gap-2 w-full bg-[#88bdbc] hover:bg-[#619695] text-white py-3 px-6 rounded-md transition-colors"
+              className="flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white"
             >
-              <ShoppingCart className="w-5 h-5" />
-              Add to Cart
+              <ShoppingCart className="h-5 w-5" />
+              <span className="font-medium">Add to Cart</span>
             </button>
           </div>
         </div>

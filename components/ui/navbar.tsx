@@ -38,15 +38,15 @@ export function Navbar() {
               <Image
                 src="/logo2.png"
                 alt="CareDaddyLogo"
-                width={180}
-                height={50}
+                width={730}
+                height={148}
                 className="h-10 w-auto"
               />
             </Link>
 
             {/* Desktop Search */}
             <div className="hidden md:flex flex-1 items-center gap-4 max-w-xl ml-4">
-              <form onSubmit={handleSearch} className="relative flex-1">
+              <form onSubmit={handleSearch} className="relative flex-1 text-sm">
                 <input
                   type="text"
                   value={searchQuery}
@@ -78,8 +78,8 @@ export function Navbar() {
                 </div>
               </div>
               <div className="hidden md:block text-sm">
-                <div className="text-xs">Your Shopping Cart</div>
-                <div className="text-gray-600 text-lg">${total.toFixed(2)}</div>
+                <div className="text-xs font-semibold">Your Shopping Cart</div>
+                <div className="text-gray-600 text-lg font-bold">${total.toFixed(2)}</div>
               </div>
             </Link>
           </div>
