@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 
-const API_KEY = "b3e7d519ae50a5b9433c679303a6437c";
-const BASE_URL = "https://shopwe.espocloud.eu/api/v1";
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+if (!API_KEY || !BASE_URL) {
+  throw new Error("API credentials not found in environment variables");
+}
 
 export async function GET(request: Request) {
   try {
@@ -19,13 +23,15 @@ export async function GET(request: Request) {
 
     console.log("Fetching from URL:", url);
 
+    const headers: HeadersInit = {
+      "X-Api-Key": API_KEY as string,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+
     const response = await fetch(url, {
       method: "GET",
-      headers: {
-        "X-Api-Key": API_KEY,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+      headers,
       next: { revalidate: 0 }, // Disable cache
     });
 

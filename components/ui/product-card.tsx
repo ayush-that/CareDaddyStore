@@ -49,7 +49,7 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-[#dcdcdc]">
+    <div className="group w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-100">
       {/* Image Container */}
       <div className="relative h-[180px] bg-white p-4">
         <Image
