@@ -20,11 +20,6 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const menuItems = [
     { href: "/", icon: <Home className="w-5 h-5" />, label: "Home" },
     { href: "/about", icon: <Info className="w-5 h-5" />, label: "About us" },
-    {
-      href: "/order-status",
-      icon: <FileText className="w-5 h-5" />,
-      label: "Order status",
-    },
     { href: "/faq", icon: <HelpCircle className="w-5 h-5" />, label: "FAQ" },
     {
       href: "/policy",

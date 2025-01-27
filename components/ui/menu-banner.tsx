@@ -27,14 +27,16 @@ export function MenuBanner() {
               className="flex items-center gap-2 text-sm font-medium hover:text-teal-600 transition-colors"
             >
               <Home className="h-4 w-4 text-[#254e58]" />
-              <span className="text-[#254e58] font-bold">Home</span>
+              <span className="text-[#254e58] font-bold text-base">Home</span>
             </Link>
             <Link
               href="/about"
               className="flex items-center gap-2 text-sm font-medium hover:text-teal-600 transition-colors"
             >
               <Info className="h-4 w-4 text-[#254e58]" />
-              <span className="text-[#254e58] font-bold">About us</span>
+              <span className="text-[#254e58] font-bold text-base">
+                About us
+              </span>
             </Link>
             <Link
               href="/faq"
@@ -48,14 +50,16 @@ export function MenuBanner() {
               className="flex items-center gap-2 text-sm font-medium hover:text-teal-600 transition-colors"
             >
               <FileText className="h-4 w-4 text-[#254e58]" />
-              <span className="text-[#254e58] font-bold">Policy</span>
+              <span className="text-[#254e58] font-bold text-base">Policy</span>
             </Link>
             <Link
               href="/contact"
               className="flex items-center gap-2 text-sm font-medium hover:text-teal-600 transition-colors"
             >
               <Phone className="h-4 w-4 text-[#254e58]" />
-              <span className="text-[#254e58] font-bold">Contact Us</span>
+              <span className="text-[#254e58] font-bold text-base">
+                Contact Us
+              </span>
             </Link>
           </div>
 

@@ -63,10 +63,10 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Info Container */}
       <div className="p-4 bg-gradient-to-b from-[#f3fafb] to-[#e5f4f5] group-hover:bg-gradient-to-b group-hover:from-[#88bdbc] group-hover:to-[#629796] transition-colors duration-300">
         <Link href={`/product/${slug}`}>
-          <h3 className="font-medium mb-1 text-gray-900 group-hover:text-white">
+          <h3 className="font-semibold text-xl mb-1 text-gray-700 group-hover:text-white">
             {name}
           </h3>
-          <div className="text-xs text-gray-600 uppercase mb-2 group-hover:text-white/90">
+          <div className="text-xs font-semibold text-gray-600 uppercase mb-2 group-hover:text-gray-900">
             {disease}
           </div>
         </Link>
@@ -79,7 +79,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </span>
             ))}
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-white/90">
+          <span className="text-sm text-gray-600 group-hover:text-white">
             / {rating || "0.0"} out of 5
           </span>
         </div>
@@ -88,20 +88,25 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="text-xl font-bold text-red-500 group-hover:text-white">
             ${price?.toFixed(2) || "0.00"}
           </span>
-          <span className="text-sm text-gray-600 group-hover:text-white/90">
-            PILL
+          <span className="text-sm text-gray-600 group-hover:text-white">
+            / PILL
           </span>
         </div>
 
-        <div className="text-sm text-gray-600 mb-4 group-hover:text-white/90">
-          <p>Delivery period: 2-5 Days</p>
-          <p>Ships to {shipsTo || "N/A"}</p>
+        <div className="text-sm text-gray-600 mb-4 group-hover:text-gray-900">
+          <p>
+            Delivery period:{" "}
+            <span className="font-bold group-hover:text-white">2-5 Days</span>
+          </p>
+          <p>
+            Ships to <span className="font-bold group-hover:text-white  ">{shipsTo || "N/A"}</span>
+          </p>
         </div>
 
         <Button
           onClick={handleAddToCart}
           disabled={isAdding}
-          className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white transition-all ${
+          className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] group-hover:bg-[#f7766e] text-white transition-all ${
             isAdding ? "opacity-75" : ""
           }`}
         >
