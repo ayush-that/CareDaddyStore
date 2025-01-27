@@ -14,7 +14,7 @@ export function AlphabetFilter({
   const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   return (
-    <div className="w-full bg-[#f5f9fa] p-2 rounded-lg overflow-x-auto">
+    <div className="w-full bg-gradient-to-b from-[#f5f9fa] to-[#e5f4f5] p-2 rounded-lg overflow-x-auto">
       <div className="flex items-center justify-between min-w-max">
         <button
           onClick={() => onLetterSelect(null)}

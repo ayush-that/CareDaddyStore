@@ -4,8 +4,6 @@ import {
   Home,
   Info,
   FileText,
-  MessageSquare,
-  Star,
   HelpCircle,
   FileQuestion,
   Mail,
@@ -26,16 +24,6 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       href: "/order-status",
       icon: <FileText className="w-5 h-5" />,
       label: "Order status",
-    },
-    {
-      href: "/testimonials",
-      icon: <MessageSquare className="w-5 h-5" />,
-      label: "Testimonials",
-    },
-    {
-      href: "/bestsellers",
-      icon: <Star className="w-5 h-5" />,
-      label: "Bestsellers",
     },
     { href: "/faq", icon: <HelpCircle className="w-5 h-5" />, label: "FAQ" },
     {

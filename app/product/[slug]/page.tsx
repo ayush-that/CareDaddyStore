@@ -1,99 +1,60 @@
 "use client";
 
-import Image from "next/image";
-import { useProducts } from "@/lib/contexts/product-context";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { ProductDetail } from "@/components/ui/product-detail";
+import { ProductService } from "@/lib/api";
+import { ClientWrapper } from "@/components/ui/client-wrapper";
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
-  const { products } = useProducts();
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Find the product by slug
-  const product = products.find(
-    (p) => p.name.toLowerCase().replace(/\s+/g, "-") === params.slug
-  );
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await ProductService.getProductBySlug(params.slug);
+        if (data) {
+          setProduct(data);
+        } else {
+          setError("Product not found");
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setError("Failed to load product");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!product) {
-    return <div>Product not found</div>;
-  }
+    fetchProduct();
+  }, [params.slug]);
 
-  return (
-    <div className="container py-8">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="grid md:grid-cols-2 gap-8 p-8">
-          {/* Product Image */}
-          <div className="relative h-[400px] bg-white">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          {/* Product Info */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {product.name}
-              </h1>
-              <p className="text-lg text-gray-600 uppercase">
-                {product.disease}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i} className="text-yellow-400 text-2xl">
-                    ★
-                  </span>
-                ))}
-              </div>
-              <span className="text-lg text-gray-600">
-                / {product.rating} out of 5
-              </span>
-            </div>
-
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-red-500">
-                ${product.price}
-              </span>
-              <span className="text-xl text-gray-600">PER PILL</span>
-            </div>
-
-            <div className="text-gray-600 space-y-2">
-              {product.deliveryPeriod && (
-                <p>Delivery period: {product.deliveryPeriod}</p>
-              )}
-              <p>Ships to {product.shipsTo}</p>
-            </div>
-
-            <div className="pt-6">
-              <Button className="w-full h-12 text-lg bg-[#88bdbc] hover:bg-[#254e58] text-white">
-                Add to cart
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Description */}
-        <div className="border-t">
-          <div className="p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Description
-            </h2>
-            <div className="prose max-w-none">
-              <p>
-                Prevents the occurrence of epileptic seizures, allodynia and
-                hyperalgesia, and neuropathic pain. The drug is used to treat
-                diabetic polyneuropathy, post-herpetic neuralgia, and
-                fibromyalgia.
-              </p>
-            </div>
-          </div>
-        </div>
+  const content = loading ? (
+    <div className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
+      <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+      <div className="h-4 bg-gray-200 rounded w-1/4 mb-6"></div>
+      <div className="space-y-4">
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+        <div className="h-4 bg-gray-200 rounded w-full"></div>
+        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
       </div>
     </div>
+  ) : error ? (
+    <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{error}</h2>
+        <p className="text-gray-600">
+          The product you're looking for could not be found. Please check the
+          URL and try again.
+        </p>
+      </div>
+    </div>
+  ) : (
+    <ProductDetail product={product} />
   );
+
+  return <ClientWrapper>{content}</ClientWrapper>;
 }

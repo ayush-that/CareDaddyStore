@@ -6,7 +6,7 @@ import { Phone, MessageSquare } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-[#f5f9fa] border-t border-gray-200">
+    <footer className="bg-gradient-to-b from-[#f5f9fa] to-[#e5f4f5] border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start gap-8">
           {/* Left side - Logo and tagline */}

@@ -61,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Info Container */}
-      <div className="p-4 bg-[#f3fafb] group-hover:bg-[#7cb1b0] transition-colors duration-300">
+      <div className="p-4 bg-gradient-to-b from-[#f3fafb] to-[#e5f4f5] group-hover:bg-gradient-to-b group-hover:from-[#88bdbc] group-hover:to-[#629796] transition-colors duration-300">
         <Link href={`/product/${slug}`}>
           <h3 className="font-medium mb-1 text-gray-900 group-hover:text-white">
             {name}
@@ -101,7 +101,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <Button
           onClick={handleAddToCart}
           disabled={isAdding}
-          className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#254e58] text-white transition-all ${
+          className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white transition-all ${
             isAdding ? "opacity-75" : ""
           }`}
         >

@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export function TopBanner() {
   return (
-    <div className="w-full bg-[#254e58] text-white py-2">
+    <div className="w-full bg-gradient-to-b from-[#254e58] to-[#1f3e47] text-white py-2">
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           {/* US Phone 1 */}

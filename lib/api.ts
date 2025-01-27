@@ -93,6 +93,49 @@ export const ProductService = {
     }
   },
 
+  async getProductBySlug(slug: string): Promise<Product | null> {
+    try {
+      console.log("Fetching product by slug:", slug);
+      const params = new URLSearchParams({
+        where: JSON.stringify([
+          {
+            type: "equals",
+            attribute: "slug",
+            value: slug,
+          },
+        ]),
+      });
+
+      const response = await fetch(`${BASE_URL}/CProduct?${params}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Product by slug fetched:", data);
+
+      if (!data.list || data.list.length === 0) {
+        console.error("Product not found for slug:", slug);
+        return null;
+      }
+
+      return data.list[0];
+    } catch (error) {
+      console.error("Error fetching product by slug:", error);
+      return null;
+    }
+  },
+
   async getAllDiseases(): Promise<string[]> {
     try {
       const products = await this.getAllProducts();
