@@ -141,3 +141,10 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .container {
+    @apply px-4 mx-auto;
+    max-width: min(100vw - 2rem, 1536px);
+  }
+}
