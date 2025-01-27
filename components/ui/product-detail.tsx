@@ -3,6 +3,7 @@
 import { Star, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useCart } from "@/lib/context/cart-context";
+import { useState } from "react";
 
 interface ProductDetailProps {
   product: {
@@ -15,32 +16,47 @@ interface ProductDetailProps {
     sideEffects: string;
     image: string;
     price: number;
+    disease?: string;
   };
 }
 
 export function ProductDetail({ product }: ProductDetailProps) {
   const { addToCart } = useCart();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const maxLength = 150; // Characters to show before "Read more"
 
   const handleAddToCart = () => {
+    setIsAdding(true);
     addToCart({
       id: product.sku,
       name: product.name,
       price: product.price,
       image: product.image,
     });
+
+    // Visual feedback
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 500);
+  };
+
+  const truncateText = (text: string) => {
+    if (text.length <= maxLength) return text;
+    return isExpanded ? text : `${text.substring(0, maxLength)}...`;
   };
 
   return (
     <div className="bg-white rounded-lg shadow-sm">
       {/* Product Header with Image */}
-      <div className="grid md:grid-cols-2 gap-8 p-6 border-b">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
         {/* Image */}
-        <div className="relative h-[300px] bg-white">
+        <div className="relative h-[400px] bg-white p-6 flex items-center justify-center">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain"
+            className="object-contain p-4"
             priority
           />
         </div>
@@ -51,8 +67,19 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               {product.name}
             </h1>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center">
+            <div className="flex flex-col gap-2 text-sm mb-4">
+              <div className="text-green-600 font-medium">
+                Availability: In Stock {product.sku} packs
+              </div>
+              <div className="inline-flex items-center gap-2">
+                <span className="text-gray-500">Treats:</span>
+                <span className="bg-gradient-to-r from-[#88bdbc] to-[#619695] text-white px-3 py-1 rounded-full text-xs font-medium">
+                  {product.disease || "General"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 mb-4">
+              <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
@@ -64,44 +91,62 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-600">SKU: {product.sku}</span>
+              <span className="text-sm text-gray-600">
+                / {product.rating} out of 5
+              </span>
             </div>
           </div>
 
-          {/* Price and Add to Cart */}
           <div className="space-y-4">
             <div className="text-3xl font-bold text-[#88bdbc]">
               ${product.price.toFixed(2)}
+              <span className="text-sm font-normal text-gray-600 ml-2">
+                / PILL
+              </span>
             </div>
+            <p className="product-description text-gray-600">
+              {truncateText(product.description)}
+            </p>
+            {product.description.length > maxLength && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-[#88bdbc] hover:text-[#619695] font-medium"
+              >
+                {isExpanded ? "Read less" : "Read more"}
+              </button>
+            )}
             <button
               onClick={handleAddToCart}
-              className="flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white"
+              disabled={isAdding}
+              className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white py-2 rounded text-sm transition-all ${
+                isAdding ? "opacity-75" : ""
+              }`}
             >
-              <ShoppingCart className="h-5 w-5" />
-              <span className="font-medium">Add to Cart</span>
+              <ShoppingCart className="w-4 h-4" />
+              {isAdding ? "Adding..." : "Add to cart"}
             </button>
           </div>
         </div>
       </div>
 
       {/* Product Details */}
-      <div className="p-6 space-y-8">
-        {/* Quick Description */}
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">
-            Description
-          </h2>
-          <p className="text-gray-600">{product.description}</p>
-        </div>
-
+      <div className="p-6 space-y-8 border-t">
         {/* Detailed Description */}
         <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             Detailed Description
           </h2>
-          <p className="text-gray-600 whitespace-pre-line">
-            {product.longDescription}
+          <p className="product-description text-gray-600 whitespace-pre-line">
+            {truncateText(product.longDescription)}
           </p>
+          {product.longDescription.length > maxLength && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2"
+            >
+              {isExpanded ? "Read less" : "Read more"}
+            </button>
+          )}
         </div>
 
         {/* Safety Information */}
@@ -109,8 +154,18 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             Safety Information
           </h2>
-          <div className="bg-blue-50 p-4 rounded-md">
-            <p className="text-gray-600">{product.safetyInfo}</p>
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-4 rounded-md border border-blue-100">
+            <p className="product-description text-gray-600">
+              {truncateText(product.safetyInfo)}
+            </p>
+            {product.safetyInfo.length > maxLength && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2"
+              >
+                {isExpanded ? "Read less" : "Read more"}
+              </button>
+            )}
           </div>
         </div>
 
@@ -119,8 +174,18 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             Side Effects
           </h2>
-          <div className="bg-red-50 p-4 rounded-md">
-            <p className="text-gray-600">{product.sideEffects}</p>
+          <div className="bg-gradient-to-br from-red-50 to-red-100/50 p-4 rounded-md border border-red-100">
+            <p className="product-description text-gray-600">
+              {truncateText(product.sideEffects)}
+            </p>
+            {product.sideEffects.length > maxLength && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2"
+              >
+                {isExpanded ? "Read less" : "Read more"}
+              </button>
+            )}
           </div>
         </div>
       </div>
