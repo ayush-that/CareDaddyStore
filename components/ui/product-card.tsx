@@ -41,15 +41,10 @@ export function ProductCard({ product }: ProductCardProps) {
       price: product.price,
       image: product.image,
     });
-
-    // Visual feedback
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 500);
   };
 
   return (
-    <div className="group w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-100">
+    <div className="group sm:w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-100">
       {/* Image Container */}
       <div className="relative h-[180px] bg-white p-4">
         <Image
@@ -99,7 +94,10 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="font-bold group-hover:text-white">2-5 Days</span>
           </p>
           <p>
-            Ships to <span className="font-bold group-hover:text-white  ">{shipsTo || "N/A"}</span>
+            Ships to{" "}
+            <span className="font-bold group-hover:text-white  ">
+              {shipsTo || "N/A"}
+            </span>
           </p>
         </div>
 
