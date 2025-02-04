@@ -196,20 +196,4 @@ body {
     @apply px-4 mx-auto;
     max-width: min(100vw - 2rem, 1536px);
   }
-
-  /* Desktop padding adjustments */
-  @media (min-width: 1024px) {
-    .container {
-      @apply px-8;
-      max-width: min(100vw - 8rem, 1536px);
-    }
-  }
-
-  /* Large desktop padding adjustments */
-  @media (min-width: 1280px) {
-    .container {
-      @apply px-12;
-      max-width: min(100vw - 12rem, 1536px);
-    }
-  }
 }
