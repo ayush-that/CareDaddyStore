@@ -25,13 +25,16 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     async function fetchData() {
       try {
         setLoading(true);
-        const allProducts = await ProductService.getAllProducts();
-        setProducts(allProducts);
-        const foundProduct = allProducts.find((p) => p.slug === params.slug);
-        if (!foundProduct) {
+        // Fetch the specific product by slug
+        const productData = await ProductService.getProductBySlug(params.slug);
+        if (!productData) {
           throw new Error("Product not found");
         }
-        setProduct(foundProduct);
+        setProduct(productData);
+
+        // Fetch all products for the sidebar
+        const allProducts = await ProductService.getAllProducts();
+        setProducts(allProducts);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to fetch product"
@@ -193,24 +196,23 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                     </div>
                   </div>
 
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                      Dosage
-                    </h2>
-                    <div className="text-gray-600">
-                      {product.dosage || "Dosage information not available."}
+                  {product.dosage && (
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Dosage
+                      </h2>
+                      <div className="text-gray-600">{product.dosage}</div>
                     </div>
-                  </div>
+                  )}
 
-                  <div>
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                      Side Effects
-                    </h2>
-                    <div className="text-gray-600">
-                      {product.sideEffects ||
-                        "Side effects information not available."}
+                  {product.sideEffects && (
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                        Side Effects
+                      </h2>
+                      <div className="text-gray-600">{product.sideEffects}</div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>

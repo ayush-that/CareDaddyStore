@@ -51,7 +51,7 @@ export function DiseaseSidebar({
 
   return (
     <div className="bg-gradient-to-b from-[#eff9fa] to-[#e5f4f5] rounded-lg px-4 py-3">
-      <div className="space-y-1">
+      <div className="space-y-1 smooth-scroll">
         {/* Bestsellers Category */}
         {bestsellerProducts.length > 0 && (
           <div>
@@ -67,7 +67,9 @@ export function DiseaseSidebar({
                 )}
                 Bestsellers
               </span>
-              <span className="text-sm text-gray-500">{bestsellerProducts.length}</span>
+              <span className="text-sm text-gray-500">
+                {bestsellerProducts.length}
+              </span>
             </button>
             {expandedDisease === "Bestsellers" && (
               <div className="ml-4 mt-1 space-y-1">

@@ -52,27 +52,31 @@ export async function GET(request: Request) {
     // Transform the data to match our expected format
     const transformedData = {
       total: data.total,
-      list: data.list.map((product: any) => ({
-        id: product.id,
-        name: product.name,
-        disease: product.disease || "",
-        price: parseFloat(product.price) || 0,
-        rating: parseFloat(product.rating) || 0,
-        image: product.image || "",
-        shipsTo: product.shipsTo || "Worldwide",
-        description: product.description || "",
-        longDescription: product.longDescription || "",
-        safetyInfo: product.safetyInfo || "",
-        sideEffects: product.sideEffects || "",
-        sku: product.sku || "",
-        slug:
-          product.slug ||
-          product.name
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, ""),
-        bestseller: Boolean(product.bestseller),
-      })),
+      list: data.list.map((product: any) => {
+        // Generate a clean slug from the name if not provided
+        const productSlug = product.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+
+        return {
+          id: product.id,
+          name: product.name,
+          disease: product.disease || "",
+          price: parseFloat(product.price) || 0,
+          rating: parseFloat(product.rating) || 0,
+          image: product.image || "",
+          shipsTo: product.shipsTo || "Worldwide",
+          description: product.description || "",
+          longDescription: product.longDescription || "",
+          safetyInfo: product.safetyInfo || "",
+          sideEffects: product.sideEffects || "",
+          sku: product.sku || "",
+          dosage: product.dosage || "",
+          slug: productSlug,
+          bestseller: Boolean(product.bestseller),
+        };
+      }),
     };
 
     return NextResponse.json(transformedData);
