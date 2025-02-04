@@ -16,6 +16,7 @@ interface Product {
   rating: number;
   shipsTo?: string;
   slug: string;
+  bestseller?: boolean;
 }
 
 interface ProductCardProps {
@@ -30,7 +31,8 @@ export function ProductCard({ product }: ProductCardProps) {
     return null;
   }
 
-  const { name, disease, image, price, rating, shipsTo, slug } = product;
+  const { name, disease, image, price, rating, shipsTo, slug, bestseller } =
+    product;
 
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -90,14 +92,20 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="text-sm text-gray-600 mb-4 group-hover:text-gray-900">
           <p>
             Delivery period:{" "}
-            <span className="font-bold group-hover:text-white">2-5 Days</span>
-          </p>
-          <p>
-            Ships to{" "}
-            <span className="font-bold group-hover:text-white  ">
-              {shipsTo || "N/A"}
+            <span className="font-bold group-hover:text-white">
+              {bestseller
+                ? "USPS Priority Mail Overnight Shipping"
+                : "2-5 Days"}
             </span>
           </p>
+          {!bestseller && (
+            <p>
+              Ships to{" "}
+              <span className="font-bold group-hover:text-white">
+                {shipsTo || "N/A"}
+              </span>
+            </p>
+          )}
         </div>
 
         <Button
