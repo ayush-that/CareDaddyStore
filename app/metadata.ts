@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CareDaddyStore",
+  title: "CareCaddyStore",
   description: "Browse and purchase quality medications",
 };

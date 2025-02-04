@@ -14,7 +14,7 @@ export function Footer() {
             <Link href="/" className="inline-block">
               <Image
                 src="/logo1.png"
-                alt="CareDaddyLogo"
+                alt="CareCaddyLogo"
                 width={625}
                 height={447}
                 className="h-20 w-auto"

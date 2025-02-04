@@ -8,6 +8,7 @@ import { Footer } from "./footer";
 import { useProducts } from "@/lib/contexts/product-context";
 import { AlphabetFilter } from "./alphabet-filter";
 import { DiseaseSidebar } from "./disease-sidebar";
+import { FeaturesSection } from "./features-section";
 
 function Loading() {
   return <div className="h-screen bg-gray-100 animate-pulse" />;
@@ -80,6 +81,7 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </main>
+      <FeaturesSection />
       <Footer />
     </>
   );

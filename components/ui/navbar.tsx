@@ -37,7 +37,7 @@ export function Navbar() {
             <Link href="/" className="flex-shrink-0">
               <Image
                 src="/logo2.png"
-                alt="CareDaddyLogo"
+                alt="CareCaddyLogo"
                 width={730}
                 height={148}
                 className="h-10 w-auto"

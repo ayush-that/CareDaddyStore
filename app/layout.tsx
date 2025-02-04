@@ -8,7 +8,7 @@ import { ProductProvider } from "@/lib/contexts/product-context";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CareDaddy Store",
+  title: "CareCaddy Store",
   description: "Your trusted online pharmacy",
   icons: {
     icon: [

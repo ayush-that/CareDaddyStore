@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["365happyfamily.com", "shopwe.espocloud.eu"],
+    remotePatterns: ["365happyfamily.com", "shopwe.espocloud.eu"],
     remotePatterns: [
       {
         protocol: "https",

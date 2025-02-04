@@ -9,7 +9,7 @@ export default function AboutPage() {
         {/* Welcome Section */}
         <section>
           <h1 className="text-[#00bcd4] text-2xl font-normal mb-4">
-            Welcome to CareDaddy Store
+            Welcome to CareCaddy Store
           </h1>
           <p className="text-[#7a7a7a] italic mb-6">
             — where your health and happiness come first!
@@ -35,7 +35,7 @@ export default function AboutPage() {
         {/* Key Features Section */}
         <section>
           <h2 className="text-[#00bcd4] text-xl font-normal mb-4">
-            At CareDaddy Store, you can count on:
+            At CareCaddy Store, you can count on:
           </h2>
 
           <div className="text-[#7a7a7a] space-y-6">
@@ -53,7 +53,7 @@ export default function AboutPage() {
             <div>
               <h3 className="font-medium mb-2">Fast and Reliable Service</h3>
               <p>
-                Shopping at CareDaddy Store is quick and hassle-free. Place your
+                Shopping at CareCaddy Store is quick and hassle-free. Place your
                 order on our website and leave the rest to us! With fast
                 shipping, 24/7 customer support, and secure payments, we make
                 sure your experience is seamless and stress-free.
@@ -75,7 +75,7 @@ export default function AboutPage() {
         {/* Closing Section */}
         <section className="text-[#7a7a7a] space-y-4">
           <p>
-            Take a step back and let CareDaddy Store take care of your health
+            Take a step back and let CareCaddy Store take care of your health
             and happiness. Shop with confidence, comfort, and complete peace of
             mind. Let's get started!
           </p>

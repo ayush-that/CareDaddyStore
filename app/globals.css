@@ -193,7 +193,19 @@ body {
 
 @layer components {
   .container {
-    @apply px-4 mx-auto;
-    max-width: min(100vw - 2rem, 1536px);
+    @apply mx-auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    max-width: min(100vw - 1rem, 1536px);
+
+    @media (min-width: 640px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 }
