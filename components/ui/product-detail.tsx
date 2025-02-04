@@ -22,9 +22,11 @@ interface ProductDetailProps {
 
 export function ProductDetail({ product }: ProductDetailProps) {
   const { addToCart } = useCart();
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const maxLength = 150; // Characters to show before "Read more"
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isSafetyInfoExpanded, setIsSafetyInfoExpanded] = useState(false);
+  const [isSideEffectsExpanded, setIsSideEffectsExpanded] = useState(false);
+  const maxLength = 300;
 
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -41,7 +43,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
     }, 500);
   };
 
-  const truncateText = (text: string) => {
+  const truncateText = (text: string, isExpanded: boolean) => {
     if (text.length <= maxLength) return text;
     return isExpanded ? text : `${text.substring(0, maxLength)}...`;
   };
@@ -105,14 +107,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </span>
             </div>
             <p className="product-description text-gray-600 text-sm sm:text-base">
-              {truncateText(product.description)}
+              {truncateText(product.description, isDescriptionExpanded)}
             </p>
             {product.description.length > maxLength && (
               <button
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
                 className="text-[#88bdbc] hover:text-[#619695] font-medium text-sm"
               >
-                {isExpanded ? "Read less" : "Read more"}
+                {isDescriptionExpanded ? "Read less" : "Read more"}
               </button>
             )}
             <button
@@ -137,14 +139,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
             Detailed Description
           </h2>
           <p className="product-description text-gray-600 whitespace-pre-line text-sm sm:text-base">
-            {truncateText(product.longDescription)}
+            {truncateText(product.longDescription, isDescriptionExpanded)}
           </p>
           {product.longDescription.length > maxLength && (
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
               className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2 text-sm"
             >
-              {isExpanded ? "Read less" : "Read more"}
+              {isDescriptionExpanded ? "Read less" : "Read more"}
             </button>
           )}
         </div>
@@ -156,14 +158,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
           </h2>
           <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 p-3 sm:p-4 rounded-md border border-blue-100">
             <p className="product-description text-gray-600 text-sm sm:text-base">
-              {truncateText(product.safetyInfo)}
+              {truncateText(product.safetyInfo, isSafetyInfoExpanded)}
             </p>
             {product.safetyInfo.length > maxLength && (
               <button
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={() => setIsSafetyInfoExpanded(!isSafetyInfoExpanded)}
                 className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2 text-sm"
               >
-                {isExpanded ? "Read less" : "Read more"}
+                {isSafetyInfoExpanded ? "Read less" : "Read more"}
               </button>
             )}
           </div>
@@ -176,14 +178,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
           </h2>
           <div className="bg-gradient-to-br from-red-50 to-red-100/50 p-3 sm:p-4 rounded-md border border-red-100">
             <p className="product-description text-gray-600 text-sm sm:text-base">
-              {truncateText(product.sideEffects)}
+              {truncateText(product.sideEffects, isSideEffectsExpanded)}
             </p>
             {product.sideEffects.length > maxLength && (
               <button
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={() => setIsSideEffectsExpanded(!isSideEffectsExpanded)}
                 className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2 text-sm"
               >
-                {isExpanded ? "Read less" : "Read more"}
+                {isSideEffectsExpanded ? "Read less" : "Read more"}
               </button>
             )}
           </div>

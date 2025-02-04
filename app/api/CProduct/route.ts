@@ -65,6 +65,7 @@ export async function GET(request: Request) {
         safetyInfo: product.safetyInfo || "",
         sideEffects: product.sideEffects || "",
         sku: product.sku || "",
+        slug: product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
       })),
     };
 

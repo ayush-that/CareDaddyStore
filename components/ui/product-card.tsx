@@ -15,6 +15,7 @@ interface Product {
   price: number;
   rating: number;
   shipsTo?: string;
+  slug: string;
 }
 
 interface ProductCardProps {
@@ -29,9 +30,7 @@ export function ProductCard({ product }: ProductCardProps) {
     return null;
   }
 
-  const { name, disease, image, price, rating, shipsTo } = product;
-
-  const slug = name.toLowerCase().replace(/\s+/g, "-");
+  const { name, disease, image, price, rating, shipsTo, slug } = product;
 
   const handleAddToCart = () => {
     setIsAdding(true);
