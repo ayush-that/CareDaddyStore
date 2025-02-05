@@ -8,6 +8,55 @@ export function Footer() {
   return (
     <footer className="bg-[#f5f9fa] border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Payment and Security Badges */}
+        <div className="flex justify-center mb-8">
+          <div className="flex items-center gap-4 flex-wrap justify-center">
+            <Image
+              src="/images/footer/Visa_Inc._logo.svg"
+              alt="Visa"
+              width={51}
+              height={16}
+              className="h-4 w-auto"
+            />
+            <Image
+              src="/images/footer/mastercard-top.svg"
+              alt="Mastercard"
+              width={51}
+              height={16}
+              className="h-5 w-auto"
+            />
+            <div className="h-8 border-l border-gray-300 mx-2"></div>
+            <Image
+              src="/images/footer/geotrust.webp"
+              alt="GeoTrust Secured"
+              width={114}
+              height={31}
+              className="h-5 w-auto"
+            />
+            <Image
+              src="/images/footer/visa-verified.svg"
+              alt="Verified by Visa"
+              width={57}
+              height={31}
+              className="h-5 w-auto"
+            />
+            <Image
+              src="/images/footer/ssl.svg"
+              alt="SSL Secured"
+              width={100}
+              height={31}
+              className="h-5 w-auto"
+            />
+            <Image
+              src="/images/footer/McAfee_logo_(2009-2016).png"
+              alt="McAfee Secure"
+              width={92}
+              height={31}
+              className="h-5 w-auto"
+            />
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {/* Left side - Logo */}
           <div className="flex justify-center md:justify-start">
