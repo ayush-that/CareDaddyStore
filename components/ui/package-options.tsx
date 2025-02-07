@@ -340,44 +340,89 @@ export function PackageOptions({
         <h2 className="text-xl font-bold text-gray-900 mb-4">
           {productName} {selectedDosage}
         </h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-[#88bdbc] text-white">
-              <tr>
-                <th className="py-3 px-4 text-left">PACKAGE</th>
-                <th className="py-3 px-4 text-left">PER PILL</th>
-                <th className="py-3 px-4 text-left">PACK COST</th>
-                <th className="py-3 px-4 text-left">SHIPPING</th>
-                <th className="py-3 px-4 text-left">TOTAL</th>
-                <th className="py-3 px-4 text-left">ORDER</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPackages.map((pkg: Package, index: number) => (
-                <tr key={index} className="border-b">
-                  <td className="py-4 px-4">{pkg.productName}</td>
-                  <td className="py-4 px-4">${pkg.perPillCost.toFixed(2)}</td>
-                  <td className="py-4 px-4">${pkg.packCost.toFixed(2)}</td>
-                  <td className="py-4 px-4">
-                    {pkg.shippingCost > 0
-                      ? `$${pkg.shippingCost.toFixed(2)}`
-                      : "Free"}
-                  </td>
-                  <td className="py-4 px-4">${pkg.totalCost.toFixed(2)}</td>
-                  <td className="py-4 px-4">
-                    <button
-                      onClick={() => handleAddToCart(pkg)}
-                      disabled={isAdding}
-                      className="bg-[#88bdbc] hover:bg-[#619695] text-white px-4 py-2 rounded flex items-center gap-2"
-                    >
-                      <ShoppingCart className="w-4 h-4" />
-                      {isAdding ? "Adding..." : "Add to cart"}
-                    </button>
-                  </td>
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <div className="inline-block min-w-full align-middle">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-[#88bdbc]">
+                <tr>
+                  <th
+                    scope="col"
+                    className="py-3 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-[20%]"
+                  >
+                    Package
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-[15%]"
+                  >
+                    Per Pill
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-[15%]"
+                  >
+                    Pack Cost
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-[15%]"
+                  >
+                    Shipping
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-[15%]"
+                  >
+                    Total
+                  </th>
+                  <th
+                    scope="col"
+                    className="py-3 px-3 sm:px-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-[20%]"
+                  >
+                    Order
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {currentPackages.map((pkg: Package, index: number) => (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
+                      {pkg.productName}
+                    </td>
+                    <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
+                      ${pkg.perPillCost.toFixed(2)}
+                    </td>
+                    <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
+                      ${pkg.packCost.toFixed(2)}
+                    </td>
+                    <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
+                      {pkg.shippingCost > 0
+                        ? `$${pkg.shippingCost.toFixed(2)}`
+                        : "Free"}
+                    </td>
+                    <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
+                      ${pkg.totalCost.toFixed(2)}
+                    </td>
+                    <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm">
+                      <button
+                        onClick={() => handleAddToCart(pkg)}
+                        disabled={isAdding}
+                        className="bg-[#88bdbc] hover:bg-[#619695] text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap"
+                      >
+                        <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">
+                          {isAdding ? "Adding..." : "Add to cart"}
+                        </span>
+                        <span className="sm:hidden">
+                          {isAdding ? "..." : "Add"}
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
