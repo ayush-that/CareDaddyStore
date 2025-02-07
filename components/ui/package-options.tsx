@@ -20,7 +20,8 @@ type ProductSlug =
   | "viagra"
   | "cialis"
   | "super-ed-trial-pack"
-  | "cialis-professional";
+  | "cialis-professional"
+  | "levitra";
 
 interface ProductConfig {
   dosages: string[];
@@ -228,6 +229,36 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
             productName: "20 Tabs pack",
             packCost: 42.99,
             perPillCost: 2.2495,
+            shippingCost: 17.99,
+            totalCost: 60.98,
+          },
+          {
+            productName: "45 Tabs pack",
+            packCost: 74.99,
+            perPillCost: 1.666444444,
+            shippingCost: 17.99,
+            totalCost: 92.98,
+          },
+        ],
+      },
+    },
+  },
+  levitra: {
+    dosages: ["20mg"],
+    dosageConfigs: {
+      "20mg": {
+        packages: [
+          {
+            productName: "10 Tabs pack",
+            packCost: 29.99,
+            perPillCost: 2.999,
+            shippingCost: 17.99,
+            totalCost: 47.98,
+          },
+          {
+            productName: "20 Tabs pack",
+            packCost: 42.99,
+            perPillCost: 2.1495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },

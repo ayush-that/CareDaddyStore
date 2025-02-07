@@ -138,7 +138,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
         {(product.slug === "viagra" ||
           product.slug === "cialis" ||
           product.slug === "super-ed-trial-pack" ||
-          product.slug === "cialis-professional") && (
+          product.slug === "cialis-professional" ||
+          product.slug === "levitra") && (
           <PackageOptions
             productName={product.name}
             productSku={product.sku}
