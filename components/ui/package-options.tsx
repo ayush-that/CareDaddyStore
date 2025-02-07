@@ -16,7 +16,11 @@ interface DosageConfig {
   packages: Package[];
 }
 
-type ProductSlug = "viagra" | "cialis";
+type ProductSlug =
+  | "viagra"
+  | "cialis"
+  | "super-ed-trial-pack"
+  | "cialis-professional";
 
 interface ProductConfig {
   dosages: string[];
@@ -187,6 +191,52 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
             perPillCost: 1.555333333,
             shippingCost: 17.99,
             totalCost: 87.98,
+          },
+        ],
+      },
+    },
+  },
+  "super-ed-trial-pack": {
+    dosages: ["840mg"],
+    dosageConfigs: {
+      "840mg": {
+        packages: [
+          {
+            productName: "6 Viagra + 6 Cialis + 6 Levitra",
+            packCost: 37.99,
+            perPillCost: 3.799,
+            shippingCost: 17.99,
+            totalCost: 55.98,
+          },
+        ],
+      },
+    },
+  },
+  "cialis-professional": {
+    dosages: ["20mg"],
+    dosageConfigs: {
+      "20mg": {
+        packages: [
+          {
+            productName: "10 Tabs pack",
+            packCost: 29.99,
+            perPillCost: 2.999,
+            shippingCost: 17.99,
+            totalCost: 47.98,
+          },
+          {
+            productName: "20 Tabs pack",
+            packCost: 42.99,
+            perPillCost: 2.2495,
+            shippingCost: 17.99,
+            totalCost: 60.98,
+          },
+          {
+            productName: "45 Tabs pack",
+            packCost: 74.99,
+            perPillCost: 1.666444444,
+            shippingCost: 17.99,
+            totalCost: 92.98,
           },
         ],
       },

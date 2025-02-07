@@ -135,7 +135,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
       {/* Product Details */}
       <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 border-t">
-        {(product.slug === "viagra" || product.slug === "cialis") && (
+        {(product.slug === "viagra" ||
+          product.slug === "cialis" ||
+          product.slug === "super-ed-trial-pack" ||
+          product.slug === "cialis-professional") && (
           <PackageOptions
             productName={product.name}
             productSku={product.sku}
