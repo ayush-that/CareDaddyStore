@@ -4,6 +4,7 @@ import { Star, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import { useCart } from "@/lib/context/cart-context";
 import { useState } from "react";
+import { PackageOptions } from "./package-options";
 
 interface ProductDetailProps {
   product: {
@@ -17,6 +18,7 @@ interface ProductDetailProps {
     image: string;
     price: number;
     disease?: string;
+    slug?: string;
   };
 }
 
@@ -133,6 +135,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
       {/* Product Details */}
       <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 border-t">
+        {(product.slug === "viagra" || product.slug === "cialis") && (
+          <PackageOptions
+            productName={product.name}
+            productSku={product.sku}
+            productImage={product.image}
+            slug={product.slug}
+          />
+        )}
+
         {/* Detailed Description */}
         <div>
           <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
