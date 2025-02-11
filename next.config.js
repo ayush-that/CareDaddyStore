@@ -13,6 +13,17 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000", "shopwe.xyz"],
+    },
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;
