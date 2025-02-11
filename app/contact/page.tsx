@@ -41,7 +41,7 @@ export default function ContactPage() {
             Email: ${formData.email}
             Message: ${formData.message}
           `,
-          email_to: "ayush1337@hotmail.com",
+          email_to: "shopwe820@gmail.com",
         }),
       });
 
