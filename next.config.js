@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: ["365happyfamily.com", "shopwe.espocloud.eu"],
     remotePatterns: [
       {
         protocol: "https",
@@ -19,9 +18,9 @@ const nextConfig = {
     },
   },
   webpack: (config, { isServer }) => {
-    if (isServer) {
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    }
+    // If you need to make HTTPS requests to servers with self-signed certificates,
+    // the proper solution is to add the certificates to your system's trust store
+    // or configure the specific certificates in your application
     return config;
   },
 };
