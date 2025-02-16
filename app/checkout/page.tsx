@@ -5,11 +5,15 @@ import { useCart } from "@/lib/context/cart-context";
 import { useState } from "react";
 import Image from "next/image";
 
+import {
+  SHIPPING_COST,
+  INSURANCE_COST,
+  PAYMENT_OPTIONS,
+} from "@/config/checkout";
+
 export default function CheckoutPage() {
   const { items, total } = useCart();
-  const shippingCost = 29.95;
-  const insuranceCost = 6.95;
-  const totalAmount = total + shippingCost + insuranceCost;
+  const totalAmount = total + SHIPPING_COST + INSURANCE_COST;
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -334,44 +338,26 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="PayPal">PayPal</option>
-                        <option value="Venmo">Venmo</option>
-                        <option value="CashApp">Cash App</option>
-                        <option value="Bitcoin">Bitcoin</option>
+                        {PAYMENT_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.value}
+                          </option>
+                        ))}
                       </select>
                       <div className="flex mt-2">
-                        <div className="w-16 h-12 relative bg-white rounded overflow-hidden">
-                          <Image
-                            src="/images/checkout/paypal.png"
-                            alt="PayPal"
-                            fill
-                            className="object-contain p-1"
-                          />
-                        </div>
-                        <div className="w-16 h-12 relative bg-white rounded overflow-hidden">
-                          <Image
-                            src="/images/checkout/venmo.png"
-                            alt="Venmo"
-                            fill
-                            className="object-contain p-1"
-                          />
-                        </div>
-                        <div className="w-16 h-12 relative bg-white rounded overflow-hidden">
-                          <Image
-                            src="/images/checkout/cashapp.png"
-                            alt="Cash App"
-                            fill
-                            className="object-contain p-1"
-                          />
-                        </div>
-                        <div className="w-16 h-12 relative bg-white rounded overflow-hidden">
-                          <Image
-                            src="/images/checkout/bitcoin.png"
-                            alt="Bitcoin"
-                            fill
-                            className="object-contain p-1"
-                          />
-                        </div>
+                        {PAYMENT_OPTIONS.map((option) => (
+                          <div
+                            key={option.value}
+                            className="w-16 h-12 relative bg-white rounded overflow-hidden"
+                          >
+                            <Image
+                              src={option.imageSrc}
+                              alt={option.alt}
+                              fill
+                              className={option.css}
+                            />
+                          </div>
+                        ))}
                       </div>
                     </div>
 
@@ -427,7 +413,6 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                 ))}
-
                 <div className="border-t pt-4">
                   <div className="flex justify-between font-medium text-lg">
                     <span>Total amount</span>
