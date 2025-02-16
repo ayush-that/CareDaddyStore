@@ -12,9 +12,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart, total } = useCart();
+  const router = useRouter();
+
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
 
   return (
     <ClientWrapper>
@@ -118,7 +124,10 @@ export default function CartPage() {
                   Total:{" "}
                   <span className="text-[#ff7675]">${total.toFixed(2)}</span>
                 </div>
-                <button className="inline-flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white">
+                <button 
+                  onClick={handleCheckout}
+                  className="inline-flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white"
+                >
                   <CreditCard className="h-5 w-5" />
                   <span className="font-medium">Proceed to Checkout</span>
                 </button>
