@@ -25,6 +25,9 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.1
+      country-state-city:
+        specifier: ^3.2.1
+        version: 3.2.1
       lucide-react:
         specifier: ^0.358.0
         version: 0.358.0(react@18.3.1)
@@ -706,6 +709,12 @@ packages:
         integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==,
       }
     engines: { node: '>= 6' }
+
+  country-state-city@3.2.1:
+    resolution:
+      {
+        integrity: sha512-kxbanqMc6izjhc/EHkGPCTabSPZ2G6eG4/97akAYHJUN4stzzFEvQPZoF8oXDQ+10gM/O/yUmISCR1ZVxyb6EA==,
+      }
 
   cross-spawn@7.0.6:
     resolution:
@@ -2056,6 +2065,8 @@ snapshots:
   commander@13.1.0: {}
 
   commander@4.1.1: {}
+
+  country-state-city@3.2.1: {}
 
   cross-spawn@7.0.6:
     dependencies:

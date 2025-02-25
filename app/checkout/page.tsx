@@ -4,6 +4,7 @@ import { ClientWrapper } from '@/components/ui/client-wrapper';
 import { useCart } from '@/lib/context/cart-context';
 import { useState } from 'react';
 import Image from 'next/image';
+import { Country, State } from 'country-state-city';
 
 import { SHIPPING_COST, INSURANCE_COST, PAYMENT_OPTIONS } from '@/config/checkout';
 
@@ -11,10 +12,13 @@ export default function CheckoutPage() {
   const { items, total } = useCart();
   const totalAmount = total + SHIPPING_COST + INSURANCE_COST;
 
+  const [countries] = useState(Country.getAllCountries());
+  const [states, setStates] = useState(State.getStatesOfCountry(''));
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    country: 'India',
+    country: '',
     state: '',
     city: '',
     zipCode: '',
@@ -33,6 +37,12 @@ export default function CheckoutPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({ ...prev, [id]: value }));
+
+    // Update states when country changes
+    if (id === 'country') {
+      setStates(State.getStatesOfCountry(value));
+      setFormData(prev => ({ ...prev, state: '' })); // Reset state when country changes
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -185,8 +195,12 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="India">India</option>
-                        {/* Add more countries as needed */}
+                        <option value="">Select Country</option>
+                        {countries.map(country => (
+                          <option key={country.isoCode} value={country.isoCode}>
+                            {country.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div>
@@ -199,9 +213,14 @@ export default function CheckoutPage() {
                         value={formData.state}
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        disabled={!formData.country}
                       >
                         <option value="">Select State</option>
-                        {/* Add states here */}
+                        {states.map(state => (
+                          <option key={state.isoCode} value={state.isoCode}>
+                            {state.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div>
