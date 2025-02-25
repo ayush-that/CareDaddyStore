@@ -1,20 +1,17 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { ShoppingCart, Menu, Search } from "lucide-react";
-import { useCart } from "@/lib/context/cart-context";
-import { useProducts } from "@/lib/contexts/product-context";
-import { MobileMenu } from "./mobile-menu";
-import { useState } from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { ShoppingCart, Menu, Search } from 'lucide-react';
+import { useCart } from '@/lib/context/cart-context';
+import { useProducts } from '@/lib/contexts/product-context';
+import { MobileMenu } from './mobile-menu';
+import { useState } from 'react';
 
 export function Navbar() {
   const { items, total } = useCart();
   const { searchQuery, setSearchQuery } = useProducts();
-  const totalItems = items.reduce(
-    (sum: any, item: any) => sum + item.quantity,
-    0
-  );
+  const totalItems = items.reduce((sum: any, item: any) => sum + item.quantity, 0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -50,14 +47,11 @@ export function Navbar() {
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   placeholder="Search for products..."
                   className="w-full h-10 pl-4 pr-10 rounded-lg border border-gray-200 focus:outline-none focus:border-[#88bdbc]"
                 />
-                <button
-                  type="submit"
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                >
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2">
                   <Search className="w-5 h-5 text-gray-400" />
                 </button>
               </form>
@@ -79,9 +73,7 @@ export function Navbar() {
               </div>
               <div className="hidden md:block text-sm">
                 <div className="text-xs font-semibold">Your Shopping Cart</div>
-                <div className="text-gray-600 text-lg font-bold">
-                  ${total.toFixed(2)}
-                </div>
+                <div className="text-gray-600 text-lg font-bold">${total.toFixed(2)}</div>
               </div>
             </Link>
           </div>
@@ -92,14 +84,11 @@ export function Navbar() {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search for products..."
                 className="w-full h-10 pl-4 pr-10 rounded-lg border border-gray-200 focus:outline-none focus:border-[#88bdbc]"
               />
-              <button
-                type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2">
                 <Search className="w-5 h-5 text-gray-400" />
               </button>
             </form>
@@ -107,10 +96,7 @@ export function Navbar() {
         </div>
       </div>
 
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-      />
+      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
     </>
   );
 }

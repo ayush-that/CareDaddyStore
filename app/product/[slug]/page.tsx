@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { ProductDetail } from "@/components/ui/product-detail";
-import { ProductService } from "@/lib/api";
-import { ClientWrapper } from "@/components/ui/client-wrapper";
+import { useEffect, useState } from 'react';
+import { ProductDetail } from '@/components/ui/product-detail';
+import { ProductService } from '@/lib/api';
+import { ClientWrapper } from '@/components/ui/client-wrapper';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const [product, setProduct] = useState<any>(null);
@@ -19,11 +19,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         if (data) {
           setProduct(data);
         } else {
-          setError("Product not found");
+          setError('Product not found');
         }
       } catch (error) {
-        console.error("Error fetching product:", error);
-        setError("Failed to load product");
+        console.error('Error fetching product:', error);
+        setError('Failed to load product');
       } finally {
         setLoading(false);
       }
@@ -47,8 +47,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">{error}</h2>
         <p className="text-gray-600">
-          The product you're looking for could not be found. Please check the
-          URL and try again.
+          The product you're looking for could not be found. Please check the URL and try again.
         </p>
       </div>
     </div>

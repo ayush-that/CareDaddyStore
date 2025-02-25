@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "./button";
-import { useCart } from "@/lib/context/cart-context";
-import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from './button';
+import { useCart } from '@/lib/context/cart-context';
+import { ShoppingCart } from 'lucide-react';
+import { useState } from 'react';
 
 interface Product {
   id: number;
@@ -31,8 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
     return null;
   }
 
-  const { name, disease, image, price, rating, shipsTo, slug, bestseller } =
-    product;
+  const { name, disease, image, price, rating, shipsTo, slug, bestseller } = product;
 
   const handleAddToCart = () => {
     setIsAdding(true);
@@ -48,12 +47,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="group sm:w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-100">
       {/* Image Container */}
       <div className="relative h-[180px] bg-white p-4">
-        <Image
-          src={image || "/placeholder.png"}
-          alt={name}
-          fill
-          className="object-contain"
-        />
+        <Image src={image || '/placeholder.png'} alt={name} fill className="object-contain" />
       </div>
 
       {/* Info Container */}
@@ -76,34 +70,27 @@ export function ProductCard({ product }: ProductCardProps) {
             ))}
           </div>
           <span className="text-sm text-gray-600 group-hover:text-white">
-            / {rating || "0.0"} out of 5
+            / {rating || '0.0'} out of 5
           </span>
         </div>
 
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xl font-bold text-red-500 group-hover:text-white">
-            ${price?.toFixed(2) || "0.00"}
+            ${price?.toFixed(2) || '0.00'}
           </span>
-          <span className="text-sm text-gray-600 group-hover:text-white">
-            / PILL
-          </span>
+          <span className="text-sm text-gray-600 group-hover:text-white">/ PILL</span>
         </div>
 
         <div className="text-sm text-gray-600 mb-4 group-hover:text-gray-900">
           <p>
-            Delivery period:{" "}
+            Delivery period:{' '}
             <span className="font-bold group-hover:text-white">
-              {bestseller
-                ? "USPS Priority Mail Overnight Shipping"
-                : "2-5 Days"}
+              {bestseller ? 'USPS Priority Mail Overnight Shipping' : '2-5 Days'}
             </span>
           </p>
           {!bestseller && (
             <p>
-              Ships to{" "}
-              <span className="font-bold group-hover:text-white">
-                {shipsTo || "N/A"}
-              </span>
+              Ships to <span className="font-bold group-hover:text-white">{shipsTo || 'N/A'}</span>
             </p>
           )}
         </div>
@@ -112,11 +99,11 @@ export function ProductCard({ product }: ProductCardProps) {
           onClick={handleAddToCart}
           disabled={isAdding}
           className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] group-hover:bg-[#f7766e] text-white transition-all ${
-            isAdding ? "opacity-75" : ""
+            isAdding ? 'opacity-75' : ''
           }`}
         >
           <ShoppingCart className="w-4 h-4" />
-          {isAdding ? "Adding..." : "Add to cart"}
+          {isAdding ? 'Adding...' : 'Add to cart'}
         </Button>
       </div>
     </div>

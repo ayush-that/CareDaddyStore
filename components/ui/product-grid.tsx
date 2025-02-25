@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useProducts } from "@/lib/contexts/product-context";
-import { useCart } from "@/lib/context/cart-context";
-import { ShoppingCart } from "lucide-react";
+import { useProducts } from '@/lib/contexts/product-context';
+import { useCart } from '@/lib/context/cart-context';
+import { ShoppingCart } from 'lucide-react';
 
 export function ProductGrid() {
   const { products, selectedLetter } = useProducts();
   const { addToCart } = useCart();
 
   const filteredProducts =
-    selectedLetter === null || selectedLetter === ""
+    selectedLetter === null || selectedLetter === ''
       ? products
-      : products.filter((product) =>
+      : products.filter(product =>
           product.name.toLowerCase().startsWith(selectedLetter.toLowerCase())
         );
 
@@ -26,7 +26,7 @@ export function ProductGrid() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-      {filteredProducts.map((product) => (
+      {filteredProducts.map(product => (
         <div
           key={product.id}
           className="bg-white rounded-lg overflow-hidden flex sm:block shadow-sm"
@@ -39,12 +39,8 @@ export function ProductGrid() {
             />
           </div>
           <div className="w-2/3 sm:w-full p-6 bg-[#88bdbc] text-white">
-            <h3 className="font-medium text-base sm:text-lg mb-2">
-              {product.name}
-            </h3>
-            <div className="text-xs uppercase mb-1 md:mb-2">
-              {product.disease}
-            </div>
+            <h3 className="font-medium text-base sm:text-lg mb-2">{product.name}</h3>
+            <div className="text-xs uppercase mb-1 md:mb-2">{product.disease}</div>
             <div className="hidden md:flex items-center gap-1 mb-2">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -53,9 +49,7 @@ export function ProductGrid() {
                   </span>
                 ))}
               </div>
-              <span className="text-sm text-white/90">
-                / {product.rating || "0.0"} out of 5
-              </span>
+              <span className="text-sm text-white/90">/ {product.rating || '0.0'} out of 5</span>
             </div>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
               <div className="text-lg md:text-xl font-bold">

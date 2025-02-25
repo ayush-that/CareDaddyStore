@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCart } from "@/lib/context/cart-context";
-import { ShoppingCart } from "lucide-react";
-import Link from "next/link";
+import { useCart } from '@/lib/context/cart-context';
+import { ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
 
 export function CartButton() {
   const { items } = useCart();

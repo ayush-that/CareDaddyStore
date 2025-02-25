@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Headphones, Music, Phone } from "lucide-react";
-import Image from "next/image";
+import { Headphones, Music, Phone } from 'lucide-react';
+import Image from 'next/image';
 
 export function TopBanner() {
   return (
@@ -30,13 +30,7 @@ export function TopBanner() {
 
         {/* Payment Methods */}
         <div className="flex items-center gap-3">
-          <Image
-            src="/visa-top.svg"
-            alt="Visa"
-            width={48}
-            height={30}
-            className="h-7 w-auto"
-          />
+          <Image src="/visa-top.svg" alt="Visa" width={48} height={30} className="h-7 w-auto" />
           <Image
             src="/mastercard-top.svg"
             alt="Mastercard"

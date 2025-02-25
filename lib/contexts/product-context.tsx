@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { ProductService, Product } from "@/lib/api";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { ProductService, Product } from '@/lib/api';
 
 interface ProductContextType {
   products: Product[];
@@ -22,7 +22,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
   const [selectedDisease, setSelectedDisease] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     let mounted = true;
@@ -36,7 +36,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
           setLoading(false);
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error('Error fetching products:', error);
         if (mounted) {
           setLoading(false);
         }
@@ -50,20 +50,16 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const filteredProducts: Product[] = allProducts.filter(
-    (product): product is Product => {
-      const matchesLetter =
-        selectedLetter === null ||
-        product.name.charAt(0).toUpperCase() === selectedLetter;
-      const matchesDisease =
-        selectedDisease === null || product.disease === selectedDisease;
-      const matchesSearch =
-        searchQuery === "" ||
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.disease.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesLetter && matchesDisease && matchesSearch;
-    }
-  );
+  const filteredProducts: Product[] = allProducts.filter((product): product is Product => {
+    const matchesLetter =
+      selectedLetter === null || product.name.charAt(0).toUpperCase() === selectedLetter;
+    const matchesDisease = selectedDisease === null || product.disease === selectedDisease;
+    const matchesSearch =
+      searchQuery === '' ||
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.disease.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesLetter && matchesDisease && matchesSearch;
+  });
 
   return (
     <ProductContext.Provider
@@ -87,7 +83,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
 export function useProducts() {
   const context = useContext(ProductContext);
   if (context === undefined) {
-    throw new Error("useProducts must be used within a ProductProvider");
+    throw new Error('useProducts must be used within a ProductProvider');
   }
   return context;
 }

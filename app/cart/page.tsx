@@ -1,25 +1,18 @@
-"use client";
+'use client';
 
-import { ClientWrapper } from "@/components/ui/client-wrapper";
-import { useCart } from "@/lib/context/cart-context";
-import {
-  Minus,
-  Plus,
-  Trash2,
-  ShoppingBag,
-  ArrowLeft,
-  CreditCard,
-} from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { ClientWrapper } from '@/components/ui/client-wrapper';
+import { useCart } from '@/lib/context/cart-context';
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, CreditCard } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart, total } = useCart();
   const router = useRouter();
 
   const handleCheckout = () => {
-    router.push("/checkout");
+    router.push('/checkout');
   };
 
   return (
@@ -52,19 +45,14 @@ export default function CartPage() {
 
             {/* Cart Items */}
             <div className="divide-y border border-gray-200">
-              {items.map((item) => (
+              {items.map(item => (
                 <div
                   key={item.id}
                   className="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 px-6 py-4 items-center"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 relative bg-white p-2 border border-gray-200 rounded">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-contain"
-                      />
+                      <Image src={item.image} alt={item.name} fill className="object-contain" />
                     </div>
                     <span>{item.name}</span>
                   </div>
@@ -72,9 +60,7 @@ export default function CartPage() {
                   <div className="flex items-center justify-center">
                     <div className="flex items-center">
                       <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         className="w-8 h-8 flex items-center justify-center bg-[#f1f1f1] hover:bg-[#e5e5e5] rounded"
                       >
                         <Minus className="w-3 h-3" />
@@ -86,9 +72,7 @@ export default function CartPage() {
                         className="w-10 h-8 text-center border-y border-[#f1f1f1]"
                       />
                       <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         className="w-8 h-8 flex items-center justify-center bg-[#f1f1f1] hover:bg-[#e5e5e5] rounded"
                       >
                         <Plus className="w-3 h-3" />
@@ -121,10 +105,9 @@ export default function CartPage() {
               </Link>
               <div className="flex items-center gap-8">
                 <div className="text-xl font-bold">
-                  Total:{" "}
-                  <span className="text-[#ff7675]">${total.toFixed(2)}</span>
+                  Total: <span className="text-[#ff7675]">${total.toFixed(2)}</span>
                 </div>
-                <button 
+                <button
                   onClick={handleCheckout}
                   className="inline-flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#619695] h-10 px-4 rounded text-white"
                 >

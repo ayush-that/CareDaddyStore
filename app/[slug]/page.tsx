@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { ProductService, Product } from "@/lib/api";
-import { AlphabetFilter } from "@/components/ui/alphabet-filter";
-import { DiseaseSidebar } from "@/components/ui/disease-sidebar";
-import { Star, ShoppingCart } from "lucide-react";
-import Image from "next/image";
-import { useCartStore } from "@/lib/store/cart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ClientWrapper } from "@/components/ui/client-wrapper";
-import { ProductGrid } from "@/components/ui/product-grid";
-import { useProducts } from "@/lib/contexts/product-context";
+import { useEffect, useState } from 'react';
+import { ProductService, Product } from '@/lib/api';
+import { AlphabetFilter } from '@/components/ui/alphabet-filter';
+import { DiseaseSidebar } from '@/components/ui/disease-sidebar';
+import { Star, ShoppingCart } from 'lucide-react';
+import Image from 'next/image';
+import { useCartStore } from '@/lib/store/cart';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ClientWrapper } from '@/components/ui/client-wrapper';
+import { ProductGrid } from '@/components/ui/product-grid';
+import { useProducts } from '@/lib/contexts/product-context';
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
   const [product, setProduct] = useState<Product | null>(null);
@@ -28,7 +28,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         // Fetch the specific product by slug
         const productData = await ProductService.getProductBySlug(params.slug);
         if (!productData) {
-          throw new Error("Product not found");
+          throw new Error('Product not found');
         }
         setProduct(productData);
 
@@ -36,9 +36,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         const allProducts = await ProductService.getAllProducts();
         setProducts(allProducts);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch product"
-        );
+        setError(err instanceof Error ? err.message : 'Failed to fetch product');
       } finally {
         setLoading(false);
       }
@@ -47,19 +45,20 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   }, [params.slug]);
 
   // Calculate disease counts from actual products
-  const diseaseCounts = products.reduce((acc, product) => {
-    if (!product.disease) return acc;
-    if (!acc[product.disease]) {
-      acc[product.disease] = { name: product.disease, count: 0 };
-    }
-    acc[product.disease].count++;
-    return acc;
-  }, {} as Record<string, { name: string; count: number }>);
+  const diseaseCounts = products.reduce(
+    (acc, product) => {
+      if (!product.disease) return acc;
+      if (!acc[product.disease]) {
+        acc[product.disease] = { name: product.disease, count: 0 };
+      }
+      acc[product.disease].count++;
+      return acc;
+    },
+    {} as Record<string, { name: string; count: number }>
+  );
 
   // Convert to array and sort by count
-  const diseaseList = Object.values(diseaseCounts).sort(
-    (a, b) => b.count - a.count
-  );
+  const diseaseList = Object.values(diseaseCounts).sort((a, b) => b.count - a.count);
 
   if (loading) {
     return (
@@ -84,9 +83,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   if (error || !product) {
     return (
       <div className="container mx-auto py-8 px-4">
-        <div className="text-center text-red-500">
-          {error || "Product not found"}
-        </div>
+        <div className="text-center text-red-500">{error || 'Product not found'}</div>
       </div>
     );
   }
@@ -99,10 +96,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     <ClientWrapper>
       <div className="container mx-auto py-8 px-4">
         <div className="mb-6">
-          <AlphabetFilter
-            selectedLetter={selectedLetter}
-            onLetterSelect={setSelectedLetter}
-          />
+          <AlphabetFilter selectedLetter={selectedLetter} onLetterSelect={setSelectedLetter} />
         </div>
 
         <div className="flex gap-8">
@@ -130,12 +124,8 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                   </div>
 
                   <div className="flex-1">
-                    <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-                      {product.name}
-                    </h1>
-                    <div className="text-sm text-gray-600 uppercase mb-4">
-                      {product.disease}
-                    </div>
+                    <h1 className="text-2xl font-semibold text-gray-900 mb-2">{product.name}</h1>
+                    <div className="text-sm text-gray-600 uppercase mb-4">{product.disease}</div>
 
                     <div className="flex items-center gap-1 mb-4">
                       <div className="flex">
@@ -144,32 +134,28 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                             key={i}
                             className={`h-5 w-5 ${
                               i < Math.floor(product.rating)
-                                ? "text-amber-400 fill-amber-400"
-                                : "text-gray-200"
+                                ? 'text-amber-400 fill-amber-400'
+                                : 'text-gray-200'
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-gray-600">
-                        / {product.rating} out of 5
-                      </span>
+                      <span className="text-sm text-gray-600">/ {product.rating} out of 5</span>
                     </div>
 
                     <div className="flex items-baseline gap-2 mb-6">
                       <span className="text-3xl font-bold text-rose-500">
                         ${product.price.toFixed(2)}
                       </span>
-                      <span className="text-sm text-gray-600 uppercase">
-                        per pill
-                      </span>
+                      <span className="text-sm text-gray-600 uppercase">per pill</span>
                     </div>
 
                     <div className="text-sm text-gray-600 space-y-1 mb-6">
                       <div>Delivery period: 3-8 days</div>
                       <div>
-                        Ships to{" "}
+                        Ships to{' '}
                         {Array.isArray(product.shipsTo)
-                          ? product.shipsTo.join(", ")
+                          ? product.shipsTo.join(', ')
                           : product.shipsTo}
                       </div>
                     </div>
@@ -188,28 +174,22 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               <div className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                      Description
-                    </h2>
+                    <h2 className="text-lg font-semibold text-gray-900 mb-2">Description</h2>
                     <div className="text-gray-600">
-                      {product.description || "No description available."}
+                      {product.description || 'No description available.'}
                     </div>
                   </div>
 
                   {product.dosage && (
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                        Dosage
-                      </h2>
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">Dosage</h2>
                       <div className="text-gray-600">{product.dosage}</div>
                     </div>
                   )}
 
                   {product.sideEffects && (
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                        Side Effects
-                      </h2>
+                      <h2 className="text-lg font-semibold text-gray-900 mb-2">Side Effects</h2>
                       <div className="text-gray-600">{product.sideEffects}</div>
                     </div>
                   )}

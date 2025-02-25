@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { Phone } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Phone } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -74,8 +74,8 @@ export function Footer() {
           {/* Middle - Tagline */}
           <div className="text-center">
             <p className="text-[#7a7a7a] text-sm leading-relaxed mt-4">
-              Your trusted online pharmacy partner, delivering quality
-              healthcare solutions worldwide with care and reliability.
+              Your trusted online pharmacy partner, delivering quality healthcare solutions
+              worldwide with care and reliability.
             </p>
           </div>
 

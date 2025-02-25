@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ChevronDown, ChevronRight } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 interface Disease {
   name: string;
@@ -47,7 +47,7 @@ export function DiseaseSidebar({
   };
 
   // Get bestseller products
-  const bestsellerProducts = products.filter((product) => product.bestseller);
+  const bestsellerProducts = products.filter(product => product.bestseller);
 
   return (
     <div className="bg-gradient-to-b from-[#eff9fa] to-[#e5f4f5] rounded-lg px-4 py-3">
@@ -56,24 +56,22 @@ export function DiseaseSidebar({
         {bestsellerProducts.length > 0 && (
           <div>
             <button
-              onClick={() => handleDiseaseClick("Bestsellers")}
+              onClick={() => handleDiseaseClick('Bestsellers')}
               className="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors hover:bg-[#e0ecec]"
             >
               <span className="flex items-center gap-2">
-                {expandedDisease === "Bestsellers" ? (
+                {expandedDisease === 'Bestsellers' ? (
                   <ChevronDown className="h-4 w-4" />
                 ) : (
                   <ChevronRight className="h-4 w-4" />
                 )}
                 Bestsellers
               </span>
-              <span className="text-sm text-gray-500">
-                {bestsellerProducts.length}
-              </span>
+              <span className="text-sm text-gray-500">{bestsellerProducts.length}</span>
             </button>
-            {expandedDisease === "Bestsellers" && (
+            {expandedDisease === 'Bestsellers' && (
               <div className="ml-4 mt-1 space-y-1">
-                {bestsellerProducts.map((product) => (
+                {bestsellerProducts.map(product => (
                   <Link
                     key={product.id}
                     href={`/product/${product.slug}`}
@@ -88,7 +86,7 @@ export function DiseaseSidebar({
         )}
 
         {/* Disease Categories */}
-        {diseases.map((disease) => (
+        {diseases.map(disease => (
           <div key={disease.name}>
             <button
               onClick={() => handleDiseaseClick(disease.name)}
@@ -107,8 +105,8 @@ export function DiseaseSidebar({
             {expandedDisease === disease.name && (
               <div className="ml-4 mt-1 space-y-1">
                 {products
-                  .filter((product) => product.disease === disease.name)
-                  .map((product) => (
+                  .filter(product => product.disease === disease.name)
+                  .map(product => (
                     <Link
                       key={product.id}
                       href={`/product/${product.slug}`}

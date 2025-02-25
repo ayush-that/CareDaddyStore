@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
-import { useCart } from "@/lib/context/cart-context";
+import { ShoppingCart } from 'lucide-react';
+import { useState } from 'react';
+import { useCart } from '@/lib/context/cart-context';
 
 interface Package {
   productName: string;
@@ -16,12 +16,7 @@ interface DosageConfig {
   packages: Package[];
 }
 
-type ProductSlug =
-  | "viagra"
-  | "cialis"
-  | "super-ed-trial-pack"
-  | "cialis-professional"
-  | "levitra";
+type ProductSlug = 'viagra' | 'cialis' | 'super-ed-trial-pack' | 'cialis-professional' | 'levitra';
 
 interface ProductConfig {
   dosages: string[];
@@ -38,26 +33,26 @@ interface PackageOptionsProps {
 // Product-specific configurations
 const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
   viagra: {
-    dosages: ["100mg", "150mg", "200mg"],
+    dosages: ['100mg', '150mg', '200mg'],
     dosageConfigs: {
-      "100mg": {
+      '100mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 24.99,
             perPillCost: 2.499,
             shippingCost: 17.99,
             totalCost: 45.479,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 34.99,
             perPillCost: 1.7495,
             shippingCost: 17.99,
             totalCost: 54.7295,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 64.99,
             perPillCost: 1.444222222,
             shippingCost: 17.99,
@@ -65,24 +60,24 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
           },
         ],
       },
-      "150mg": {
+      '150mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
             totalCost: 87.98,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -90,24 +85,24 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
           },
         ],
       },
-      "200mg": {
+      '200mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -118,26 +113,26 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
     },
   },
   cialis: {
-    dosages: ["20mg", "40mg", "60mg"],
+    dosages: ['20mg', '40mg', '60mg'],
     dosageConfigs: {
-      "20mg": {
+      '20mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 24.99,
             perPillCost: 2.499,
             shippingCost: 17.99,
             totalCost: 45.479,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 34.99,
             perPillCost: 1.7495,
             shippingCost: 17.99,
             totalCost: 54.7295,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 64.99,
             perPillCost: 1.444222222,
             shippingCost: 17.99,
@@ -145,24 +140,24 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
           },
         ],
       },
-      "40mg": {
+      '40mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -170,24 +165,24 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
           },
         ],
       },
-      "60mg": {
+      '60mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -197,13 +192,13 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       },
     },
   },
-  "super-ed-trial-pack": {
-    dosages: ["840mg"],
+  'super-ed-trial-pack': {
+    dosages: ['840mg'],
     dosageConfigs: {
-      "840mg": {
+      '840mg': {
         packages: [
           {
-            productName: "6 Viagra + 6 Cialis + 6 Levitra",
+            productName: '6 Viagra + 6 Cialis + 6 Levitra',
             packCost: 37.99,
             perPillCost: 3.799,
             shippingCost: 17.99,
@@ -213,27 +208,27 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       },
     },
   },
-  "cialis-professional": {
-    dosages: ["20mg"],
+  'cialis-professional': {
+    dosages: ['20mg'],
     dosageConfigs: {
-      "20mg": {
+      '20mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 29.99,
             perPillCost: 2.999,
             shippingCost: 17.99,
             totalCost: 47.98,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 42.99,
             perPillCost: 2.2495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 74.99,
             perPillCost: 1.666444444,
             shippingCost: 17.99,
@@ -244,26 +239,26 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
     },
   },
   levitra: {
-    dosages: ["20mg"],
+    dosages: ['20mg'],
     dosageConfigs: {
-      "20mg": {
+      '20mg': {
         packages: [
           {
-            productName: "10 Tabs pack",
+            productName: '10 Tabs pack',
             packCost: 29.99,
             perPillCost: 2.999,
             shippingCost: 17.99,
             totalCost: 47.98,
           },
           {
-            productName: "20 Tabs pack",
+            productName: '20 Tabs pack',
             packCost: 42.99,
             perPillCost: 2.1495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },
           {
-            productName: "45 Tabs pack",
+            productName: '45 Tabs pack',
             packCost: 74.99,
             perPillCost: 1.666444444,
             shippingCost: 17.99,
@@ -287,9 +282,7 @@ export function PackageOptions({
   if (!config) return null;
 
   const { addToCart } = useCart();
-  const [selectedDosage, setSelectedDosage] = useState<string>(
-    config.dosages[0]
-  );
+  const [selectedDosage, setSelectedDosage] = useState<string>(config.dosages[0]);
   const [isAdding, setIsAdding] = useState(false);
 
   // Get the packages for the selected dosage
@@ -315,18 +308,16 @@ export function PackageOptions({
     <div className="space-y-6">
       {/* Dosage Selection */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Select dosage:
-        </h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Select dosage:</h2>
         <div className="flex flex-wrap gap-2">
-          {config.dosages.map((dosage) => (
+          {config.dosages.map(dosage => (
             <button
               key={dosage}
               onClick={() => setSelectedDosage(dosage)}
               className={`px-4 py-2 rounded-lg transition-colors ${
                 selectedDosage === dosage
-                  ? "bg-[#ff7675] text-white"
-                  : "bg-[#88bdbc] text-white hover:bg-[#619695]"
+                  ? 'bg-[#ff7675] text-white'
+                  : 'bg-[#88bdbc] text-white hover:bg-[#619695]'
               }`}
             >
               {dosage}
@@ -396,9 +387,7 @@ export function PackageOptions({
                       ${pkg.packCost.toFixed(2)}
                     </td>
                     <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
-                      {pkg.shippingCost > 0
-                        ? `$${pkg.shippingCost.toFixed(2)}`
-                        : "Free"}
+                      {pkg.shippingCost > 0 ? `$${pkg.shippingCost.toFixed(2)}` : 'Free'}
                     </td>
                     <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm text-gray-900">
                       ${pkg.totalCost.toFixed(2)}
@@ -411,11 +400,9 @@ export function PackageOptions({
                       >
                         <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">
-                          {isAdding ? "Adding..." : "Add to cart"}
+                          {isAdding ? 'Adding...' : 'Add to cart'}
                         </span>
-                        <span className="sm:hidden">
-                          {isAdding ? "..." : "Add"}
-                        </span>
+                        <span className="sm:hidden">{isAdding ? '...' : 'Add'}</span>
                       </button>
                     </td>
                   </tr>

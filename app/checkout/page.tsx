@@ -1,64 +1,55 @@
-"use client";
+'use client';
 
-import { ClientWrapper } from "@/components/ui/client-wrapper";
-import { useCart } from "@/lib/context/cart-context";
-import { useState } from "react";
-import Image from "next/image";
+import { ClientWrapper } from '@/components/ui/client-wrapper';
+import { useCart } from '@/lib/context/cart-context';
+import { useState } from 'react';
+import Image from 'next/image';
 
-import {
-  SHIPPING_COST,
-  INSURANCE_COST,
-  PAYMENT_OPTIONS,
-} from "@/config/checkout";
+import { SHIPPING_COST, INSURANCE_COST, PAYMENT_OPTIONS } from '@/config/checkout';
 
 export default function CheckoutPage() {
   const { items, total } = useCart();
   const totalAmount = total + SHIPPING_COST + INSURANCE_COST;
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    country: "India",
-    state: "",
-    city: "",
-    zipCode: "",
-    address: "",
-    phone: "",
-    email: "",
-    paymentType: "PayPal",
-    paypalEmail: "",
-    venmoUsername: "",
-    cashappUsername: "",
-    bitcoinAddress: "",
+    firstName: '',
+    lastName: '',
+    country: 'India',
+    state: '',
+    city: '',
+    zipCode: '',
+    address: '',
+    phone: '',
+    email: '',
+    paymentType: 'PayPal',
+    paypalEmail: '',
+    venmoUsername: '',
+    cashappUsername: '',
+    bitcoinAddress: '',
   });
 
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("processing");
+    setStatus('processing');
     // Add payment processing logic here
     setTimeout(() => {
-      setStatus("success");
+      setStatus('success');
     }, 2000);
   };
 
   const renderPaymentFields = () => {
     switch (formData.paymentType) {
-      case "PayPal":
+      case 'PayPal':
         return (
           <div>
-            <label
-              htmlFor="paypalEmail"
-              className="block text-sm text-gray-600 mb-1"
-            >
+            <label htmlFor="paypalEmail" className="block text-sm text-gray-600 mb-1">
               PayPal Email *
             </label>
             <input
@@ -72,13 +63,10 @@ export default function CheckoutPage() {
             />
           </div>
         );
-      case "Venmo":
+      case 'Venmo':
         return (
           <div>
-            <label
-              htmlFor="venmoUsername"
-              className="block text-sm text-gray-600 mb-1"
-            >
+            <label htmlFor="venmoUsername" className="block text-sm text-gray-600 mb-1">
               Venmo Username *
             </label>
             <div className="flex">
@@ -97,13 +85,10 @@ export default function CheckoutPage() {
             </div>
           </div>
         );
-      case "CashApp":
+      case 'CashApp':
         return (
           <div>
-            <label
-              htmlFor="cashappUsername"
-              className="block text-sm text-gray-600 mb-1"
-            >
+            <label htmlFor="cashappUsername" className="block text-sm text-gray-600 mb-1">
               Cash App Username *
             </label>
             <div className="flex">
@@ -122,13 +107,10 @@ export default function CheckoutPage() {
             </div>
           </div>
         );
-      case "Bitcoin":
+      case 'Bitcoin':
         return (
           <div>
-            <label
-              htmlFor="bitcoinAddress"
-              className="block text-sm text-gray-600 mb-1"
-            >
+            <label htmlFor="bitcoinAddress" className="block text-sm text-gray-600 mb-1">
               Bitcoin Address *
             </label>
             <input
@@ -141,8 +123,7 @@ export default function CheckoutPage() {
               placeholder="Enter your Bitcoin address"
             />
             <p className="mt-1 text-sm text-gray-500">
-              The payment instructions will be sent to your email after order
-              confirmation
+              The payment instructions will be sent to your email after order confirmation
             </p>
           </div>
         );
@@ -168,10 +149,7 @@ export default function CheckoutPage() {
                   <h3 className="text-lg font-medium mb-4">Shipping Address</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label
-                        htmlFor="firstName"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="firstName" className="block text-sm text-gray-600 mb-1">
                         First name *
                       </label>
                       <input
@@ -184,10 +162,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor="lastName"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="lastName" className="block text-sm text-gray-600 mb-1">
                         Last name *
                       </label>
                       <input
@@ -200,10 +175,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor="country"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="country" className="block text-sm text-gray-600 mb-1">
                         Country *
                       </label>
                       <select
@@ -218,10 +190,7 @@ export default function CheckoutPage() {
                       </select>
                     </div>
                     <div>
-                      <label
-                        htmlFor="state"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="state" className="block text-sm text-gray-600 mb-1">
                         State / Province *
                       </label>
                       <select
@@ -236,10 +205,7 @@ export default function CheckoutPage() {
                       </select>
                     </div>
                     <div>
-                      <label
-                        htmlFor="city"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="city" className="block text-sm text-gray-600 mb-1">
                         City *
                       </label>
                       <input
@@ -252,10 +218,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor="zipCode"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="zipCode" className="block text-sm text-gray-600 mb-1">
                         ZIP/Postal code *
                       </label>
                       <input
@@ -268,10 +231,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label
-                        htmlFor="address"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="address" className="block text-sm text-gray-600 mb-1">
                         Address *
                       </label>
                       <input
@@ -284,10 +244,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="phone" className="block text-sm text-gray-600 mb-1">
                         Phone *
                       </label>
                       <input
@@ -300,10 +257,7 @@ export default function CheckoutPage() {
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="email" className="block text-sm text-gray-600 mb-1">
                         Email *
                       </label>
                       <input
@@ -320,15 +274,10 @@ export default function CheckoutPage() {
 
                 {/* Payment Information Section */}
                 <div className="mb-8">
-                  <h3 className="text-lg font-medium mb-4">
-                    Payment Information
-                  </h3>
+                  <h3 className="text-lg font-medium mb-4">Payment Information</h3>
                   <div className="space-y-4">
                     <div>
-                      <label
-                        htmlFor="paymentType"
-                        className="block text-sm text-gray-600 mb-1"
-                      >
+                      <label htmlFor="paymentType" className="block text-sm text-gray-600 mb-1">
                         Payment type *
                       </label>
                       <select
@@ -338,14 +287,14 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        {PAYMENT_OPTIONS.map((option) => (
+                        {PAYMENT_OPTIONS.map(option => (
                           <option key={option.value} value={option.value}>
                             {option.value}
                           </option>
                         ))}
                       </select>
                       <div className="flex mt-2">
-                        {PAYMENT_OPTIONS.map((option) => (
+                        {PAYMENT_OPTIONS.map(option => (
                           <div
                             key={option.value}
                             className="w-16 h-12 relative bg-white rounded overflow-hidden"
@@ -367,10 +316,10 @@ export default function CheckoutPage() {
 
                 <button
                   type="submit"
-                  disabled={status === "processing"}
+                  disabled={status === 'processing'}
                   className="w-full bg-[#88bdbc] text-white py-3 rounded font-medium hover:bg-[#619695] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {status === "processing" ? "Processing..." : "Complete Order"}
+                  {status === 'processing' ? 'Processing...' : 'Complete Order'}
                 </button>
               </form>
             </div>
@@ -381,11 +330,8 @@ export default function CheckoutPage() {
             <div className="bg-[#f5f5f5] rounded-lg p-6">
               <h3 className="text-lg font-medium mb-4">Order Summary</h3>
               <div className="space-y-4">
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex justify-between items-start"
-                  >
+                {items.map(item => (
+                  <div key={item.id} className="flex justify-between items-start">
                     <div className="flex items-start gap-2">
                       <div className="w-12 h-12 relative bg-white rounded overflow-hidden">
                         <Image
@@ -398,9 +344,7 @@ export default function CheckoutPage() {
                       <div>
                         <p className="text-sm font-medium">{item.name}</p>
                         <p className="text-xs text-gray-500">
-                          {item.quantity}{" "}
-                          {item.quantity === 1 ? "Pill" : "Pills"} x{" "}
-                          {item.strength}
+                          {item.quantity} {item.quantity === 1 ? 'Pill' : 'Pills'} x {item.strength}
                         </p>
                       </div>
                     </div>

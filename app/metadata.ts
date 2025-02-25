@@ -1,6 +1,6 @@
-import { Metadata } from "next";
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "CareCaddyStore",
-  description: "Browse and purchase quality medications",
+  title: 'CareCaddyStore',
+  description: 'Browse and purchase quality medications',
 };

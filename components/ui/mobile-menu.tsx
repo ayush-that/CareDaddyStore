@@ -1,13 +1,5 @@
-import Link from "next/link";
-import {
-  X,
-  Home,
-  Info,
-  FileText,
-  HelpCircle,
-  FileQuestion,
-  Mail,
-} from "lucide-react";
+import Link from 'next/link';
+import { X, Home, Info, FileText, HelpCircle, FileQuestion, Mail } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -18,18 +10,18 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   if (!isOpen) return null;
 
   const menuItems = [
-    { href: "/", icon: <Home className="w-5 h-5" />, label: "Home" },
-    { href: "/about", icon: <Info className="w-5 h-5" />, label: "About us" },
-    { href: "/faq", icon: <HelpCircle className="w-5 h-5" />, label: "FAQ" },
+    { href: '/', icon: <Home className="w-5 h-5" />, label: 'Home' },
+    { href: '/about', icon: <Info className="w-5 h-5" />, label: 'About us' },
+    { href: '/faq', icon: <HelpCircle className="w-5 h-5" />, label: 'FAQ' },
     {
-      href: "/policy",
+      href: '/policy',
       icon: <FileQuestion className="w-5 h-5" />,
-      label: "Policy",
+      label: 'Policy',
     },
     {
-      href: "/contact",
+      href: '/contact',
       icon: <Mail className="w-5 h-5" />,
-      label: "Contact Us",
+      label: 'Contact Us',
     },
   ];
 
@@ -43,7 +35,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       <div className="px-6">
         <h2 className="text-gray-900 font-medium mb-6">Navigation:</h2>
         <nav className="space-y-4">
-          {menuItems.map((item) => (
+          {menuItems.map(item => (
             <Link
               key={item.href}
               href={item.href}

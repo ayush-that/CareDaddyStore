@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Star, ShoppingCart } from "lucide-react";
-import Image from "next/image";
-import { useCart } from "@/lib/context/cart-context";
-import { useState } from "react";
-import { PackageOptions } from "./package-options";
+import { Star, ShoppingCart } from 'lucide-react';
+import Image from 'next/image';
+import { useCart } from '@/lib/context/cart-context';
+import { useState } from 'react';
+import { PackageOptions } from './package-options';
 
 interface ProductDetailProps {
   product: {
@@ -68,9 +68,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         {/* Product Info */}
         <div className="space-y-4 sm:space-y-6">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-              {product.name}
-            </h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{product.name}</h1>
             <div className="flex flex-col gap-2 text-sm mb-4">
               <div className="text-green-600 font-medium">
                 Availability: In Stock {product.sku} packs
@@ -78,7 +76,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               <div className="inline-flex items-center gap-2 flex-wrap">
                 <span className="text-gray-500">Treats:</span>
                 <span className="bg-gradient-to-r from-[#88bdbc] to-[#619695] text-white px-3 py-1 rounded-full text-xs font-medium">
-                  {product.disease || "General"}
+                  {product.disease || 'General'}
                 </span>
               </div>
             </div>
@@ -88,25 +86,19 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   <Star
                     key={i}
                     className={`w-4 sm:w-5 h-4 sm:h-5 ${
-                      i < product.rating
-                        ? "text-yellow-400 fill-current"
-                        : "text-gray-300"
+                      i < product.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-sm text-gray-600">
-                / {product.rating} out of 5
-              </span>
+              <span className="text-sm text-gray-600">/ {product.rating} out of 5</span>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="text-2xl sm:text-3xl font-bold text-[#88bdbc]">
               ${product.price.toFixed(2)}
-              <span className="text-xs sm:text-sm font-normal text-gray-600 ml-2">
-                / PILL
-              </span>
+              <span className="text-xs sm:text-sm font-normal text-gray-600 ml-2">/ PILL</span>
             </div>
             <p className="product-description text-gray-600 text-sm sm:text-base">
               {truncateText(product.description, isDescriptionExpanded)}
@@ -116,18 +108,18 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
                 className="text-[#88bdbc] hover:text-[#619695] font-medium text-sm"
               >
-                {isDescriptionExpanded ? "Read less" : "Read more"}
+                {isDescriptionExpanded ? 'Read less' : 'Read more'}
               </button>
             )}
             <button
               onClick={handleAddToCart}
               disabled={isAdding}
               className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white py-2 rounded text-sm transition-all ${
-                isAdding ? "opacity-75" : ""
+                isAdding ? 'opacity-75' : ''
               }`}
             >
               <ShoppingCart className="w-4 h-4" />
-              {isAdding ? "Adding..." : "Add to cart"}
+              {isAdding ? 'Adding...' : 'Add to cart'}
             </button>
           </div>
         </div>
@@ -135,11 +127,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
       {/* Product Details */}
       <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 border-t">
-        {(product.slug === "viagra" ||
-          product.slug === "cialis" ||
-          product.slug === "super-ed-trial-pack" ||
-          product.slug === "cialis-professional" ||
-          product.slug === "levitra") && (
+        {(product.slug === 'viagra' ||
+          product.slug === 'cialis' ||
+          product.slug === 'super-ed-trial-pack' ||
+          product.slug === 'cialis-professional' ||
+          product.slug === 'levitra') && (
           <PackageOptions
             productName={product.name}
             productSku={product.sku}
@@ -161,7 +153,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
               className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2 text-sm"
             >
-              {isDescriptionExpanded ? "Read less" : "Read more"}
+              {isDescriptionExpanded ? 'Read less' : 'Read more'}
             </button>
           )}
         </div>
@@ -180,7 +172,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 onClick={() => setIsSafetyInfoExpanded(!isSafetyInfoExpanded)}
                 className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2 text-sm"
               >
-                {isSafetyInfoExpanded ? "Read less" : "Read more"}
+                {isSafetyInfoExpanded ? 'Read less' : 'Read more'}
               </button>
             )}
           </div>
@@ -188,9 +180,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
         {/* Side Effects */}
         <div>
-          <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">
-            Side Effects
-          </h2>
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Side Effects</h2>
           <div className="bg-gradient-to-br from-red-50 to-red-100/50 p-3 sm:p-4 rounded-md border border-red-100">
             <p className="product-description text-gray-600 text-sm sm:text-base">
               {truncateText(product.sideEffects, isSideEffectsExpanded)}
@@ -200,7 +190,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 onClick={() => setIsSideEffectsExpanded(!isSideEffectsExpanded)}
                 className="text-[#88bdbc] hover:text-[#619695] font-medium mt-2 text-sm"
               >
-                {isSideEffectsExpanded ? "Read less" : "Read more"}
+                {isSideEffectsExpanded ? 'Read less' : 'Read more'}
               </button>
             )}
           </div>

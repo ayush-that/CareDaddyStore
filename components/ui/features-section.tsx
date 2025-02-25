@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { Users, DollarSign, Truck } from "lucide-react";
+import { Users, DollarSign, Truck } from 'lucide-react';
 
 export function FeaturesSection() {
   const features = [
     {
       icon: Users,
-      title: "1M+ Customers",
-      description: "Quality, Privacy, Secure.",
-      bgColor: "bg-[#34656d]",
-      iconColor: "text-white",
+      title: '1M+ Customers',
+      description: 'Quality, Privacy, Secure.',
+      bgColor: 'bg-[#34656d]',
+      iconColor: 'text-white',
     },
     {
       icon: DollarSign,
-      title: "Very Low Prices",
-      description: "Best price in the world!",
-      bgColor: "bg-[#88bdbc]",
-      iconColor: "text-white",
+      title: 'Very Low Prices',
+      description: 'Best price in the world!',
+      bgColor: 'bg-[#88bdbc]',
+      iconColor: 'text-white',
     },
     {
       icon: Truck,
-      title: "Fast Delivery",
-      description: "100% Guarantee. Free Airmail shipping.",
-      bgColor: "bg-[#f76c6c]",
-      iconColor: "text-white",
+      title: 'Fast Delivery',
+      description: '100% Guarantee. Free Airmail shipping.',
+      bgColor: 'bg-[#f76c6c]',
+      iconColor: 'text-white',
     },
   ];
 
@@ -41,18 +41,11 @@ export function FeaturesSection() {
                 <div
                   className={`${feature.bgColor} p-3 rounded-full flex items-center justify-center`}
                 >
-                  <feature.icon
-                    className={`w-6 h-6 ${feature.iconColor}`}
-                    strokeWidth={2}
-                  />
+                  <feature.icon className={`w-6 h-6 ${feature.iconColor}`} strokeWidth={2} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg text-gray-900">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm font-normal">
-                    {feature.description}
-                  </p>
+                  <h3 className="font-semibold text-lg text-gray-900">{feature.title}</h3>
+                  <p className="text-gray-600 text-sm font-normal">{feature.description}</p>
                 </div>
               </div>
             ))}

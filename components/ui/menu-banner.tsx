@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Home, Info, FileText, Phone, HelpCircle } from "lucide-react";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Home, Info, FileText, Phone, HelpCircle } from 'lucide-react';
 
 export function MenuBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = ["/banner1.png", "/banner2.png", "/banner3.png"];
+  const slides = ['/banner1.png', '/banner2.png', '/banner3.png'];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      setCurrentSlide(prev => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
@@ -34,9 +34,7 @@ export function MenuBanner() {
               className="flex items-center gap-2 text-sm font-medium hover:text-teal-600 transition-colors"
             >
               <Info className="h-4 w-4 text-[#254e58]" />
-              <span className="text-[#254e58] font-bold text-base">
-                About us
-              </span>
+              <span className="text-[#254e58] font-bold text-base">About us</span>
             </Link>
             <Link
               href="/faq"
@@ -57,9 +55,7 @@ export function MenuBanner() {
               className="flex items-center gap-2 text-sm font-medium hover:text-teal-600 transition-colors"
             >
               <Phone className="h-4 w-4 text-[#254e58]" />
-              <span className="text-[#254e58] font-bold text-base">
-                Contact Us
-              </span>
+              <span className="text-[#254e58] font-bold text-base">Contact Us</span>
             </Link>
           </div>
 
@@ -74,7 +70,7 @@ export function MenuBanner() {
                   alt={`Banner ${index + 1}`}
                   fill
                   className={`object-contain transition-opacity duration-500 ${
-                    currentSlide === index ? "opacity-100" : "opacity-0"
+                    currentSlide === index ? 'opacity-100' : 'opacity-0'
                   }`}
                   priority={index === 0}
                 />

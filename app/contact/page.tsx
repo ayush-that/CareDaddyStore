@@ -1,39 +1,37 @@
-"use client";
+'use client';
 
-import { ClientWrapper } from "@/components/ui/client-wrapper";
-import { useState } from "react";
+import { ClientWrapper } from '@/components/ui/client-wrapper';
+import { useState } from 'react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    orderId: "",
-    email: "",
-    subject: "",
-    message: "",
+    firstName: '',
+    lastName: '',
+    orderId: '',
+    email: '',
+    subject: '',
+    message: '',
   });
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState('');
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("sending");
+    setStatus('sending');
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: "c90e41df-71f6-438d-a957-dd005e2828d4",
+          access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
           from_name: `${formData.firstName} ${formData.lastName}`,
           subject: formData.subject,
           message: `
@@ -41,26 +39,26 @@ export default function ContactPage() {
             Email: ${formData.email}
             Message: ${formData.message}
           `,
-          email_to: "shopwe820@gmail.com",
+          email_to: 'shopwe820@gmail.com',
         }),
       });
 
       const result = await response.json();
       if (result.success) {
-        setStatus("success");
+        setStatus('success');
         setFormData({
-          firstName: "",
-          lastName: "",
-          orderId: "",
-          email: "",
-          subject: "",
-          message: "",
+          firstName: '',
+          lastName: '',
+          orderId: '',
+          email: '',
+          subject: '',
+          message: '',
         });
       } else {
-        setStatus("error");
+        setStatus('error');
       }
     } catch (error) {
-      setStatus("error");
+      setStatus('error');
     }
   };
 
@@ -68,26 +66,23 @@ export default function ContactPage() {
     <ClientWrapper>
       <div className="p-6 space-y-6">
         <section>
-          <h1 className="text-[#00bcd4] text-2xl font-normal mb-4">
-            Contact Us
-          </h1>
+          <h1 className="text-[#00bcd4] text-2xl font-normal mb-4">Contact Us</h1>
 
           <div className="text-[#7a7a7a] space-y-4 mb-6">
             <p>
-              Our customer support service work 7 days a week, 24 hours a day.
-              Please, feel free to contact us in case you have any question,
-              request or comment. Specify your name and e-mail address so we
-              could respond to your inquiry.
+              Our customer support service work 7 days a week, 24 hours a day. Please, feel free to
+              contact us in case you have any question, request or comment. Specify your name and
+              e-mail address so we could respond to your inquiry.
             </p>
           </div>
 
-          {status === "success" && (
+          {status === 'success' && (
             <div className="mb-4 p-4 bg-green-100 text-green-700 rounded">
               Thank you for your message. We will get back to you soon!
             </div>
           )}
 
-          {status === "error" && (
+          {status === 'error' && (
             <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
               Something went wrong. Please try again later.
             </div>
@@ -96,10 +91,7 @@ export default function ContactPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label
-                  htmlFor="firstName"
-                  className="block text-[#7a7a7a] mb-2"
-                >
+                <label htmlFor="firstName" className="block text-[#7a7a7a] mb-2">
                   First name
                 </label>
                 <input
@@ -184,10 +176,10 @@ export default function ContactPage() {
 
             <button
               type="submit"
-              disabled={status === "sending"}
+              disabled={status === 'sending'}
               className="bg-[#ff7675] text-white px-8 py-2 rounded hover:bg-[#ff6b6b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {status === "sending" ? "Sending..." : "Send"}
+              {status === 'sending' ? 'Sending...' : 'Send'}
             </button>
           </form>
         </section>
