@@ -3,9 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './button';
-import { useCart } from '@/lib/context/cart-context';
 import { ShoppingCart } from 'lucide-react';
-import { useState } from 'react';
 
 interface Product {
   id: number;
@@ -24,24 +22,11 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { addToCart } = useCart();
-  const [isAdding, setIsAdding] = useState(false);
-
   if (!product || !product.name) {
     return null;
   }
 
   const { name, disease, image, price, rating, shipsTo, slug, bestseller } = product;
-
-  const handleAddToCart = () => {
-    setIsAdding(true);
-    addToCart({
-      id: product.id.toString(),
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    });
-  };
 
   return (
     <div className="group sm:w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-100">
@@ -95,16 +80,12 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        <Button
-          onClick={handleAddToCart}
-          disabled={isAdding}
-          className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] group-hover:bg-[#f7766e] text-white transition-all ${
-            isAdding ? 'opacity-75' : ''
-          }`}
-        >
-          <ShoppingCart className="w-4 h-4" />
-          {isAdding ? 'Adding...' : 'Add to cart'}
-        </Button>
+        <Link href={`/product/${slug}`} className="block w-full">
+          <Button className="w-full flex items-center justify-center gap-2 bg-[#88bdbc] group-hover:bg-[#f7766e] text-white transition-all">
+            <ShoppingCart className="w-4 h-4" />
+            View Product
+          </Button>
+        </Link>
       </div>
     </div>
   );
