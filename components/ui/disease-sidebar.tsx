@@ -59,7 +59,67 @@ export function DiseaseSidebar({ diseases, products }: DiseaseSidebarProps) {
 
   return (
     <div className="bg-gradient-to-b from-[#eff9fa] to-[#e5f4f5] rounded-lg px-4 py-3">
-      <div className="space-y-1 smooth-scroll">
+      {/* Mobile view - horizontal scrollable row */}
+      <div className="md:hidden">
+        <div className="overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex flex-row space-x-2 whitespace-nowrap">
+            {/* Bestsellers for mobile */}
+            {bestsellerProducts.length > 0 && (
+              <button
+                onClick={() => handleDiseaseClick('Bestsellers')}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap
+                  ${expandedDisease === 'Bestsellers' ? 'bg-[#c6e0e0] text-black' : 'bg-[#e0ecec] text-gray-800 hover:bg-[#d4e3e3]'}`}
+              >
+                Bestsellers ({bestsellerProducts.length})
+              </button>
+            )}
+
+            {/* Disease buttons for mobile */}
+            {allDiseases.map(disease => (
+              <button
+                key={`mobile-${disease.name}`}
+                onClick={() => handleDiseaseClick(disease.name)}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap
+                  ${expandedDisease === disease.name ? 'bg-[#c6e0e0] text-black' : 'bg-[#e0ecec] text-gray-800 hover:bg-[#d4e3e3]'}`}
+              >
+                {disease.name} {disease.count > 0 && `(${disease.count})`}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Expanded section for mobile only */}
+        {expandedDisease && (
+          <div className="mt-3 border-t border-[#d4e3e3] pt-3">
+            <div className="space-y-1">
+              {expandedDisease === 'Bestsellers'
+                ? bestsellerProducts.map(product => (
+                    <Link
+                      key={`mobile-product-${product.id}`}
+                      href={`/product/${product.slug}`}
+                      className="block py-1 px-3 text-sm text-gray-600 hover:text-gray-900"
+                    >
+                      {product.name}
+                    </Link>
+                  ))
+                : products
+                    .filter(product => product.disease === expandedDisease)
+                    .map(product => (
+                      <Link
+                        key={`mobile-product-${product.id}`}
+                        href={`/product/${product.slug}`}
+                        className="block py-1 px-3 text-sm text-gray-600 hover:text-gray-900"
+                      >
+                        {product.name}
+                      </Link>
+                    ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop view - vertical list with original functionality */}
+      <div className="hidden md:block space-y-1 smooth-scroll">
         {/* Bestsellers Category */}
         {bestsellerProducts.length > 0 && (
           <div>
