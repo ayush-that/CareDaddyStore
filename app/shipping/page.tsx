@@ -47,32 +47,83 @@ export default function ShippingPage() {
     e.preventDefault();
     setStatus('processing');
 
-    // Create FormData for file upload
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null) {
-        data.append(key, value);
-      }
-    });
-    data.append('paymentMethod', paymentMethod || '');
-    if (orderId) {
-      data.append('orderId', orderId);
-    }
-
     try {
-      // TODO: Replace with your EspoCRM API endpoint
-      const response = await fetch('/api/shipping', {
+      // First handle the file upload if it exists
+      let attachmentUrl = '';
+      if (formData.paymentProof) {
+        const fileData = new FormData();
+        fileData.append('file', formData.paymentProof);
+        fileData.append('access_key', 'c90e41df-71f6-438d-a957-dd005e2828d4');
+
+        const uploadResponse = await fetch('https://api.web3forms.com/upload', {
+          method: 'POST',
+          body: fileData,
+        });
+
+        const uploadResult = await uploadResponse.json();
+        if (uploadResult.success) {
+          attachmentUrl = uploadResult.url;
+        }
+      }
+
+      // Then submit the form data
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        body: data,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
+          from_name: `${formData.firstName} ${formData.lastName}`,
+          subject: `New Shipping Details - Order ${orderId || 'No Order ID'}`,
+          message: `
+            Shipping Details:
+            ------------------
+            Name: ${formData.firstName} ${formData.lastName}
+            Email: ${formData.email}
+            Phone: ${formData.phone}
+            
+            Address:
+            ${formData.address}
+            ${formData.city}
+            ${formData.state}
+            ${formData.country}
+            ${formData.zipCode}
+            
+            Order Information:
+            -----------------
+            Order ID: ${orderId || 'Not specified'}
+            Payment Method: ${paymentMethod || 'Not specified'}
+            Payment Proof: ${attachmentUrl || 'Not provided'}
+          `,
+          email_to: 'shopwe820@gmail.com',
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit shipping details');
-      }
+      const result = await response.json();
+      console.log('Submission result:', result);
 
-      setStatus('success');
+      if (result.success) {
+        setStatus('success');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          country: '',
+          state: '',
+          city: '',
+          zipCode: '',
+          address: '',
+          phone: '',
+          email: '',
+          paymentProof: null,
+        });
+      } else {
+        console.error('Submission failed:', result);
+        setStatus('error');
+      }
     } catch (error) {
-      console.error('Submission failed:', error);
+      console.error('Submission error:', error);
       setStatus('error');
     }
   };
@@ -85,17 +136,18 @@ export default function ShippingPage() {
 
           {status === 'success' && (
             <div className="mb-6 p-4 bg-green-100 text-green-700 rounded">
-              Thank you! Your shipping details have been submitted.
+              Thank you! Your shipping details have been submitted successfully.
             </div>
           )}
 
           {status === 'error' && (
             <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
-              Failed to submit shipping details. Please try again.
+              Failed to submit shipping details. Please check your information and try again. If the
+              problem persists, please contact support.
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="firstName" className="block text-sm text-gray-600 mb-1">
@@ -104,6 +156,7 @@ export default function ShippingPage() {
                 <input
                   type="text"
                   id="firstName"
+                  name="firstName"
                   required
                   value={formData.firstName}
                   onChange={handleChange}
@@ -238,13 +291,14 @@ export default function ShippingPage() {
                 <input
                   type="file"
                   id="paymentProof"
-                  required
-                  accept="image/*"
+                  name="attachment"
+                  required={paymentMethod !== 'paypal'}
+                  accept="image/*,.pdf"
                   onChange={handleFileChange}
                   className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <p className="mt-1 text-sm text-gray-500">
-                  Please upload a screenshot of your payment confirmation
+                  Please upload your payment confirmation (Image or PDF, max 5MB)
                 </p>
               </div>
             )}
