@@ -4,6 +4,7 @@ import './globals.css';
 import { Providers } from '@/components/providers';
 import { CartProvider } from '@/lib/context/cart-context';
 import { ProductProvider } from '@/lib/contexts/product-context';
+import { PayPalProvider } from '@/components/providers/paypal-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,11 +25,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ProductProvider>
-          <CartProvider>
-            <Providers>{children}</Providers>
-          </CartProvider>
-        </ProductProvider>
+        <PayPalProvider>
+          <ProductProvider>
+            <CartProvider>
+              <Providers>{children}</Providers>
+            </CartProvider>
+          </ProductProvider>
+        </PayPalProvider>
       </body>
     </html>
   );

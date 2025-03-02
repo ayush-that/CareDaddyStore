@@ -2,385 +2,218 @@
 
 import { ClientWrapper } from '@/components/ui/client-wrapper';
 import { useCart } from '@/lib/context/cart-context';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Country, State } from 'country-state-city';
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import type {
+  CreateOrderData,
+  CreateOrderActions,
+  OnApproveData,
+  OnApproveActions,
+} from '@paypal/paypal-js';
+import Link from 'next/link';
 
-import { SHIPPING_COST, INSURANCE_COST, PAYMENT_OPTIONS } from '@/config/checkout';
+import { SHIPPING_COST, INSURANCE_COST } from '@/config/checkout';
 
 export default function CheckoutPage() {
   const { items, total } = useCart();
-  const totalAmount = total + SHIPPING_COST + INSURANCE_COST;
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = subtotal + SHIPPING_COST + INSURANCE_COST;
+  const [{ isResolved }] = usePayPalScriptReducer();
+  const [selectedMethod, setSelectedMethod] = useState<'paypal' | 'venmo' | 'cashapp'>('paypal');
+  const [paymentMethods, setPaymentMethods] = useState<any>(null);
 
-  const [countries] = useState(Country.getAllCountries());
-  const [states, setStates] = useState(State.getStatesOfCountry(''));
+  useEffect(() => {
+    // Fetch payment QR codes from API
+    fetch('/api/payment-methods')
+      .then(res => res.json())
+      .then(data => {
+        console.log('Payment Methods Response:', data);
+        setPaymentMethods(data);
+      })
+      .catch(err => console.error('Error fetching payment methods:', err));
+  }, []);
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    country: '',
-    state: '',
-    city: '',
-    zipCode: '',
-    address: '',
-    phone: '',
-    email: '',
-    paymentType: 'PayPal',
-    paypalEmail: '',
-    venmoUsername: '',
-    cashappUsername: '',
-    bitcoinAddress: '',
-  });
-
-  const [status, setStatus] = useState('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
-
-    // Update states when country changes
-    if (id === 'country') {
-      setStates(State.getStatesOfCountry(value));
-      setFormData(prev => ({ ...prev, state: '' })); // Reset state when country changes
-    }
+  const handlePaypalCreateOrder = async (data: CreateOrderData, actions: CreateOrderActions) => {
+    return actions.order.create({
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            value: totalAmount.toString(),
+            currency_code: 'USD',
+          },
+          description: `Order from CareCaddy Store - ${items.length} items`,
+        },
+      ],
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus('processing');
-    // Add payment processing logic here
-    setTimeout(() => {
-      setStatus('success');
-    }, 2000);
-  };
+  const handlePaypalApprove = async (data: OnApproveData, actions: OnApproveActions) => {
+    try {
+      const details = await actions.order?.capture();
+      if (!details) {
+        throw new Error('Failed to capture order');
+      }
 
-  const renderPaymentFields = () => {
-    switch (formData.paymentType) {
-      case 'PayPal':
-        return (
-          <div>
-            <label htmlFor="paypalEmail" className="block text-sm text-gray-600 mb-1">
-              PayPal Email *
-            </label>
-            <input
-              type="email"
-              id="paypalEmail"
-              required
-              value={formData.paypalEmail}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter your PayPal email"
-            />
-          </div>
-        );
-      case 'Venmo':
-        return (
-          <div>
-            <label htmlFor="venmoUsername" className="block text-sm text-gray-600 mb-1">
-              Venmo Username *
-            </label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-l border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
-                @
-              </span>
-              <input
-                type="text"
-                id="venmoUsername"
-                required
-                value={formData.venmoUsername}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-r focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="username"
-              />
-            </div>
-          </div>
-        );
-      case 'CashApp':
-        return (
-          <div>
-            <label htmlFor="cashappUsername" className="block text-sm text-gray-600 mb-1">
-              Cash App Username *
-            </label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 rounded-l border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
-                $
-              </span>
-              <input
-                type="text"
-                id="cashappUsername"
-                required
-                value={formData.cashappUsername}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-r focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="cashtag"
-              />
-            </div>
-          </div>
-        );
-      case 'Bitcoin':
-        return (
-          <div>
-            <label htmlFor="bitcoinAddress" className="block text-sm text-gray-600 mb-1">
-              Bitcoin Address *
-            </label>
-            <input
-              type="text"
-              id="bitcoinAddress"
-              required
-              value={formData.bitcoinAddress}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter your Bitcoin address"
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              The payment instructions will be sent to your email after order confirmation
-            </p>
-          </div>
-        );
-      default:
-        return null;
+      // Redirect to shipping form with payment details
+      window.location.href = `/shipping?orderId=${details.id}&method=paypal`;
+    } catch (error) {
+      console.error('Payment failed:', error);
     }
   };
 
   return (
     <ClientWrapper>
-      <div className="max-w-6xl mx-auto p-6">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column - Form */}
-          <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">Secure Checkout</h2>
-              </div>
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <h2 className="text-xl font-semibold mb-6">Choose Payment Method</h2>
 
-              <form onSubmit={handleSubmit}>
-                {/* Shipping Address Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-medium mb-4">Shipping Address</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="firstName" className="block text-sm text-gray-600 mb-1">
-                        First name *
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        required
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="lastName" className="block text-sm text-gray-600 mb-1">
-                        Last name *
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        required
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="country" className="block text-sm text-gray-600 mb-1">
-                        Country *
-                      </label>
-                      <select
-                        id="country"
-                        required
-                        value={formData.country}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        <option value="">Select Country</option>
-                        {countries.map(country => (
-                          <option key={country.isoCode} value={country.isoCode}>
-                            {country.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="state" className="block text-sm text-gray-600 mb-1">
-                        State / Province *
-                      </label>
-                      <select
-                        id="state"
-                        required
-                        value={formData.state}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        disabled={!formData.country}
-                      >
-                        <option value="">Select State</option>
-                        {states.map(state => (
-                          <option key={state.isoCode} value={state.isoCode}>
-                            {state.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="city" className="block text-sm text-gray-600 mb-1">
-                        City *
-                      </label>
-                      <input
-                        type="text"
-                        id="city"
-                        required
-                        value={formData.city}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="zipCode" className="block text-sm text-gray-600 mb-1">
-                        ZIP/Postal code *
-                      </label>
-                      <input
-                        type="text"
-                        id="zipCode"
-                        required
-                        value={formData.zipCode}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label htmlFor="address" className="block text-sm text-gray-600 mb-1">
-                        Address *
-                      </label>
-                      <input
-                        type="text"
-                        id="address"
-                        required
-                        value={formData.address}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className="block text-sm text-gray-600 mb-1">
-                        Phone *
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        required
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm text-gray-600 mb-1">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          <div className="space-y-6">
+            {/* Payment Method Selection */}
+            <div className="flex gap-4">
+              <button
+                onClick={() => setSelectedMethod('paypal')}
+                className={`flex-1 border rounded-lg ${
+                  selectedMethod === 'paypal' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                }`}
+              >
+                <Image
+                  src="/images/checkout/paypal.png"
+                  alt="PayPal"
+                  width={100}
+                  height={40}
+                  className="mx-auto h-14 w-auto"
+                />
+              </button>
+              <button
+                onClick={() => setSelectedMethod('venmo')}
+                className={`border flex-1 rounded-lg ${
+                  selectedMethod === 'venmo' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                }`}
+              >
+                <Image
+                  src="/images/checkout/venmo.png"
+                  alt="Venmo"
+                  width={100}
+                  height={40}
+                  className="mx-auto h-14 w-auto"
+                />
+              </button>
+              <button
+                onClick={() => setSelectedMethod('cashapp')}
+                className={`flex-1 p-4 border rounded-lg ${
+                  selectedMethod === 'cashapp' ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                }`}
+              >
+                <Image
+                  src="/images/checkout/cashapp.png"
+                  alt="Cash App"
+                  width={100}
+                  height={40}
+                  className="mx-auto h-14 w-auto"
+                />
+              </button>
+            </div>
+
+            {/* Payment Method Content */}
+            <div className="mt-6">
+              {selectedMethod === 'paypal' && (
+                <div>
+                  {isResolved ? (
+                    <PayPalButtons
+                      createOrder={handlePaypalCreateOrder}
+                      onApprove={handlePaypalApprove}
+                      style={{ layout: 'vertical' }}
+                    />
+                  ) : (
+                    <div className="text-center p-4">Loading PayPal...</div>
+                  )}
+                </div>
+              )}
+
+              {selectedMethod === 'venmo' && (
+                <div className="text-center">
+                  <div className="mb-4">
+                    <div className="relative w-[300px] h-[300px] mx-auto">
+                      <Image
+                        src={paymentMethods?.venmo?.qrCode || '/images/qr/venmo-qr.png'}
+                        alt="Venmo QR Code"
+                        fill
+                        className="object-contain"
+                        priority
                       />
                     </div>
                   </div>
+                  <Link
+                    href={`/shipping?method=venmo`}
+                    className="inline-block bg-[#88bdbc] text-white px-6 py-2 rounded hover:bg-[#619695]"
+                  >
+                    Continue to Shipping Details
+                  </Link>
                 </div>
+              )}
 
-                {/* Payment Information Section */}
-                <div className="mb-8">
-                  <h3 className="text-lg font-medium mb-4">Payment Information</h3>
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="paymentType" className="block text-sm text-gray-600 mb-1">
-                        Payment type *
-                      </label>
-                      <select
-                        id="paymentType"
-                        required
-                        value={formData.paymentType}
-                        onChange={handleChange}
-                        className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      >
-                        {PAYMENT_OPTIONS.map(option => (
-                          <option key={option.value} value={option.value}>
-                            {option.value}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="flex mt-2">
-                        {PAYMENT_OPTIONS.map(option => (
-                          <div
-                            key={option.value}
-                            className="w-16 h-12 relative bg-white rounded overflow-hidden"
-                          >
-                            <Image
-                              src={option.imageSrc}
-                              alt={option.alt}
-                              fill
-                              className={option.css}
-                            />
-                          </div>
-                        ))}
-                      </div>
+              {selectedMethod === 'cashapp' && (
+                <div className="text-center">
+                  <div className="mb-4">
+                    <div className="relative w-[300px] h-[300px] mx-auto">
+                      <Image
+                        src={paymentMethods?.cashapp?.qrCode || '/images/qr/cashapp-qr.png'}
+                        alt="Cash App QR Code"
+                        fill
+                        className="object-contain"
+                        priority
+                      />
                     </div>
-
-                    {renderPaymentFields()}
                   </div>
+                  <Link
+                    href={`/shipping?method=cashapp`}
+                    className="inline-block bg-[#88bdbc] text-white px-6 py-2 rounded hover:bg-[#619695]"
+                  >
+                    Continue to Shipping Details
+                  </Link>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={status === 'processing'}
-                  className="w-full bg-[#88bdbc] text-white py-3 rounded font-medium hover:bg-[#619695] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {status === 'processing' ? 'Processing...' : 'Complete Order'}
-                </button>
-              </form>
+              )}
             </div>
           </div>
 
-          {/* Right Column - Order Summary */}
-          <div className="lg:w-80">
-            <div className="bg-[#f5f5f5] rounded-lg p-6">
-              <h3 className="text-lg font-medium mb-4">Order Summary</h3>
-              <div className="space-y-4">
-                {items.map(item => (
-                  <div key={item.id} className="flex justify-between items-start">
-                    <div className="flex items-start gap-2">
-                      <div className="w-12 h-12 relative bg-white rounded overflow-hidden">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-contain p-1"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">{item.name}</p>
-                        <p className="text-xs text-gray-500">
-                          {item.quantity} {item.quantity === 1 ? 'Pill' : 'Pills'} x {item.strength}
-                        </p>
-                      </div>
+          {/* Order Summary */}
+          <div className="mt-8 pt-6 border-t">
+            <h3 className="text-lg font-medium mb-4">Order Summary</h3>
+            <div className="space-y-4">
+              {items.map(item => (
+                <div key={item.id} className="flex justify-between items-start">
+                  <div className="flex items-start gap-2">
+                    <div className="w-12 h-12 relative bg-white rounded overflow-hidden">
+                      <Image src={item.image} alt={item.name} fill className="object-contain p-1" />
                     </div>
-                    <p className="font-medium">
-                      {item.price === 0 ? (
-                        <span className="text-green-500">FREE</span>
-                      ) : (
-                        `$${item.price.toFixed(2)}`
-                      )}
-                    </p>
+                    <div>
+                      <p className="text-sm font-medium">{item.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {item.quantity} {item.quantity === 1 ? 'Pill' : 'Pills'} x {item.strength}
+                      </p>
+                    </div>
                   </div>
-                ))}
-                <div className="border-t pt-4">
-                  <div className="flex justify-between font-medium text-lg">
-                    <span>Total amount</span>
-                    <span>${total.toFixed(2)}</span>
-                  </div>
+                  <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                </div>
+              ))}
+              <div className="border-t pt-4 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Shipping</span>
+                  <span>${SHIPPING_COST.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Insurance</span>
+                  <span>${INSURANCE_COST.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between font-medium text-lg pt-2 border-t">
+                  <span>Total</span>
+                  <span>${totalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
