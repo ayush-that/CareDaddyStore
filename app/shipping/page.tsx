@@ -9,6 +9,8 @@ export default function ShippingPage() {
   const searchParams = useSearchParams();
   const paymentMethod = searchParams.get('method');
   const orderId = searchParams.get('orderId');
+  const items = searchParams.get('items');
+  const amount = searchParams.get('amount');
 
   const [countries] = useState(Country.getAllCountries());
   const [states, setStates] = useState(State.getStatesOfCountry(''));
@@ -66,6 +68,20 @@ export default function ShippingPage() {
         }
       }
 
+      // Parse items if available
+      let orderItems = '';
+      try {
+        if (items) {
+          const parsedItems = JSON.parse(decodeURIComponent(items));
+          orderItems = parsedItems
+            .map((item: any) => `- ${item.name} (Quantity: ${item.quantity})`)
+            .join('\n            ');
+        }
+      } catch (e) {
+        console.error('Error parsing items:', e);
+        orderItems = 'Error parsing order items';
+      }
+
       // Then submit the form data
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -76,26 +92,32 @@ export default function ShippingPage() {
         body: JSON.stringify({
           access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
           from_name: `${formData.firstName} ${formData.lastName}`,
-          subject: `New Shipping Details - Order ${orderId || 'No Order ID'}`,
+          subject: `New Order Shipping Details - Order ${orderId || 'No Order ID'}`,
           message: `
+            Order Information:
+            -----------------
+            Order ID: ${orderId || 'Not specified'}
+            Total Amount: ${amount || 'Not specified'}
+            Payment Method: ${paymentMethod || 'Not specified'}
+            Payment Proof: ${attachmentUrl || 'Not provided'}
+
+            Ordered Items:
+            -------------
+            ${orderItems || 'No items specified'}
+
             Shipping Details:
-            ------------------
+            ----------------
             Name: ${formData.firstName} ${formData.lastName}
             Email: ${formData.email}
             Phone: ${formData.phone}
             
-            Address:
+            Delivery Address:
+            ----------------
             ${formData.address}
             ${formData.city}
             ${formData.state}
             ${formData.country}
             ${formData.zipCode}
-            
-            Order Information:
-            -----------------
-            Order ID: ${orderId || 'Not specified'}
-            Payment Method: ${paymentMethod || 'Not specified'}
-            Payment Proof: ${attachmentUrl || 'Not provided'}
           `,
           email_to: 'shopwe820@gmail.com',
         }),
