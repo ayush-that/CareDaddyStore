@@ -14,6 +14,7 @@ interface Product {
   price: any;
   image: any;
   rating?: any;
+  bestseller?: boolean;
 }
 
 function ProductGrid() {
@@ -21,11 +22,11 @@ function ProductGrid() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
 
-  // Filter products based only on selected letter
+  // Filter products based on bestseller status and selected letter
   const filteredProducts = products.filter((product: Product) => {
     const matchesLetter =
       !selectedLetter || product.name.charAt(0).toUpperCase() === selectedLetter;
-    return matchesLetter;
+    return product.bestseller && matchesLetter;
   });
 
   // Calculate pagination
