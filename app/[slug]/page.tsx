@@ -162,7 +162,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
                     <button
                       onClick={handleAddToCart}
-                      className="w-full sm:w-auto px-8 py-3 bg-teal-500 hover:bg-rose-500 text-white rounded-md font-medium transition-colors flex items-center justify-center gap-2"
+                      className="w-1/4 px-8 py-3 bg-teal-500 hover:bg-rose-500 text-white rounded-md font-medium transition-colors flex items-center justify-center gap-2"
                     >
                       <ShoppingCart className="h-5 w-5" />
                       Add to cart

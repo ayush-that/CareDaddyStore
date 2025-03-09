@@ -114,7 +114,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <button
               onClick={handleAddToCart}
               disabled={isAdding}
-              className={`w-full flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white py-2 rounded text-sm transition-all ${
+              className={`w-1/4 flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white py-2 rounded text-sm transition-all ${
                 isAdding ? 'opacity-75' : ''
               }`}
             >
