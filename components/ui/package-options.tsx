@@ -38,21 +38,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '100mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 24.99,
             perPillCost: 2.499,
             shippingCost: 17.99,
             totalCost: 45.479,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 34.99,
             perPillCost: 1.7495,
             shippingCost: 17.99,
             totalCost: 54.7295,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 64.99,
             perPillCost: 1.444222222,
             shippingCost: 17.99,
@@ -63,21 +63,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '150mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 39.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
             totalCost: 87.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -88,21 +88,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '200mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -118,21 +118,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '20mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 24.99,
             perPillCost: 2.499,
             shippingCost: 17.99,
             totalCost: 45.479,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 34.99,
             perPillCost: 1.7495,
             shippingCost: 17.99,
             totalCost: 54.7295,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 64.99,
             perPillCost: 1.444222222,
             shippingCost: 17.99,
@@ -143,21 +143,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '40mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -168,21 +168,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '60mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -214,21 +214,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '20mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 29.99,
             perPillCost: 2.999,
             shippingCost: 17.99,
             totalCost: 47.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 42.99,
             perPillCost: 2.2495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 74.99,
             perPillCost: 1.666444444,
             shippingCost: 17.99,
@@ -244,21 +244,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '20mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: '10 Digital Goods pack',
             packCost: 29.99,
             perPillCost: 2.999,
             shippingCost: 17.99,
             totalCost: 47.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: '20 Digital Goods pack',
             packCost: 42.99,
             perPillCost: 2.1495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: '45 Digital Goods pack',
             packCost: 74.99,
             perPillCost: 1.666444444,
             shippingCost: 17.99,

@@ -54,7 +54,7 @@ export function ProductGrid() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
               <div className="text-lg md:text-xl font-bold">
                 ${product.price.toFixed(2)}
-                <span className="text-sm font-normal ml-1">PILL</span>
+                <span className="text-sm font-normal ml-1">Digital Good</span>
               </div>
               <button
                 onClick={() => handleAddToCart(product)}

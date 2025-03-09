@@ -98,7 +98,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <div className="space-y-4">
             <div className="text-2xl sm:text-3xl font-bold text-[#88bdbc]">
               ${product.price.toFixed(2)}
-              <span className="text-xs sm:text-sm font-normal text-gray-600 ml-2">/ PILL</span>
+              <span className="text-xs sm:text-sm font-normal text-gray-600 ml-2">
+                / Digital Good
+              </span>
             </div>
             <p className="product-description text-gray-600 text-sm sm:text-base">
               {truncateText(product.description, isDescriptionExpanded)}

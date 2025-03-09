@@ -63,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="text-xl font-bold text-red-500 group-hover:text-white">
             ${price?.toFixed(2) || '0.00'}
           </span>
-          <span className="text-sm text-gray-600 group-hover:text-white">/ PILL</span>
+          <span className="text-sm text-gray-600 group-hover:text-white">/ Digital Good</span>
         </div>
 
         <div className="text-sm text-gray-600 mb-4 group-hover:text-gray-900">
