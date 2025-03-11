@@ -7,7 +7,7 @@ import { Home, Info, FileText, Phone, HelpCircle } from 'lucide-react';
 
 export function MenuBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = ['/banner1.png', '/banner2.png', '/banner3.png'];
+  const slides = ['/banner3.png'];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -69,7 +69,7 @@ export function MenuBanner() {
                   src={slide}
                   alt={`Banner ${index + 1}`}
                   fill
-                  className={`object-contain transition-opacity duration-500 ${
+                  className={`object-contain transition-opacity ${
                     currentSlide === index ? 'opacity-100' : 'opacity-0'
                   }`}
                   priority={index === 0}
