@@ -56,7 +56,7 @@ function ShippingForm() {
       if (formData.paymentProof) {
         const fileData = new FormData();
         fileData.append('file', formData.paymentProof);
-        fileData.append('access_key', 'c90e41df-71f6-438d-a957-dd005e2828d4');
+        fileData.append('access_key', 'da5e4fac-07d4-4581-907d-d1798c78d699');
 
         const uploadResponse = await fetch('https://api.web3forms.com/upload', {
           method: 'POST',
@@ -91,7 +91,7 @@ function ShippingForm() {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
+          access_key: 'da5e4fac-07d4-4581-907d-d1798c78d699',
           from_name: `${formData.firstName} ${formData.lastName}`,
           subject: `New Order Shipping Details - Order ${orderId || 'No Order ID'}`,
           message: `

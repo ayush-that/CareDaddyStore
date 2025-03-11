@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import { ProductService, Product } from '@/lib/api';
 import { AlphabetFilter } from '@/components/ui/alphabet-filter';
 import { DiseaseSidebar } from '@/components/ui/disease-sidebar';
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star } from 'lucide-react';
 import Image from 'next/image';
-import { useCartStore } from '@/lib/store/cart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ClientWrapper } from '@/components/ui/client-wrapper';
 import { ProductGrid } from '@/components/ui/product-grid';
@@ -19,7 +18,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const [selectedDisease, setSelectedDisease] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { addItem } = useCartStore();
 
   useEffect(() => {
     async function fetchData() {
@@ -87,10 +85,6 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </div>
     );
   }
-
-  const handleAddToCart = () => {
-    addItem({ id: product.id, name: product.name, price: product.price });
-  };
 
   return (
     <ClientWrapper>
@@ -160,13 +154,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                       </div>
                     </div>
 
-                    <button
-                      onClick={handleAddToCart}
-                      className="w-1/4 px-8 py-3 bg-teal-500 hover:bg-rose-500 text-white rounded-md font-medium transition-colors flex items-center justify-center gap-2"
-                    >
-                      <ShoppingCart className="h-5 w-5" />
-                      Add to cart
-                    </button>
+                    <div className="w-1/4"></div>
                   </div>
                 </div>
               </div>

@@ -1,8 +1,7 @@
 'use client';
 
-import { Star, ShoppingCart } from 'lucide-react';
+import { Star } from 'lucide-react';
 import Image from 'next/image';
-import { useCart } from '@/lib/context/cart-context';
 import { useState } from 'react';
 import { PackageOptions } from './package-options';
 
@@ -23,27 +22,10 @@ interface ProductDetailProps {
 }
 
 export function ProductDetail({ product }: ProductDetailProps) {
-  const { addToCart } = useCart();
-  const [isAdding, setIsAdding] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isSafetyInfoExpanded, setIsSafetyInfoExpanded] = useState(false);
   const [isSideEffectsExpanded, setIsSideEffectsExpanded] = useState(false);
   const maxLength = 300;
-
-  const handleAddToCart = () => {
-    setIsAdding(true);
-    addToCart({
-      id: product.sku,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-    });
-
-    // Visual feedback
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 500);
-  };
 
   const truncateText = (text: string, isExpanded: boolean) => {
     if (text.length <= maxLength) return text;
@@ -113,16 +95,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 {isDescriptionExpanded ? 'Read less' : 'Read more'}
               </button>
             )}
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className={`w-1/4 flex items-center justify-center gap-2 bg-[#88bdbc] hover:bg-[#f7766e] text-white py-2 rounded text-sm transition-all ${
-                isAdding ? 'opacity-75' : ''
-              }`}
-            >
-              <ShoppingCart className="w-4 h-4" />
-              {isAdding ? 'Adding...' : 'Add to cart'}
-            </button>
           </div>
         </div>
       </div>

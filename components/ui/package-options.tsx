@@ -38,21 +38,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '100mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Viagra 100 Mg 10 Tabs pack',
             packCost: 24.99,
             perPillCost: 2.499,
             shippingCost: 17.99,
             totalCost: 45.479,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Viagra 100 Mg 20 Tabs pack',
             packCost: 34.99,
             perPillCost: 1.7495,
             shippingCost: 17.99,
             totalCost: 54.7295,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Viagra 100 Mg 45 Tabs pack',
             packCost: 64.99,
             perPillCost: 1.444222222,
             shippingCost: 17.99,
@@ -63,21 +63,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '150mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Viagra 150 Mg 10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Viagra 150 Mg 20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
             totalCost: 87.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Viagra 150 Mg 45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -88,21 +88,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '200mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Viagra 200 Mg 10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Viagra 200 Mg 20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Viagra 200 Mg 45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -118,21 +118,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '20mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Cialis 20 Mg 10 Tabs pack',
             packCost: 24.99,
             perPillCost: 2.499,
             shippingCost: 17.99,
             totalCost: 45.479,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Cialis 20 Mg 20 Tabs pack',
             packCost: 34.99,
             perPillCost: 1.7495,
             shippingCost: 17.99,
             totalCost: 54.7295,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Cialis 20 Mg 45 Tabs pack',
             packCost: 64.99,
             perPillCost: 1.444222222,
             shippingCost: 17.99,
@@ -143,21 +143,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '40mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Cialis 40 Mg 10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Cialis 40 Mg 20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Cialis 40 Mg 45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -168,21 +168,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '60mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Cialis 60 Mg 10 Tabs pack',
             packCost: 27.99,
             perPillCost: 2.799,
             shippingCost: 17.99,
             totalCost: 45.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Cialis 60 Mg 20 Tabs pack',
             packCost: 39.99,
             perPillCost: 1.9995,
             shippingCost: 17.99,
             totalCost: 57.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Cialis 60 Mg 45 Tabs pack',
             packCost: 69.99,
             perPillCost: 1.555333333,
             shippingCost: 17.99,
@@ -214,21 +214,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '20mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Cialis Professional 20 Mg 10 Tabs pack',
             packCost: 29.99,
             perPillCost: 2.999,
             shippingCost: 17.99,
             totalCost: 47.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Cialis Professional 20 Mg 20 Tabs pack',
             packCost: 42.99,
             perPillCost: 2.2495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Cialis Professional 20 Mg 45 Tabs pack',
             packCost: 74.99,
             perPillCost: 1.666444444,
             shippingCost: 17.99,
@@ -244,21 +244,21 @@ const PRODUCT_CONFIGS: Record<ProductSlug, ProductConfig> = {
       '20mg': {
         packages: [
           {
-            productName: '10 Tabs pack',
+            productName: 'Levitra 20 Mg 10 Tabs pack',
             packCost: 29.99,
             perPillCost: 2.999,
             shippingCost: 17.99,
             totalCost: 47.98,
           },
           {
-            productName: '20 Tabs pack',
+            productName: 'Levitra 20 Mg 20 Tabs pack',
             packCost: 42.99,
             perPillCost: 2.1495,
             shippingCost: 17.99,
             totalCost: 60.98,
           },
           {
-            productName: '45 Tabs pack',
+            productName: 'Levitra 20 Mg 45 Tabs pack',
             packCost: 74.99,
             perPillCost: 1.666444444,
             shippingCost: 17.99,
@@ -283,7 +283,7 @@ export function PackageOptions({
 
   const { addToCart } = useCart();
   const [selectedDosage, setSelectedDosage] = useState<string>(config.dosages[0]);
-  const [isAdding, setIsAdding] = useState(false);
+  const [addingPackageId, setAddingPackageId] = useState<string | null>(null);
 
   // Get the packages for the selected dosage
   const currentDosageConfig =
@@ -291,7 +291,9 @@ export function PackageOptions({
   const currentPackages = currentDosageConfig?.packages || [];
 
   const handleAddToCart = (pkg: Package) => {
-    setIsAdding(true);
+    // Use the package name as a unique identifier
+    setAddingPackageId(pkg.productName);
+
     addToCart({
       id: productSku,
       name: `${productName} ${selectedDosage} - ${pkg.productName}`,
@@ -300,7 +302,7 @@ export function PackageOptions({
     });
 
     setTimeout(() => {
-      setIsAdding(false);
+      setAddingPackageId(null);
     }, 500);
   };
 
@@ -395,14 +397,16 @@ export function PackageOptions({
                     <td className="whitespace-nowrap py-3 px-3 sm:px-4 text-xs sm:text-sm">
                       <button
                         onClick={() => handleAddToCart(pkg)}
-                        disabled={isAdding}
+                        disabled={addingPackageId === pkg.productName}
                         className="bg-[#88bdbc] hover:bg-[#619695] text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm flex items-center gap-1 sm:gap-2 whitespace-nowrap"
                       >
                         <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">
-                          {isAdding ? 'Adding...' : 'Add to cart'}
+                          {addingPackageId === pkg.productName ? 'Adding...' : 'Add to cart'}
                         </span>
-                        <span className="sm:hidden">{isAdding ? '...' : 'Add'}</span>
+                        <span className="sm:hidden">
+                          {addingPackageId === pkg.productName ? '...' : 'Add'}
+                        </span>
                       </button>
                     </td>
                   </tr>

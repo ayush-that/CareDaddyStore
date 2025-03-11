@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         Accept: 'application/json',
       },
       body: JSON.stringify({
-        access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
+        access_key: 'da5e4fac-07d4-4581-907d-d1798c78d699',
         from_name: `${data.firstName} ${data.lastName}`,
         subject: `New Credit Card Order Request - ${orderId}`,
         message: `
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
         Accept: 'application/json',
       },
       body: JSON.stringify({
-        access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
+        access_key: 'da5e4fac-07d4-4581-907d-d1798c78d699',
         from_name: 'CareCaddy Store',
         subject: `Your Order Request - ${orderId}`,
         message: `
