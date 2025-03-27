@@ -63,7 +63,21 @@ export async function POST(request: Request) {
       name: `${data.firstName} ${data.lastName}`, // Add name field required by Lead entity
     };
 
-    const results = {
+    const results: {
+      leadCapture: {
+        status?: number;
+        result?: any;
+        success: boolean;
+        error?: string;
+      } | null;
+      directApi: {
+        status?: number;
+        result?: any;
+        success: boolean;
+        error?: string;
+      } | null;
+      overallSuccess: boolean;
+    } = {
       leadCapture: null,
       directApi: null,
       overallSuccess: false,
