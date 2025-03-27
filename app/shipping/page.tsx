@@ -5,6 +5,17 @@ import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Country, State } from 'country-state-city';
 import { useCart } from '@/lib/context/cart-context';
+import { UploadButton } from '../utils/uploadthing';
+
+interface UploadResponse {
+  name: string;
+  size: number;
+  type: string;
+  serverData: {
+    uploadedBy: string;
+    fileUrl: string;
+  };
+}
 
 function ShippingForm() {
   const searchParams = useSearchParams();
@@ -16,6 +27,7 @@ function ShippingForm() {
   const [countries] = useState(Country.getAllCountries());
   const [states, setStates] = useState(State.getStatesOfCountry(''));
   const [status, setStatus] = useState('');
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -27,7 +39,7 @@ function ShippingForm() {
     address: '',
     phone: '',
     email: '',
-    paymentProof: null as File | null,
+    paymentProof: null as UploadResponse | null,
     notes: '',
     items: '',
   });
@@ -42,12 +54,6 @@ function ShippingForm() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData(prev => ({ ...prev, paymentProof: e.target.files![0] }));
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('processing');
@@ -56,81 +62,6 @@ function ShippingForm() {
     console.log('Cart total from context:', cartTotal);
 
     try {
-      if (formData.paymentProof) {
-        try {
-          const fileSize = formData.paymentProof.size;
-          const fileType = formData.paymentProof.type;
-
-          console.log('Attempting to upload file:', {
-            name: formData.paymentProof.name,
-            size: fileSize,
-            type: fileType,
-          });
-
-          if (fileSize > 5 * 1024 * 1024) {
-            console.error('File too large:', fileSize);
-            throw new Error('File size exceeds 5MB limit');
-          }
-
-          if (!fileType.startsWith('image/') && fileType !== 'application/pdf') {
-            console.error('Invalid file type:', fileType);
-            throw new Error('Only images and PDFs are allowed');
-          }
-
-          let uploadSuccess = false;
-
-          try {
-            const fileData = new FormData();
-            fileData.append('file', formData.paymentProof);
-            fileData.append('access_key', 'da5e4fac-07d4-4581-907d-d1798c78d699');
-
-            const uploadResponse = await fetch('https://api.web3forms.com/upload', {
-              method: 'POST',
-              body: fileData,
-            });
-
-            if (!uploadResponse.ok) {
-              console.error('Web3forms file upload error:', {
-                status: uploadResponse.status,
-                statusText: uploadResponse.statusText,
-              });
-            } else {
-              console.log('File uploaded successfully to web3forms');
-              uploadSuccess = true;
-            }
-          } catch (web3formError) {
-            console.error('Error with web3forms upload:', web3formError);
-          }
-
-          if (!uploadSuccess) {
-            console.log('Trying fallback upload endpoint...');
-
-            try {
-              const fileData = new FormData();
-              fileData.append('file', formData.paymentProof);
-
-              const uploadResponse = await fetch('/api/upload', {
-                method: 'POST',
-                body: fileData,
-              });
-
-              if (!uploadResponse.ok) {
-                console.error('Fallback upload error:', {
-                  status: uploadResponse.status,
-                  statusText: uploadResponse.statusText,
-                });
-              } else {
-                console.log('File uploaded successfully to fallback endpoint');
-              }
-            } catch (fallbackError) {
-              console.error('Error with fallback upload:', fallbackError);
-            }
-          }
-        } catch (uploadError) {
-          console.error('Error uploading file:', uploadError);
-        }
-      }
-
       let orderItems = '';
       try {
         if (items) {
@@ -169,6 +100,7 @@ Order Details:
 - Phone: ${formData.phone}
 - Address: ${formData.address}, ${formData.city}, ${stateName}, ${countryName}, ${formData.zipCode}
 ${formData.notes ? '- Notes: ' + formData.notes : ''}
+${uploadedFileUrl ? '- Payment Proof: ' + uploadedFileUrl : ''}
 
 Ordered Items:
 ${orderItems}`;
@@ -201,6 +133,7 @@ ${orderItems}`;
         description: orderDescription,
         source: 'Web Site',
         status: 'New',
+        campaign: 'CareDaddyStore',
       };
 
       let espoResult: { success: boolean; error?: string; warning?: string; data?: any } = {
@@ -230,9 +163,17 @@ ${orderItems}`;
         });
 
         console.log('EspoCRM API response status:', espoResponse.status, espoResponse.statusText);
+        console.log('Request payload:', JSON.stringify(leadData, null, 2));
 
         const rawResponse = await espoResponse.text();
         console.log('Raw EspoCRM API response:', rawResponse);
+
+        try {
+          const jsonResponse = JSON.parse(rawResponse);
+          console.log('Parsed EspoCRM response:', jsonResponse);
+        } catch (e) {
+          console.log('Response is not JSON:', rawResponse);
+        }
 
         if (espoResponse.ok && rawResponse.trim() === 'true') {
           console.log('Lead successfully created in EspoCRM (direct API method)');
@@ -297,10 +238,11 @@ ${countryName}
 ${searchParams.get('orderId') ? 'Order ID: ' + searchParams.get('orderId') : ''}
 ${orderTotal ? 'Order Total: $' + orderTotal : ''}
 ${formData.notes ? 'Notes: ' + formData.notes : ''}
+${uploadedFileUrl ? 'Payment Proof: ' + uploadedFileUrl : ''}
 
 Ordered Items:
 ${formatOrderItemsForEmail(orderItems)}`,
-        access_key: 'da5e4fac-07d4-4581-907d-d1798c78d699',
+        access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
       };
 
       try {
@@ -339,6 +281,7 @@ ${formatOrderItemsForEmail(orderItems)}`,
             notes: '',
             items: '',
           });
+          setUploadedFileUrl(null);
         } else {
           console.error('Web3forms submission failed:', result);
 
@@ -359,6 +302,7 @@ ${formatOrderItemsForEmail(orderItems)}`,
               notes: '',
               items: '',
             });
+            setUploadedFileUrl(null);
           } else {
             console.error('Both services failed to receive the data');
             setStatus('error');
@@ -384,6 +328,7 @@ ${formatOrderItemsForEmail(orderItems)}`,
             notes: '',
             items: '',
           });
+          setUploadedFileUrl(null);
         } else {
           setStatus('error');
         }
@@ -550,27 +495,33 @@ ${formatOrderItemsForEmail(orderItems)}`,
 
           {paymentMethod !== 'paypal' && (
             <div>
-              <label htmlFor="paymentProof" className="block text-sm text-gray-600 mb-1">
-                Payment Proof *
-              </label>
-              <input
-                type="file"
-                id="paymentProof"
-                name="attachment"
-                required={paymentMethod !== 'paypal'}
-                accept="image/*,.pdf"
-                onChange={handleFileChange}
+              <label className="block text-sm text-gray-600 mb-1">Payment Proof *</label>
+              <UploadButton
+                endpoint="paymentProofUploader"
+                onClientUploadComplete={res => {
+                  if (res && res[0]) {
+                    setUploadedFileUrl(res[0].serverData.fileUrl);
+                    setFormData(prev => ({ ...prev, paymentProof: res[0] }));
+                  }
+                }}
+                onUploadError={(error: Error) => {
+                  console.error('Upload error:', error);
+                  setStatus('error');
+                }}
                 className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+              {uploadedFileUrl && (
+                <p className="mt-1 text-sm text-green-600">File uploaded successfully!</p>
+              )}
               <p className="mt-1 text-sm text-gray-500">
-                Please upload your payment confirmation (Image or PDF, max 5MB)
+                Please upload your payment confirmation (Image or PDF, max 4MB)
               </p>
             </div>
           )}
 
           <button
             type="submit"
-            disabled={status === 'processing'}
+            disabled={status === 'processing' || (paymentMethod !== 'paypal' && !uploadedFileUrl)}
             className="w-full bg-[#88bdbc] text-white py-3 rounded font-medium hover:bg-[#619695] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {status === 'processing' ? 'Processing...' : 'Submit Shipping Details'}

@@ -6,6 +6,9 @@ import { CartProvider } from '@/lib/context/cart-context';
 import { ProductProvider } from '@/lib/contexts/product-context';
 import { PayPalProvider } from '@/components/providers/paypal-provider';
 import MetaPixel from '@/components/meta-pixel';
+import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
+import { extractRouterConfig } from 'uploadthing/server';
+import { ourFileRouter } from './api/uploadthing/core';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <MetaPixel />
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <PayPalProvider>
           <ProductProvider>
             <CartProvider>
