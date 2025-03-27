@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Lead Capture Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container { max-width: 600px; margin-top: 50px; }
+    .form-result { display: none; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="mb-4">Test Lead Capture Form</h2>
+    
+    <div id="success-message" class="alert alert-success form-result">
+      Thank you! Your information has been submitted successfully.
+    </div>
+    
+    <div id="error-message" class="alert alert-danger form-result">
+      There was a problem submitting your information. Please try again.
+      <div id="error-details" class="mt-2 text-muted small"></div>
+    </div>
+    
+    <form id="lead-form">
+      <div class="mb-3">
+        <label for="firstName" class="form-label">First Name *</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name *</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="emailAddress" class="form-label">Email Address *</label>
+        <input type="email" class="form-control" id="emailAddress" name="emailAddress" required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+      </div>
+      
+      <div class="mb-3">
+        <label for="addressStreet" class="form-label">Address</label>
+        <input type="text" class="form-control" id="addressStreet" name="addressStreet">
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col">
+          <label for="addressCity" class="form-label">City</label>
+          <input type="text" class="form-control" id="addressCity" name="addressCity">
+        </div>
+        <div class="col">
+          <label for="addressState" class="form-label">State</label>
+          <input type="text" class="form-control" id="addressState" name="addressState">
+        </div>
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col">
+          <label for="addressCountry" class="form-label">Country</label>
+          <input type="text" class="form-control" id="addressCountry" name="addressCountry">
+        </div>
+        <div class="col">
+          <label for="addressPostalCode" class="form-label">Postal Code</label>
+          <input type="text" class="form-control" id="addressPostalCode" name="addressPostalCode">
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+      </div>
+      
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select class="form-control" id="status" name="status">
+          <option value="New">New</option>
+          <option value="Assigned">Assigned</option>
+          <option value="In Process">In Process</option>
+          <option value="Converted">Converted</option>
+          <option value="Recycled">Recycled</option>
+          <option value="Dead">Dead</option>
+        </select>
+      </div>
+      
+      <div class="mb-3">
+        <label for="source" class="form-label">Source</label>
+        <select class="form-control" id="source" name="source">
+          <option value="Web Site">Web Site</option>
+          <option value="Call">Call</option>
+          <option value="Email">Email</option>
+          <option value="Existing Customer">Existing Customer</option>
+          <option value="Partner">Partner</option>
+          <option value="Public Relations">Public Relations</option>
+          <option value="Campaign">Campaign</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  <!-- Bootstrap & jQuery JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    $(document).ready(function() {
+      $('#lead-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide any previous messages
+        $('.form-result').hide();
+        
+        // Get form data
+        const formData = {};
+        $(this).serializeArray().forEach(item => {
+          formData[item.name] = item.value;
+        });
+        
+        // Send AJAX request
+        $.ajax({
+          url: '/api/leads/capture',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(formData),
+          success: function(response) {
+            if (response.success) {
+              $('#success-message').show();
+              $('#lead-form')[0].reset();
+              
+              // Show payload information if available
+              if (response.sentPayload) {
+                $('#success-message').append('<div class="mt-3"><strong>Data sent to EspoCRM:</strong><br><pre>' + 
+                  JSON.stringify(response.sentPayload, null, 2) + '</pre></div>');
+              }
+            } else {
+              $('#error-message').show();
+              if (response.error) {
+                $('#error-details').text('Error: ' + response.error);
+                if (response.details) {
+                  $('#error-details').append('<br>Details: ' + JSON.stringify(response.details));
+                }
+              }
+            }
+          },
+          error: function(xhr, status, error) {
+            $('#error-message').show();
+            $('#error-details').text('Error: ' + error);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html> 

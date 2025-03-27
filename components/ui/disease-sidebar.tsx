@@ -33,29 +33,31 @@ export function DiseaseSidebar({ diseases, products }: DiseaseSidebarProps) {
 
   // Add dummy diseases
   const allDiseases = [
-    ...diseases,
-    { name: "Women's Health", count: 0 },
-    { name: 'Anti-Acidity', count: 0 },
-    { name: 'Anti-Allergic/Asthma', count: 0 },
-    { name: 'Anti-Depressant', count: 0 },
-    { name: 'Anti-Diabetic', count: 0 },
-    { name: 'Anti-Fungus', count: 0 },
-    { name: 'Anti-Herpes', count: 0 },
-    { name: 'Blood Pressure', count: 0 },
-    { name: 'Cholesterol', count: 0 },
-    { name: 'Erectile Dysfunction', count: 0 },
-    { name: 'Gastrointestinal', count: 0 },
-    { name: 'General Health', count: 0 },
-    { name: 'Healthy Bones', count: 0 },
-    { name: 'Heart Disease', count: 0 },
-    { name: 'Herbal', count: 0 },
-    { name: "Men's Health", count: 0 },
-    { name: 'Other', count: 0 },
-    { name: 'Pain Relief', count: 0 },
-    { name: 'Skin Care', count: 0 },
-    { name: 'Stop Smoking', count: 0 },
-    { name: 'Weight Loss', count: 0 },
-  ];
+    ...diseases.map(d => ({ ...d, source: 'api' })),
+    { name: "Women's Health", count: 0, source: 'static' },
+    { name: 'Anti-Acidity', count: 0, source: 'static' },
+    { name: 'Anti-Allergic/Asthma', count: 0, source: 'static' },
+    { name: 'Anti-Depressant', count: 0, source: 'static' },
+    { name: 'Anti-Diabetic', count: 0, source: 'static' },
+    { name: 'Anti-Fungus', count: 0, source: 'static' },
+    { name: 'Anti-Herpes', count: 0, source: 'static' },
+    { name: 'Blood Pressure', count: 0, source: 'static' },
+    { name: 'Cholesterol', count: 0, source: 'static' },
+    { name: 'Erectile Dysfunction', count: 0, source: 'static' },
+    { name: 'Gastrointestinal', count: 0, source: 'static' },
+    { name: 'General Health', count: 0, source: 'static' },
+    { name: 'Healthy Bones', count: 0, source: 'static' },
+    { name: 'Heart Disease', count: 0, source: 'static' },
+    { name: 'Herbal', count: 0, source: 'static' },
+    { name: "Men's Health", count: 0, source: 'static' },
+    { name: 'Other', count: 0, source: 'static' },
+    { name: 'Pain Relief', count: 0, source: 'static' },
+    { name: 'Skin Care', count: 0, source: 'static' },
+    { name: 'Stop Smoking', count: 0, source: 'static' },
+    { name: 'Weight Loss', count: 0, source: 'static' },
+  ]
+    // Remove duplicates by creating a map with disease name as key
+    .filter((disease, index, self) => index === self.findIndex(d => d.name === disease.name));
 
   return (
     <div className="bg-gradient-to-b from-[#eff9fa] to-[#e5f4f5] rounded-lg px-4 py-3">
@@ -77,7 +79,7 @@ export function DiseaseSidebar({ diseases, products }: DiseaseSidebarProps) {
             {/* Disease buttons for mobile */}
             {allDiseases.map(disease => (
               <button
-                key={`mobile-${disease.name}`}
+                key={`mobile-${disease.name}-${disease.source || 'unknown'}`}
                 onClick={() => handleDiseaseClick(disease.name)}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap
                   ${expandedDisease === disease.name ? 'bg-[#c6e0e0] text-black' : 'bg-[#e0ecec] text-gray-800 hover:bg-[#d4e3e3]'}`}
@@ -155,7 +157,7 @@ export function DiseaseSidebar({ diseases, products }: DiseaseSidebarProps) {
 
         {/* Disease Categories */}
         {allDiseases.map(disease => (
-          <div key={disease.name}>
+          <div key={`${disease.name}-${disease.source || 'unknown'}`}>
             <button
               onClick={() => handleDiseaseClick(disease.name)}
               className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-semibold transition-colors hover:bg-[#e0ecec]"

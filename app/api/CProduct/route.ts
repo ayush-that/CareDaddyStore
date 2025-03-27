@@ -17,19 +17,16 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const where = searchParams.get('where');
 
-    // Build the URL with proper query parameters
     let url = `${BASE_URL}/CProduct`;
     if (where) {
       url += `?where=${where}`;
     } else {
-      // Default parameters for listing products
       url += '?maxSize=100&orderBy=name&order=asc';
     }
 
     console.log('API Key being used:', API_KEY);
     console.log('Fetching from URL:', url);
 
-    // Test the API connection first
     try {
       const testResponse = await fetch(`${BASE_URL}/health`, {
         method: 'GET',
@@ -77,11 +74,9 @@ export async function GET(request: Request) {
       throw new Error('Invalid response format from API');
     }
 
-    // Transform the data to match our expected format
     const transformedData = {
       total: data.total,
       list: data.list.map((product: any) => {
-        // Generate a clean slug from the name if not provided
         const productSlug = product.name
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')

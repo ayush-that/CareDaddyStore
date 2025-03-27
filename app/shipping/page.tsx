@@ -1,17 +1,17 @@
 'use client';
 
 import { ClientWrapper } from '@/components/ui/client-wrapper';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Country, State } from 'country-state-city';
+import { useCart } from '@/lib/context/cart-context';
 
-// Create a component for the form content
 function ShippingForm() {
   const searchParams = useSearchParams();
   const paymentMethod = searchParams.get('method');
-  const orderId = searchParams.get('orderId');
   const items = searchParams.get('items');
-  const amount = searchParams.get('amount');
+
+  const { items: cartItems, total: cartTotal } = useCart();
 
   const [countries] = useState(Country.getAllCountries());
   const [states, setStates] = useState(State.getStatesOfCountry(''));
@@ -28,6 +28,8 @@ function ShippingForm() {
     phone: '',
     email: '',
     paymentProof: null as File | null,
+    notes: '',
+    items: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -50,100 +52,341 @@ function ShippingForm() {
     e.preventDefault();
     setStatus('processing');
 
+    console.log('Cart items from context:', cartItems);
+    console.log('Cart total from context:', cartTotal);
+
     try {
-      // First handle the file upload if it exists
-      let attachmentUrl = '';
       if (formData.paymentProof) {
-        const fileData = new FormData();
-        fileData.append('file', formData.paymentProof);
-        fileData.append('access_key', 'da5e4fac-07d4-4581-907d-d1798c78d699');
+        try {
+          const fileSize = formData.paymentProof.size;
+          const fileType = formData.paymentProof.type;
 
-        const uploadResponse = await fetch('https://api.web3forms.com/upload', {
-          method: 'POST',
-          body: fileData,
-        });
+          console.log('Attempting to upload file:', {
+            name: formData.paymentProof.name,
+            size: fileSize,
+            type: fileType,
+          });
 
-        const uploadResult = await uploadResponse.json();
-        if (uploadResult.success) {
-          attachmentUrl = uploadResult.url;
+          if (fileSize > 5 * 1024 * 1024) {
+            console.error('File too large:', fileSize);
+            throw new Error('File size exceeds 5MB limit');
+          }
+
+          if (!fileType.startsWith('image/') && fileType !== 'application/pdf') {
+            console.error('Invalid file type:', fileType);
+            throw new Error('Only images and PDFs are allowed');
+          }
+
+          let uploadSuccess = false;
+
+          try {
+            const fileData = new FormData();
+            fileData.append('file', formData.paymentProof);
+            fileData.append('access_key', 'da5e4fac-07d4-4581-907d-d1798c78d699');
+
+            const uploadResponse = await fetch('https://api.web3forms.com/upload', {
+              method: 'POST',
+              body: fileData,
+            });
+
+            if (!uploadResponse.ok) {
+              console.error('Web3forms file upload error:', {
+                status: uploadResponse.status,
+                statusText: uploadResponse.statusText,
+              });
+            } else {
+              console.log('File uploaded successfully to web3forms');
+              uploadSuccess = true;
+            }
+          } catch (web3formError) {
+            console.error('Error with web3forms upload:', web3formError);
+          }
+
+          if (!uploadSuccess) {
+            console.log('Trying fallback upload endpoint...');
+
+            try {
+              const fileData = new FormData();
+              fileData.append('file', formData.paymentProof);
+
+              const uploadResponse = await fetch('/api/upload', {
+                method: 'POST',
+                body: fileData,
+              });
+
+              if (!uploadResponse.ok) {
+                console.error('Fallback upload error:', {
+                  status: uploadResponse.status,
+                  statusText: uploadResponse.statusText,
+                });
+              } else {
+                console.log('File uploaded successfully to fallback endpoint');
+              }
+            } catch (fallbackError) {
+              console.error('Error with fallback upload:', fallbackError);
+            }
+          }
+        } catch (uploadError) {
+          console.error('Error uploading file:', uploadError);
         }
       }
 
-      // Parse items if available
       let orderItems = '';
       try {
         if (items) {
           const parsedItems = JSON.parse(decodeURIComponent(items));
           orderItems = parsedItems
             .map((item: any) => `- ${item.name} (Quantity: ${item.quantity})`)
-            .join('\n            ');
+            .join('\n');
+          setFormData(prev => ({ ...prev, items: orderItems }));
         }
       } catch (e) {
-        console.error('Error parsing items:', e);
-        orderItems = 'Error parsing order items';
+        console.error('Error parsing items from URL:', e);
       }
 
-      // Then submit the form data
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: 'da5e4fac-07d4-4581-907d-d1798c78d699',
-          from_name: `${formData.firstName} ${formData.lastName}`,
-          subject: `New Order Shipping Details - Order ${orderId || 'No Order ID'}`,
-          message: `
-            Order Information:
-            -----------------
-            Order ID: ${orderId || 'Not specified'}
-            Total Amount: ${amount || 'Not specified'}
-            Payment Method: ${paymentMethod || 'Not specified'}
-            Payment Proof: ${attachmentUrl || 'Not provided'}
+      if ((!orderItems || orderItems === '') && cartItems.length > 0) {
+        orderItems = cartItems
+          .map(
+            item => `- ${item.name} (Quantity: ${item.quantity}, Price: $${item.price.toFixed(2)})`
+          )
+          .join('\n');
+        setFormData(prev => ({ ...prev, items: orderItems }));
+      }
 
-            Ordered Items:
-            -------------
-            ${orderItems || 'No items specified'}
+      if (!orderItems || orderItems === '') {
+        orderItems = 'No items specified';
+      }
 
-            Shipping Details:
-            ----------------
-            Name: ${formData.firstName} ${formData.lastName}
-            Email: ${formData.email}
-            Phone: ${formData.phone}
-            
-            Delivery Address:
-            ----------------
-            ${formData.address}
-            ${formData.city}
-            ${formData.state}
-            ${formData.country}
-            ${formData.zipCode}
-          `,
-          email_to: 'shopwe820@gmail.com',
-        }),
-      });
+      const countryName =
+        countries.find(c => c.isoCode === formData.country)?.name || formData.country;
+      const stateName = states.find(s => s.isoCode === formData.state)?.name || formData.state;
+      const customerName = `${formData.firstName} ${formData.lastName}`;
 
-      const result = await response.json();
-      console.log('Submission result:', result);
+      const orderDescription = `
+Order Details:
+- Customer: ${customerName}
+- Email: ${formData.email}
+- Phone: ${formData.phone}
+- Address: ${formData.address}, ${formData.city}, ${stateName}, ${countryName}, ${formData.zipCode}
+${formData.notes ? '- Notes: ' + formData.notes : ''}
 
-      if (result.success) {
-        setStatus('success');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          country: '',
-          state: '',
-          city: '',
-          zipCode: '',
-          address: '',
-          phone: '',
-          email: '',
-          paymentProof: null,
+Ordered Items:
+${orderItems}`;
+
+      const orderTotal = searchParams.get('amount') || (cartTotal > 0 ? cartTotal.toFixed(2) : '');
+
+      function formatPhoneForEspo(phone: string): string {
+        if (!phone) return '';
+        if (phone.includes('-') || phone.includes('+')) return phone;
+
+        const digits = phone.replace(/\D/g, '');
+
+        if (digits.length === 10) {
+          return `+1-${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+        }
+
+        return `+1-${digits}`;
+      }
+
+      const leadData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        emailAddress: formData.email,
+        phoneNumber: formatPhoneForEspo(formData.phone),
+        addressStreet: formData.address,
+        addressCity: formData.city,
+        addressState: stateName,
+        addressCountry: countryName,
+        addressPostalCode: formData.zipCode,
+        description: orderDescription,
+        source: 'Web Site',
+        status: 'New',
+      };
+
+      let espoResult: { success: boolean; error?: string; warning?: string; data?: any } = {
+        success: false,
+      };
+
+      try {
+        console.log('Submitting to CRM:', JSON.stringify(leadData, null, 2));
+        console.log('Using Lead Capture API directly (successful method from curl test)');
+
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://139.59.23.17/api/v1';
+        const LEAD_CAPTURE_ID =
+          process.env.NEXT_PUBLIC_ESPOCRM_LEAD_CAPTURE_ID || 'd6e603dda729de3fb3c8c13560b7e8cb';
+
+        const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+        const ESPO_API_URL = `${baseUrl}/LeadCapture/${LEAD_CAPTURE_ID}`;
+
+        console.log('Sending directly to:', ESPO_API_URL);
+
+        const espoResponse = await fetch(ESPO_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(leadData),
         });
-      } else {
-        console.error('Submission failed:', result);
-        setStatus('error');
+
+        console.log('EspoCRM API response status:', espoResponse.status, espoResponse.statusText);
+
+        const rawResponse = await espoResponse.text();
+        console.log('Raw EspoCRM API response:', rawResponse);
+
+        if (espoResponse.ok && rawResponse.trim() === 'true') {
+          console.log('Lead successfully created in EspoCRM (direct API method)');
+          espoResult = { success: true };
+        } else {
+          try {
+            if (rawResponse && rawResponse.trim()) {
+              espoResult = JSON.parse(rawResponse);
+            } else {
+              espoResult = { success: false, error: 'Empty response' };
+            }
+          } catch (jsonError) {
+            console.error('Error parsing EspoCRM response:', jsonError);
+            espoResult = { success: false, error: 'Failed to parse response' };
+          }
+        }
+
+        console.log('Parsed EspoCRM response:', espoResult);
+
+        if (!espoResult.success) {
+          console.error('Error from CRM API:', espoResult);
+        } else {
+          console.log('CRM submission successful', espoResult);
+        }
+      } catch (espoError) {
+        console.error('Error submitting to CRM:', espoError);
+      }
+
+      const formatOrderItemsForEmail = (itemsStr: string): string => {
+        if (!itemsStr) return 'No items specified';
+
+        if (itemsStr.includes('\n')) return itemsStr;
+
+        try {
+          if (itemsStr.startsWith('[') && itemsStr.includes('"name"')) {
+            const items = JSON.parse(itemsStr);
+            return items
+              .map((item: any) => `- ${item.name} (Quantity: ${item.quantity})`)
+              .join('\n');
+          }
+        } catch (e) {}
+
+        return itemsStr;
+      };
+
+      const emailData = {
+        name: customerName,
+        email: formData.email,
+        subject: 'New Shipping Form Submission',
+        message: `
+New shipping form submission from ${customerName}
+
+Contact Details:
+- Email: ${formData.email}
+- Phone: ${formData.phone}
+
+Shipping Address:
+${formData.address}
+${formData.city}, ${stateName} ${formData.zipCode}
+${countryName}
+
+${searchParams.get('orderId') ? 'Order ID: ' + searchParams.get('orderId') : ''}
+${orderTotal ? 'Order Total: $' + orderTotal : ''}
+${formData.notes ? 'Notes: ' + formData.notes : ''}
+
+Ordered Items:
+${formatOrderItemsForEmail(orderItems)}`,
+        access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
+      };
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(emailData),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          console.log('Form submission successful');
+
+          if (espoResult && espoResult.success) {
+            console.log('Both services received the data successfully');
+          } else {
+            console.log('Web3forms submission successful, but EspoCRM submission failed');
+          }
+
+          setStatus('success');
+          setFormData({
+            firstName: '',
+            lastName: '',
+            country: '',
+            state: '',
+            city: '',
+            zipCode: '',
+            address: '',
+            phone: '',
+            email: '',
+            paymentProof: null,
+            notes: '',
+            items: '',
+          });
+        } else {
+          console.error('Web3forms submission failed:', result);
+
+          if (espoResult && espoResult.success) {
+            console.log('EspoCRM submission was successful, continuing with success');
+            setStatus('success');
+            setFormData({
+              firstName: '',
+              lastName: '',
+              country: '',
+              state: '',
+              city: '',
+              zipCode: '',
+              address: '',
+              phone: '',
+              email: '',
+              paymentProof: null,
+              notes: '',
+              items: '',
+            });
+          } else {
+            console.error('Both services failed to receive the data');
+            setStatus('error');
+          }
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+
+        if (espoResult && espoResult.success) {
+          console.log('EspoCRM submission was successful, continuing with success');
+          setStatus('success');
+          setFormData({
+            firstName: '',
+            lastName: '',
+            country: '',
+            state: '',
+            city: '',
+            zipCode: '',
+            address: '',
+            phone: '',
+            email: '',
+            paymentProof: null,
+            notes: '',
+            items: '',
+          });
+        } else {
+          setStatus('error');
+        }
       }
     } catch (error) {
       console.error('Submission error:', error);
@@ -165,7 +408,8 @@ function ShippingForm() {
         {status === 'error' && (
           <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
             Failed to submit shipping details. Please check your information and try again. If the
-            problem persists, please contact support.
+            problem persists, please contact support with the error details from your browser
+            console (F12).
           </div>
         )}
 
@@ -304,7 +548,6 @@ function ShippingForm() {
             </div>
           </div>
 
-          {/* Payment Proof Upload */}
           {paymentMethod !== 'paypal' && (
             <div>
               <label htmlFor="paymentProof" className="block text-sm text-gray-600 mb-1">
@@ -338,28 +581,29 @@ function ShippingForm() {
   );
 }
 
-// Main page component
 export default function ShippingPage() {
   return (
     <ClientWrapper>
-      <Suspense
-        fallback={
-          <div className="max-w-2xl mx-auto p-6">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="animate-pulse">
-                <div className="h-6 bg-gray-200 rounded w-1/4 mb-6"></div>
-                <div className="space-y-4">
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+      <div className="w-full bg-gray-50 py-10">
+        <Suspense
+          fallback={
+            <div className="max-w-2xl mx-auto p-6">
+              <div className="bg-white rounded-lg shadow-sm p-6">
+                <div className="animate-pulse">
+                  <div className="h-6 bg-gray-200 rounded w-1/4 mb-6"></div>
+                  <div className="space-y-4">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        }
-      >
-        <ShippingForm />
-      </Suspense>
+          }
+        >
+          <ShippingForm />
+        </Suspense>
+      </div>
     </ClientWrapper>
   );
 }

@@ -69,6 +69,7 @@ export function MenuBanner() {
                   src={slide}
                   alt={`Banner ${index + 1}`}
                   fill
+                  sizes="(max-width: 768px) 100vw, 400px"
                   className={`object-contain transition-opacity ${
                     currentSlide === index ? 'opacity-100' : 'opacity-0'
                   }`}
@@ -83,6 +84,7 @@ export function MenuBanner() {
                 src="/banner4.png"
                 alt="Special Offer"
                 fill
+                sizes="(max-width: 768px) 100vw, 180px"
                 className="object-contain"
                 priority
               />

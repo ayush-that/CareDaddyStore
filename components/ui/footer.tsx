@@ -17,6 +17,7 @@ export function Footer() {
               width={51}
               height={16}
               className="h-4 w-auto"
+              style={{ width: 'auto' }}
             />
             <Image
               src="/images/footer/mastercard-top.svg"
@@ -24,6 +25,7 @@ export function Footer() {
               width={51}
               height={16}
               className="h-5 w-auto"
+              style={{ width: 'auto' }}
             />
             <div className="h-8 border-l border-gray-300 mx-2"></div>
             <Image
@@ -32,6 +34,7 @@ export function Footer() {
               width={114}
               height={31}
               className="h-5 w-auto"
+              style={{ width: 'auto' }}
             />
             <Image
               src="/images/footer/visa-verified.svg"
@@ -39,6 +42,7 @@ export function Footer() {
               width={57}
               height={31}
               className="h-5 w-auto"
+              style={{ width: 'auto' }}
             />
             <Image
               src="/images/footer/ssl.svg"
@@ -46,6 +50,7 @@ export function Footer() {
               width={100}
               height={31}
               className="h-5 w-auto"
+              style={{ width: 'auto' }}
             />
             <Image
               src="/images/footer/McAfee_logo_(2009-2016).png"
@@ -53,6 +58,7 @@ export function Footer() {
               width={92}
               height={31}
               className="h-5 w-auto"
+              style={{ width: 'auto' }}
             />
           </div>
         </div>
@@ -67,6 +73,7 @@ export function Footer() {
                 width={625}
                 height={447}
                 className="h-20 w-auto"
+                style={{ width: 'auto' }}
               />
             </Link>
           </div>

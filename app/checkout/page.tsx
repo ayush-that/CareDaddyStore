@@ -433,8 +433,14 @@ export default function CheckoutPage() {
               {items.map(item => (
                 <div key={item.id} className="flex justify-between items-start">
                   <div className="flex items-start gap-2">
-                    <div className="w-12 h-12 relative bg-white rounded overflow-hidden">
-                      <Image src={item.image} alt={item.name} fill className="object-contain p-1" />
+                    <div className="relative w-16 h-16 shrink-0">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain p-1"
+                        sizes="64px"
+                      />
                     </div>
                     <div>
                       <p className="text-sm font-medium">{item.name}</p>

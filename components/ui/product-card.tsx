@@ -19,9 +19,10 @@ interface Product {
 
 interface ProductCardProps {
   product: Product;
+  priority?: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   if (!product || !product.name) {
     return null;
   }
@@ -32,7 +33,14 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="group sm:w-[250px] bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-2 border-gray-100">
       {/* Image Container */}
       <div className="relative h-[180px] bg-white p-4">
-        <Image src={image || '/placeholder.png'} alt={name} fill className="object-contain" />
+        <Image
+          src={image || '/placeholder.png'}
+          alt={name}
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={priority}
+        />
       </div>
 
       {/* Info Container */}

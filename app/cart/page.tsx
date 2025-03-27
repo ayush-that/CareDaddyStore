@@ -51,8 +51,14 @@ export default function CartPage() {
                   className="grid grid-cols-[3fr_1fr_1fr_1fr] gap-4 px-6 py-4 items-center"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 relative bg-white p-2 border border-gray-200 rounded">
-                      <Image src={item.image} alt={item.name} fill className="object-contain" />
+                    <div className="relative flex-shrink-0 w-20 h-20">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100px, 80px"
+                      />
                     </div>
                     <span>{item.name}</span>
                   </div>
