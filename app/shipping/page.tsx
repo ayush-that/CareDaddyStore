@@ -300,7 +300,7 @@ ${formData.notes ? 'Notes: ' + formData.notes : ''}
 
 Ordered Items:
 ${formatOrderItemsForEmail(orderItems)}`,
-        access_key: 'c90e41df-71f6-438d-a957-dd005e2828d4',
+        access_key: 'da5e4fac-07d4-4581-907d-d1798c78d699',
       };
 
       try {
