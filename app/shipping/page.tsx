@@ -175,6 +175,8 @@ ${orderItems}`;
             Accept: 'application/json',
           },
           body: JSON.stringify(leadData),
+          mode: 'cors',
+          cache: 'no-cache',
         });
 
         console.log('EspoCRM API response status:', espoResponse.status, espoResponse.statusText);

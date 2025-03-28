@@ -18,10 +18,21 @@ const nextConfig = {
     },
   },
   webpack: (config, { isServer }) => {
-    // If you need to make HTTPS requests to servers with self-signed certificates,
-    // the proper solution is to add the certificates to your system's trust store
-    // or configure the specific certificates in your application
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: http:; connect-src 'self' http: https:;",
+          },
+        ],
+      },
+    ];
   },
 };
 
