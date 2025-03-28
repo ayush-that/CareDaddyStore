@@ -159,65 +159,59 @@ ${orderItems}`;
         console.log('Submitting to CRM:', JSON.stringify(leadData, null, 2));
         console.log('Using Lead Capture API directly (successful method from curl test)');
 
-        const API_BASE_URL = 'http://139.59.23.17/api/v1';
-        const LEAD_CAPTURE_ID = 'd6e603dda729de3fb3c8c13560b7e8cb';
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://139.59.23.17/api/v1';
+        const LEAD_CAPTURE_ID =
+          process.env.NEXT_PUBLIC_ESPOCRM_LEAD_CAPTURE_ID || 'd6e603dda729de3fb3c8c13560b7e8cb';
 
         const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
         const ESPO_API_URL = `${baseUrl}/LeadCapture/${LEAD_CAPTURE_ID}`;
 
         console.log('Sending directly to:', ESPO_API_URL);
 
+        const espoResponse = await fetch(ESPO_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(leadData),
+        });
+
+        console.log('EspoCRM API response status:', espoResponse.status, espoResponse.statusText);
+        console.log('Request payload:', JSON.stringify(leadData, null, 2));
+
+        const rawResponse = await espoResponse.text();
+        console.log('Raw EspoCRM API response:', rawResponse);
+
         try {
-          const espoResponse = await fetch(ESPO_API_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-              Origin: window.location.origin,
-            },
-            mode: 'cors',
-            credentials: 'omit',
-            body: JSON.stringify(leadData),
-          });
+          const jsonResponse = JSON.parse(rawResponse);
+          console.log('Parsed EspoCRM response:', jsonResponse);
+        } catch (e) {
+          console.log('Response is not JSON:', rawResponse);
+        }
 
-          console.log('EspoCRM API response status:', espoResponse.status, espoResponse.statusText);
-          console.log('Request payload:', JSON.stringify(leadData, null, 2));
-
-          const rawResponse = await espoResponse.text();
-          console.log('Raw EspoCRM API response:', rawResponse);
-
+        if (espoResponse.ok && rawResponse.trim() === 'true') {
+          console.log('Lead successfully created in EspoCRM (direct API method)');
+          espoResult = { success: true };
+        } else {
           try {
-            const jsonResponse = JSON.parse(rawResponse);
-            console.log('Parsed EspoCRM response:', jsonResponse);
-          } catch (e) {
-            console.log('Response is not JSON:', rawResponse);
-          }
-
-          if (espoResponse.ok && rawResponse.trim() === 'true') {
-            console.log('Lead successfully created in EspoCRM (direct API method)');
-            espoResult = { success: true };
-          } else {
-            try {
-              if (rawResponse && rawResponse.trim()) {
-                espoResult = JSON.parse(rawResponse);
-              } else {
-                espoResult = { success: false, error: 'Empty response' };
-              }
-            } catch (jsonError) {
-              console.error('Error parsing EspoCRM response:', jsonError);
-              espoResult = { success: false, error: 'Failed to parse response' };
+            if (rawResponse && rawResponse.trim()) {
+              espoResult = JSON.parse(rawResponse);
+            } else {
+              espoResult = { success: false, error: 'Empty response' };
             }
+          } catch (jsonError) {
+            console.error('Error parsing EspoCRM response:', jsonError);
+            espoResult = { success: false, error: 'Failed to parse response' };
           }
+        }
 
-          console.log('Parsed EspoCRM response:', espoResult);
+        console.log('Parsed EspoCRM response:', espoResult);
 
-          if (!espoResult.success) {
-            console.error('Error from CRM API:', espoResult);
-          } else {
-            console.log('CRM submission successful', espoResult);
-          }
-        } catch (espoError) {
-          console.error('Error submitting to CRM:', espoError);
+        if (!espoResult.success) {
+          console.error('Error from CRM API:', espoResult);
+        } else {
+          console.log('CRM submission successful', espoResult);
         }
       } catch (espoError) {
         console.error('Error submitting to CRM:', espoError);
