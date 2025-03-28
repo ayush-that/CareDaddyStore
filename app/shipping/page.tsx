@@ -1,7 +1,7 @@
 'use client';
 
 import { ClientWrapper } from '@/components/ui/client-wrapper';
-import { useState, Suspense, useEffect } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Country, State } from 'country-state-city';
 import { useCart } from '@/lib/context/cart-context';
@@ -28,6 +28,15 @@ function ShippingForm() {
   const [states, setStates] = useState(State.getStatesOfCountry(''));
   const [status, setStatus] = useState('');
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [submittedOrderId, setSubmittedOrderId] = useState<string>('');
+  const [submittedDetails, setSubmittedDetails] = useState<any>(null);
+
+  // Generate a unique order ID
+  const generateOrderId = () => {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `CD-${timestamp}-${randomStr}`;
+  };
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -57,6 +66,10 @@ function ShippingForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('processing');
+
+    // Generate order ID at the start of submission
+    const orderId = generateOrderId();
+    console.log('Generated Order ID:', orderId);
 
     console.log('Cart items from context:', cartItems);
     console.log('Cart total from context:', cartTotal);
@@ -134,6 +147,8 @@ ${orderItems}`;
         source: 'Web Site',
         status: 'New',
         campaign: 'CareDaddyStore',
+        orderId: orderId,
+        title: orderId,
       };
 
       let espoResult: { success: boolean; error?: string; warning?: string; data?: any } = {
@@ -226,6 +241,8 @@ ${orderItems}`;
         message: `
 New shipping form submission from ${customerName}
 
+Order ID: ${orderId}
+
 Contact Details:
 - Email: ${formData.email}
 - Phone: ${formData.phone}
@@ -235,7 +252,6 @@ ${formData.address}
 ${formData.city}, ${stateName} ${formData.zipCode}
 ${countryName}
 
-${searchParams.get('orderId') ? 'Order ID: ' + searchParams.get('orderId') : ''}
 ${orderTotal ? 'Order Total: $' + orderTotal : ''}
 ${formData.notes ? 'Notes: ' + formData.notes : ''}
 ${uploadedFileUrl ? 'Payment Proof: ' + uploadedFileUrl : ''}
@@ -259,13 +275,15 @@ ${formatOrderItemsForEmail(orderItems)}`,
 
         if (result.success) {
           console.log('Form submission successful');
-
-          if (espoResult && espoResult.success) {
-            console.log('Both services received the data successfully');
-          } else {
-            console.log('Web3forms submission successful, but EspoCRM submission failed');
-          }
-
+          setSubmittedOrderId(orderId);
+          setSubmittedDetails({
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            phone: formData.phone,
+            address: `${formData.address}, ${formData.city}, ${stateName}, ${countryName}, ${formData.zipCode}`,
+            items: orderItems,
+            total: orderTotal || '',
+          });
           setStatus('success');
           setFormData({
             firstName: '',
@@ -345,8 +363,64 @@ ${formatOrderItemsForEmail(orderItems)}`,
         <h2 className="text-xl font-semibold mb-6">Shipping Details</h2>
 
         {status === 'success' && (
-          <div className="mb-6 p-4 bg-green-100 text-green-700 rounded">
-            Thank you! Your shipping details have been submitted successfully.
+          <div className="mb-6 space-y-4">
+            <div className="p-4 bg-green-100 text-green-700 rounded">
+              <h3 className="font-semibold text-lg mb-2">Thank you for your order!</h3>
+              <p className="mb-2">Your order has been successfully submitted.</p>
+              <p className="font-medium">Order ID: {submittedOrderId}</p>
+            </div>
+
+            {submittedDetails && (
+              <div className="border rounded-lg p-4 space-y-4">
+                <div>
+                  <h4 className="font-semibold text-gray-700 mb-2">Order Details</h4>
+                  <div className="space-y-1 text-sm">
+                    <p>
+                      <span className="font-medium">Name:</span> {submittedDetails.name}
+                    </p>
+                    <p>
+                      <span className="font-medium">Email:</span> {submittedDetails.email}
+                    </p>
+                    <p>
+                      <span className="font-medium">Phone:</span> {submittedDetails.phone}
+                    </p>
+                    <p>
+                      <span className="font-medium">Shipping Address:</span>{' '}
+                      {submittedDetails.address}
+                    </p>
+                    {submittedDetails.total && (
+                      <p>
+                        <span className="font-medium">Order Total:</span> ${submittedDetails.total}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-700 mb-2">Ordered Items</h4>
+                  <div className="text-sm whitespace-pre-line">{submittedDetails.items}</div>
+                </div>
+
+                <div className="border-t pt-4 mt-4">
+                  <h4 className="font-semibold text-gray-700 mb-2">Contact Us</h4>
+                  <div className="text-sm space-y-1">
+                    <p>If you have any questions about your order, please contact us:</p>
+                    <p>
+                      <span className="font-medium">Email:</span> support@careddadystore.com
+                    </p>
+                    <p>
+                      <span className="font-medium">US Phone:</span> +1 928 859-6278
+                    </p>
+                    <p>
+                      <span className="font-medium">UK Phone:</span> +44 7497 555555
+                    </p>
+                    <p>
+                      <span className="font-medium">Hours:</span> 24/7 Customer Support
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
