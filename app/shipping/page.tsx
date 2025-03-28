@@ -159,7 +159,8 @@ ${orderItems}`;
         console.log('Submitting to CRM:', JSON.stringify(leadData, null, 2));
         console.log('Using Lead Capture API directly (successful method from curl test)');
 
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://139.59.23.17/api/v1';
+        const API_BASE_URL =
+          process.env.NEXT_PUBLIC_API_BASE_URL || 'https://admin.qwik.skin/api/v1';
         const LEAD_CAPTURE_ID =
           process.env.NEXT_PUBLIC_ESPOCRM_LEAD_CAPTURE_ID || 'd6e603dda729de3fb3c8c13560b7e8cb';
 

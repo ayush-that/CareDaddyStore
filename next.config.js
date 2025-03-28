@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'shopwe.espocloud.eu',
+        hostname: 'admin.qwik.skin',
       },
     ],
   },
@@ -18,15 +18,6 @@ const nextConfig = {
     },
   },
   webpack: (config, { isServer }) => {
-    // Allow HTTP connections
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        net: false,
-        tls: false,
-        fs: false,
-      };
-    }
     return config;
   },
 };
