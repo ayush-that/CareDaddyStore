@@ -5,12 +5,13 @@ import { Providers } from '@/components/providers';
 import { CartProvider } from '@/lib/context/cart-context';
 import { ProductProvider } from '@/lib/contexts/product-context';
 import { PayPalProvider } from '@/components/providers/paypal-provider';
-import MetaPixel from '@/components/meta-pixel';
+import dynamic from 'next/dynamic';
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from './api/uploadthing/core';
 
 const inter = Inter({ subsets: ['latin'] });
+const PixelTracker = dynamic(() => import('@/components/PixelTracker'), { ssr: false });
 
 export const metadata: Metadata = {
   title: 'CareCaddy Store',
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <MetaPixel />
+        <PixelTracker />
         <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <PayPalProvider>
           <ProductProvider>
